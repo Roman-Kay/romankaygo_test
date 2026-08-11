@@ -1,0 +1,1 @@
+enum DocumentStatus { unsigned, signed }
