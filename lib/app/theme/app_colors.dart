@@ -4,10 +4,8 @@ abstract final class AppColors {
   static const transparent = Color(0x00000000);
   static const black = Color(0xFF000000);
   static const blackMuted = Color(0x42000000);
-  static const ink = Color(0xFF202020);
   static const paper = Color(0xFFF1F1F1);
   static const white = Color(0xFFFFFFFF);
-  static const glassWhite = Color(0xFFFFFFFF);
   static const panelWhite = Color(0xEFFFFFFF);
   static const paperMuted = Color(0xFFE1E1E1);
   static const glassBacker = Color(0xFFF5F5F5);
@@ -20,7 +18,8 @@ abstract final class AppColors {
   static const headerButtonBackground = Color(0xFF3C3C3C);
   static const searchIcon = Color(0xFF2F2F2F);
   static const selectedCheck = Color(0xFF69D82F);
-  static const tabBackground = Color(0x1F767680);
+  static const tabBackground = Color(0x1E767680);
+  static const tabSelected = Color(0xFF191919);
   static const tabDivider = Color(0xFF8E8E93);
   static const accent = Color(0xFF84F64D);
   static const textPrimary = Color(0xFF202020);

@@ -272,7 +272,7 @@ class _RoundGlassActionButton extends StatelessWidget {
         iconSize: 34,
         useOwnLayer: true,
         interactionScale: 0.96,
-        glowColor: AppColors.glassWhite.withValues(alpha: 0.55),
+        glowColor: AppColors.white.withValues(alpha: 0.55),
         glowRadius: 26,
         semanticLabel: 'Search',
         settings: LiquidGlassSettings(
@@ -287,8 +287,8 @@ class _RoundGlassActionButton extends StatelessWidget {
           saturation: 1.16,
           glowIntensity: 0.48,
           whitenStrength: 0.22,
-          glassColor: AppColors.glassWhite.withValues(alpha: 0.24),
-          backerColor: AppColors.glassWhite.withValues(alpha: 0.20),
+          glassColor: AppColors.white.withValues(alpha: 0.24),
+          backerColor: AppColors.white.withValues(alpha: 0.20),
         ),
       ),
     );
@@ -327,12 +327,12 @@ class _AddDocumentGlassButton extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.add_circle, color: AppColors.ink, size: 24),
+                Icon(Icons.add_circle, color: AppColors.textPrimary, size: 24),
                 SizedBox(width: 8),
                 Text(
                   'Add Document',
                   style: TextStyle(
-                    color: AppColors.ink,
+                    color: AppColors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0,
@@ -382,7 +382,7 @@ class _Header extends StatelessWidget {
               shape: const LiquidRoundedRectangle(borderRadius: 15.2),
               useOwnLayer: true,
               interactionScale: 1.04,
-              glowColor: AppColors.glassWhite.withValues(alpha: 0.1),
+              glowColor: AppColors.white.withValues(alpha: 0.1),
               glowRadius: 1.2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -394,7 +394,7 @@ class _Header extends StatelessWidget {
                       ? 'Deselect All (${state.selectedIds.length})'
                       : 'Select All',
                   style: const TextStyle(
-                    color: AppColors.glassWhite,
+                    color: AppColors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
@@ -507,9 +507,7 @@ class _DocumentContextDismissLayer extends StatelessWidget {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: onDismiss,
-          child: ColoredBox(
-            color: AppColors.glassWhite.withValues(alpha: 0.08),
-          ),
+          child: ColoredBox(color: AppColors.white.withValues(alpha: 0.08)),
         ),
       ),
     );

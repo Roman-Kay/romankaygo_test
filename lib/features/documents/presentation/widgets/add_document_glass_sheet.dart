@@ -72,7 +72,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                   animation: _controller,
                   builder: (context, child) {
                     return Container(
-                      color: AppColors.glassWhite.withValues(
+                      color: AppColors.white.withValues(
                         alpha: 0.46 * _controller.value,
                       ),
                     );
@@ -133,13 +133,13 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                   iconSize: 34,
                   useOwnLayer: true,
                   interactionScale: 0.94,
-                  glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
+                  glowColor: AppColors.white.withValues(alpha: 0.42),
                   glowRadius: 22,
                   settings: LiquidGlassSettings(
                     blur: 24,
                     thickness: 22,
                     refractiveIndex: 1.32,
-                    glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
+                    glassColor: AppColors.white.withValues(alpha: 0.18),
                   ),
                 ),
               ),
@@ -237,13 +237,13 @@ class _FanSourceButton extends StatelessWidget {
           shape: const LiquidRoundedRectangle(borderRadius: 100),
           useOwnLayer: true,
           interactionScale: 1.05,
-          glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
+          glowColor: AppColors.white.withValues(alpha: 0.42),
           glowRadius: 1.2,
           settings: LiquidGlassSettings(
             blur: 24,
             thickness: 22,
             refractiveIndex: 1.32,
-            glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
+            glassColor: AppColors.white.withValues(alpha: 0.18),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

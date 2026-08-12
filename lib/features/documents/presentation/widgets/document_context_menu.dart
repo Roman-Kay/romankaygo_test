@@ -61,7 +61,7 @@ class DocumentContextMenu extends StatelessWidget {
               saturation: 1.24,
               glowIntensity: 0.52,
               whitenStrength: 0.16,
-              glassColor: AppColors.glassWhite.withValues(alpha: 0.19),
+              glassColor: AppColors.white.withValues(alpha: 0.19),
               backerColor: AppColors.glassBacker.withValues(alpha: 0.20),
             ),
             child: Column(
@@ -124,7 +124,7 @@ class _MenuAction extends StatelessWidget {
         style: GlassButtonStyle.transparent,
         useOwnLayer: true,
         interactionScale: 1.02,
-        glowColor: AppColors.glassWhite.withValues(alpha: 0.24),
+        glowColor: AppColors.white.withValues(alpha: 0.24),
         glowRadius: 0.8,
         shape: const LiquidRoundedRectangle(borderRadius: 26),
         child: Column(

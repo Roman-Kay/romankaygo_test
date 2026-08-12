@@ -17,7 +17,7 @@ class CircleIconButton extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     this.backgroundColor = AppColors.headerButtonBackground,
-    this.foregroundColor = AppColors.glassWhite,
+    this.foregroundColor = AppColors.white,
     this.size = 52,
     this.borderRadius,
   });
@@ -34,7 +34,7 @@ class CircleIconButton extends StatelessWidget {
         shape: LiquidRoundedRectangle(borderRadius: radius),
         useOwnLayer: true,
         interactionScale: 0.94,
-        glowColor: AppColors.glassWhite.withValues(alpha: 0.34),
+        glowColor: AppColors.white.withValues(alpha: 0.34),
         glowRadius: 20,
         settings: LiquidGlassSettings(
           blur: 18,

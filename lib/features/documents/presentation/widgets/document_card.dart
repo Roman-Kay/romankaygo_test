@@ -75,17 +75,14 @@ class DocumentCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.selectedCheck
-                            : AppColors.glassWhite.withValues(alpha: 0.45),
+                            : AppColors.white.withValues(alpha: 0.45),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.glassWhite,
-                          width: 2,
-                        ),
+                        border: Border.all(color: AppColors.white, width: 2),
                       ),
                       child: Icon(
                         Icons.check,
                         color: isSelected
-                            ? AppColors.glassWhite
+                            ? AppColors.white
                             : AppColors.blackMuted,
                         size: 28,
                       ),
@@ -142,7 +139,7 @@ class _DocumentSheet extends StatelessWidget {
     return Opacity(
       opacity: opacity,
       child: Container(
-        color: AppColors.glassWhite,
+        color: AppColors.white,
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
         child: CustomPaint(
           painter: _DocumentLinesPainter(),
@@ -200,7 +197,7 @@ class _PreviewFrame extends StatelessWidget {
       height: 167.84,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.glassWhite,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: AppColors.documentBorder.withValues(alpha: 0.59),
@@ -298,7 +295,7 @@ class _SignedMarkBadge extends StatelessWidget {
       height: 42,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.glassWhite.withValues(alpha: 0.75),
+        color: AppColors.white.withValues(alpha: 0.75),
         borderRadius: BorderRadius.circular(20),
       ),
       child: const _SignatureMark(),

@@ -6,7 +6,7 @@ abstract final class AppTheme {
   static ThemeData get dark {
     return ThemeData(
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: AppColors.ink,
+      scaffoldBackgroundColor: AppColors.textPrimary,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.accent,
         brightness: Brightness.dark,

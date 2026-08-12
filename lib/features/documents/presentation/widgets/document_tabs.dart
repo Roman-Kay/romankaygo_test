@@ -8,59 +8,21 @@ class DocumentTabs extends StatelessWidget {
   final DocumentTab selectedTab;
   final ValueChanged<DocumentTab> onChanged;
 
-  const DocumentTabs({
-    super.key,
-    required this.selectedTab,
-    required this.onChanged,
-  });
+  const DocumentTabs({super.key, required this.selectedTab, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 12, top: 16, right: 12),
       child: GlassSegmentedControl(
-        useOwnLayer: true,
         height: 36,
-        borderRadius: 100,
-        indicatorBorderRadius: 20,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.all(4),
         selectedIndex: _indexOf(selectedTab),
         onSegmentSelected: (index) => onChanged(_tabAt(index)),
         backgroundColor: AppColors.tabBackground,
-        indicatorColor: AppColors.glassWhite.withValues(alpha: 0.78),
-        settings: const LiquidGlassSettings(
-          blur: 10,
-          thickness: 28,
-          refractiveIndex: 1.42,
-        ),
-        indicatorSettings: const LiquidGlassSettings(
-          blur: 14,
-          thickness: 38,
-          refractiveIndex: 1.5,
-        ),
-        selectedTextStyle: const TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 14,
-          fontWeight: FontWeight.w800,
-          height: 1.1,
-          letterSpacing: 0,
-        ),
-        unselectedTextStyle: TextStyle(
-          color: AppColors.textPrimary.withValues(alpha: 0.62),
-          fontSize: 14,
-          fontWeight: FontWeight.w800,
-          height: 1.1,
-          letterSpacing: 0,
-        ),
-        dividerSettings: DividerSettings(
-          thickness: 1,
-          indent: 7,
-          endIndent: 7,
-          decoration: BoxDecoration(
-            color: AppColors.tabDivider.withValues(alpha: 0.28),
-            borderRadius: BorderRadius.circular(0.5),
-          ),
-        ),
+        indicatorColor: AppColors.white,
+        selectedTextStyle: const TextStyle(color: AppColors.tabSelected, fontSize: 14, fontWeight: FontWeight.w700),
+        unselectedTextStyle: TextStyle(color: AppColors.tabSelected.withValues(alpha: 0.4), fontSize: 13, fontWeight: FontWeight.w700),
         segments: const [
           GlassSegment(label: 'All'),
           GlassSegment(label: 'Signed'),

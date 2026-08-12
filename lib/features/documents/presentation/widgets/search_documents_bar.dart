@@ -88,7 +88,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
             ),
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: AppColors.glassWhite.withValues(alpha: 0.9),
+                color: AppColors.white.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(27),
                 border: Border.all(
                   color: AppColors.tabDivider.withValues(alpha: 0.12),
@@ -148,13 +148,13 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
             iconSize: 28,
             useOwnLayer: true,
             interactionScale: 0.94,
-            glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
+            glowColor: AppColors.white.withValues(alpha: 0.42),
             glowRadius: 20,
             settings: LiquidGlassSettings(
               blur: 18,
               thickness: 20,
               refractiveIndex: 1.3,
-              glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
+              glassColor: AppColors.white.withValues(alpha: 0.18),
             ),
           ),
         ),

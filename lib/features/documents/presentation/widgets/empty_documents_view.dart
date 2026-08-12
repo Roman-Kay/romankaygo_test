@@ -235,7 +235,7 @@ class _SourcePill extends StatelessWidget {
         shape: const LiquidRoundedRectangle(borderRadius: 28),
         useOwnLayer: true,
         interactionScale: 1.05,
-        glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
+        glowColor: AppColors.white.withValues(alpha: 0.42),
         glowRadius: 1.2,
         settings: LiquidGlassSettings(
           blur: 18,
@@ -246,8 +246,8 @@ class _SourcePill extends StatelessWidget {
           ambientRim: 0.38,
           fresnelStrength: 0.86,
           whitenStrength: 0.26,
-          glassColor: AppColors.glassWhite.withValues(alpha: 0.42),
-          backerColor: AppColors.glassWhite.withValues(alpha: 0.34),
+          glassColor: AppColors.white.withValues(alpha: 0.42),
+          backerColor: AppColors.white.withValues(alpha: 0.34),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
