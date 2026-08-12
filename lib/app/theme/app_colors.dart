@@ -17,14 +17,15 @@ abstract final class AppColors {
   static const documentBodyLine = Color(0xFF515151);
   static const documentTableLine = Color(0xFF6A6A6A);
   static const headerButtonBackground = Color(0xFF3C3C3C);
-  static const blackSearch = Color(0xFF2F2F2F);
   static const blackEmptyHint = Color(0x66303030);
   static const selectedCheck = Color(0xFF69D82F);
   static const tabBackground = Color(0x1E767680);
   static const tabSelected = Color(0xFF191919);
   static const tabDivider = Color(0xFF8E8E93);
   static const accent = Color(0xFF84F64D);
-  static const textPrimary = Color(0xFF373737);
+  static const accentGradientTop = Color(0xFF87E64C);
+  static const accentGradientBottom = Color(0xFFA1FF66);
+  static const textPrimary = Color(0xFF2F2F2F);
   static const textStrong = Color(0xFF303030);
   static const textSecondary = Color(0xFF9B9B9B);
   static const textTertiary = Color(0xFF919191);

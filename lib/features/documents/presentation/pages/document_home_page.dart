@@ -18,7 +18,6 @@ import '../widgets/document_context_menu.dart';
 import '../widgets/document_overflow_menu.dart';
 import '../widgets/document_tabs.dart';
 import '../widgets/empty_documents_view.dart';
-import '../widgets/glass_tap_target.dart';
 import '../widgets/search_documents_bar.dart';
 import '../widgets/selected_actions_bar.dart';
 import '../widgets/signica_logo.dart';
@@ -194,7 +193,7 @@ class _BottomDocumentControls extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _RoundGlassActionButton(onPressed: onSearchPressed),
+                  _RoundGlassActionButton(onPressed: onSearchPressed, assetPath: 'assets/figma/search.svg'),
                   _AddDocumentGlassButton(onPressed: onAddPressed),
                 ],
               ),
@@ -206,12 +205,13 @@ class _BottomDocumentControls extends StatelessWidget {
 class _RoundGlassActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const _RoundGlassActionButton({required this.onPressed});
+  final String assetPath;
+  const _RoundGlassActionButton({required this.onPressed, required this.assetPath});
 
   @override
   Widget build(BuildContext context) {
     return GlassIconButton(
-      icon: SvgPicture.asset('assets/figma/search.svg', height: 18),
+      icon: SvgPicture.asset(assetPath, height: 18),
       onPressed: onPressed,
       size: 62.9,
       semanticLabel: 'Search',
@@ -229,29 +229,39 @@ class _AddDocumentGlassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassButton.custom(
       onTap: onPressed,
-      width: 206,
-      height: 62,
+      height: 61,
       shape: const LiquidRoundedRectangle(borderRadius: 31),
       useOwnLayer: true,
       style: GlassButtonStyle.prominent,
       interactionScale: 1.05,
       glowColor: AppColors.accent.withValues(alpha: 0.36),
       glowRadius: 1.1,
-      settings: LiquidGlassSettings(blur: 16, thickness: 24, refractiveIndex: 1.34, glassColor: AppColors.accent.withValues(alpha: 0.48)),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.add_circle, color: AppColors.textPrimary, size: 24),
-              SizedBox(width: 8),
-              Text(
-                'Add Document',
-                style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 0),
-              ),
-            ],
+      settings: LiquidGlassSettings(
+        blur: 16,
+        thickness: 24,
+        refractiveIndex: 1.34,
+        glassColor: AppColors.accent.withValues(alpha: 0.22),
+        backerColor: AppColors.accent.withValues(alpha: 0.18),
+        whitenStrength: 0.04,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(31),
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(begin: Alignment(0.5, 0), end: Alignment(0.5, 1), colors: [AppColors.accentGradientTop, AppColors.accentGradientBottom]),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 19),
+            child: Row(
+              children: [
+                SvgPicture.asset('assets/figma/add.svg', height: 23),
+                const SizedBox(width: 8),
+                const Text(
+                  'Add Document',
+                  style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -18,7 +18,7 @@ class EmptyDocumentsView extends StatelessWidget {
         const SizedBox(height: 18),
         const Text(
           'No Documents Yet',
-          style: TextStyle(color: AppColors.blackSearch, fontSize: 20, fontWeight: FontWeight.w700, height: 1.20),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w700, height: 1.20),
         ),
         const SizedBox(height: 10),
         Text(
