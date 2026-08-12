@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../domain/entities/document.dart';
 import '../../domain/entities/document_status.dart';
@@ -19,13 +20,19 @@ class DocumentRepositoryImpl implements DocumentRepository {
 
   @override
   Future<List<Document>> getDocuments() async {
+    final storageRoot = await getApplicationDocumentsDirectory();
     final rows = await dao.getAll();
-    return rows.map((row) => row.toDomain()).toList(growable: false);
+    return rows
+        .map((row) => row.toDomain(storageRootPath: storageRoot.path))
+        .toList(growable: false);
   }
 
   @override
-  Future<void> saveDocument(Document document) {
-    return dao.upsertDocument(document.toCompanion());
+  Future<void> saveDocument(Document document) async {
+    final storageRoot = await getApplicationDocumentsDirectory();
+    return dao.upsertDocument(
+      document.toCompanion(storageRootPath: storageRoot.path),
+    );
   }
 
   @override

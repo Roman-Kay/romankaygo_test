@@ -46,138 +46,129 @@ class _DocumentHomeView extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        _Header(
-                          state: state,
-                          onMenuPressed: () {
-                            bloc.add(const ActionsMenuToggled());
-                          },
-                          onCloseSelect: () {
-                            bloc.add(const SelectModeExited());
-                          },
-                          onSelectAll: () {
-                            bloc.add(const SelectAllPressed());
-                          },
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: AppColors.paper,
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(36)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12, top: 16, right: 12, bottom: 0),
-                                    child: DocumentTabs(
-                                      selectedTab: state.tab,
-                                      onChanged: (tab) {
-                                        bloc.add(DocumentTabChanged(tab));
-                                      },
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: state.isEmpty
-                                        ? EmptyDocumentsView(
-                                            onSourceSelected: (DocumentSource source) {
-                                              bloc.add(AddDocumentSourceSelected(source));
-                                            },
-                                          )
-                                        : _DocumentGrid(state: state),
-                                  ),
-                                ],
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      _Header(
+                        state: state,
+                        onMenuPressed: () {
+                          bloc.add(const ActionsMenuToggled());
+                        },
+                        onCloseSelect: () {
+                          bloc.add(const SelectModeExited());
+                        },
+                        onSelectAll: () {
+                          bloc.add(const SelectAllPressed());
+                        },
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: AppColors.paper,
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
+                          ),
+                          child: Column(
+                            children: [
+                              DocumentTabs(
+                                selectedTab: state.tab,
+                                onChanged: (tab) {
+                                  bloc.add(DocumentTabChanged(tab));
+                                },
                               ),
-                            ),
+                              Expanded(
+                                child: state.isEmpty
+                                    ? EmptyDocumentsView(
+                                        onSourceSelected: (DocumentSource source) {
+                                          bloc.add(AddDocumentSourceSelected(source));
+                                        },
+                                      )
+                                    : _DocumentGrid(state: state),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    if (!state.isSelectMode)
-                      Positioned(
-                        left: 18,
-                        right: 18,
-                        bottom: 36,
-                        child: _BottomDocumentControls(
-                          state: state,
-                          onSearchPressed: () {
-                            bloc.add(const SearchPressed());
-                          },
-                          onSearchChanged: (query) {
-                            bloc.add(SearchQueryChanged(query));
-                          },
-                          onSearchClosed: () {
-                            bloc.add(const SearchCancelled());
-                          },
-                          onAddPressed: () {
-                            bloc.add(const AddDocumentPressed());
-                          },
-                        ),
                       ),
-                    if (state.isSelectMode)
-                      SelectedActionsBar(
-                        onDelete: () {
-                          bloc.add(const DeleteSelectedPressed());
+                    ],
+                  ),
+                  if (!state.isSelectMode)
+                    Positioned(
+                      left: 18,
+                      right: 18,
+                      bottom: 36,
+                      child: _BottomDocumentControls(
+                        state: state,
+                        onSearchPressed: () {
+                          bloc.add(const SearchPressed());
                         },
-                      ),
-                    if (state.overlay == DocumentsOverlay.documentContext)
-                      _DocumentContextDismissLayer(
-                        onDismiss: () {
-                          bloc.add(const DocumentContextMenuDismissed());
+                        onSearchChanged: (query) {
+                          bloc.add(SearchQueryChanged(query));
                         },
-                      ),
-                    if (state.overlay == DocumentsOverlay.documentContext)
-                      DocumentContextMenu(
-                        onPrint: () {
-                          bloc.add(const DocumentContextMenuDismissed());
+                        onSearchClosed: () {
+                          bloc.add(const SearchCancelled());
                         },
-                        onShare: () {
-                          bloc.add(const DocumentContextMenuDismissed());
-                        },
-                        onDelete: () {
-                          bloc.add(const ContextDocumentDeletePressed());
-                        },
-                      ),
-                    if (state.overlay == DocumentsOverlay.actions)
-                      Positioned.fill(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            bloc.add(const ActionsMenuDismissed());
-                          },
-                        ),
-                      ),
-                    if (state.overlay == DocumentsOverlay.actions)
-                      DocumentOverflowMenu(
-                        onSelect: () {
-                          bloc.add(const SelectModeEntered());
-                        },
-                        onAddDocument: () {
+                        onAddPressed: () {
                           bloc.add(const AddDocumentPressed());
                         },
                       ),
-                    if (state.isImporting)
-                      Positioned.fill(
-                        child: Container(color: Colors.black.withValues(alpha: 0.16), alignment: Alignment.center, child: const CircularProgressIndicator()),
-                      ),
-                    if (state.overlay == DocumentsOverlay.addSource)
-                      AddDocumentGlassSheet(
-                        onSourceSelected: (source) {
-                          bloc.add(AddDocumentSourceSelected(source));
+                    ),
+                  if (state.isSelectMode)
+                    SelectedActionsBar(
+                      onDelete: () {
+                        bloc.add(const DeleteSelectedPressed());
+                      },
+                    ),
+                  if (state.overlay == DocumentsOverlay.documentContext)
+                    _DocumentContextDismissLayer(
+                      onDismiss: () {
+                        bloc.add(const DocumentContextMenuDismissed());
+                      },
+                    ),
+                  if (state.overlay == DocumentsOverlay.documentContext)
+                    DocumentContextMenu(
+                      onPrint: () {
+                        bloc.add(const DocumentContextMenuDismissed());
+                      },
+                      onShare: () {
+                        bloc.add(const DocumentContextMenuDismissed());
+                      },
+                      onDelete: () {
+                        bloc.add(const ContextDocumentDeletePressed());
+                      },
+                    ),
+                  if (state.overlay == DocumentsOverlay.actions)
+                    Positioned.fill(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          bloc.add(const ActionsMenuDismissed());
                         },
-                        onClose: () {
-                          bloc.add(const AddDocumentCancelled());
-                        },
                       ),
-                  ],
-                ),
+                    ),
+                  if (state.overlay == DocumentsOverlay.actions)
+                    DocumentOverflowMenu(
+                      onSelect: () {
+                        bloc.add(const SelectModeEntered());
+                      },
+                      onAddDocument: () {
+                        bloc.add(const AddDocumentPressed());
+                      },
+                    ),
+                  if (state.isImporting)
+                    Positioned.fill(
+                      child: Container(color: Colors.black.withValues(alpha: 0.16), alignment: Alignment.center, child: const CircularProgressIndicator()),
+                    ),
+                  if (state.overlay == DocumentsOverlay.addSource)
+                    AddDocumentGlassSheet(
+                      onSourceSelected: (source) {
+                        bloc.add(AddDocumentSourceSelected(source));
+                      },
+                      onClose: () {
+                        bloc.add(const AddDocumentCancelled());
+                      },
+                    ),
+                ],
               ),
             ),
           ),
@@ -327,27 +318,19 @@ class _Header extends StatelessWidget {
           if (state.isSelectMode == false)
             const SignicaLogo()
           else
-            GlassTapTarget(
+            GlassButton.custom(
               onTap: onSelectAll,
-              child: GlassButton.custom(
-                onTap: () {},
-                width: state.isAllVisibleSelected ? 160 : 94,
-                height: 44,
-                shape: const LiquidRoundedRectangle(borderRadius: 14),
-                useOwnLayer: true,
-                interactionScale: 1.04,
-                glowColor: Colors.white.withValues(alpha: 0.22),
-                glowRadius: 1.2,
-                settings: LiquidGlassSettings(blur: 16, thickness: 20, refractiveIndex: 1.32, glassColor: const Color(0xFF3C3C3C).withValues(alpha: 0.34)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      state.isAllVisibleSelected ? 'Deselect All (${state.selectedIds.length})' : 'Select All',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
-                    ),
-                  ),
+              height: 44,
+              shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+              useOwnLayer: true,
+              interactionScale: 1.04,
+              glowColor: AppColors.white.withValues(alpha: 0.1),
+              glowRadius: 1.2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Text(
+                  state.isAllVisibleSelected ? 'Deselect All (${state.selectedIds.length})' : 'Select All',
+                  style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
             ),
