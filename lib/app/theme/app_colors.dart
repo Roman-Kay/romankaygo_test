@@ -26,6 +26,8 @@ abstract final class AppColors {
   static const accentGradientTop = Color(0xFF87E64C);
   static const accentGradientBottom = Color(0xFFA1FF66);
   static const textPrimary = Color(0xFF2F2F2F);
+  static const textDropDown = Color(0xFF333333);
+
   static const textStrong = Color(0xFF303030);
   static const textSecondary = Color(0xFF9B9B9B);
   static const textTertiary = Color(0xFF919191);
