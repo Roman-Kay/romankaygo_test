@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
+import '../../../../app/theme/app_colors.dart';
 import 'glass_tap_target.dart';
 
 class CircleIconButton extends StatelessWidget {
@@ -15,8 +16,8 @@ class CircleIconButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onPressed,
-    this.backgroundColor = const Color(0xFF3C3C3C),
-    this.foregroundColor = Colors.white,
+    this.backgroundColor = AppColors.headerButtonBackground,
+    this.foregroundColor = AppColors.glassWhite,
     this.size = 52,
     this.borderRadius,
   });
@@ -33,7 +34,7 @@ class CircleIconButton extends StatelessWidget {
         shape: LiquidRoundedRectangle(borderRadius: radius),
         useOwnLayer: true,
         interactionScale: 0.94,
-        glowColor: Colors.white.withValues(alpha: 0.34),
+        glowColor: AppColors.glassWhite.withValues(alpha: 0.34),
         glowRadius: 20,
         settings: LiquidGlassSettings(
           blur: 18,

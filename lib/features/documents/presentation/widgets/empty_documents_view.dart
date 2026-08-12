@@ -65,7 +65,7 @@ class EmptyDocumentsView extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Color(0x00F0F0F0), AppColors.paper],
+                          colors: [AppColors.transparent, AppColors.paper],
                           stops: [0.3, 0.8],
                         ),
                       ),
@@ -78,16 +78,16 @@ class EmptyDocumentsView extends StatelessWidget {
             const Text(
               'No Documents Yet',
               style: TextStyle(
-                color: Color(0xFF303030),
+                color: AppColors.textStrong,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Your can add documents from ',
               style: TextStyle(
-                color: Color(0x66303030),
+                color: AppColors.textStrong.withValues(alpha: 0.40),
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
                 height: 1.3,
@@ -166,7 +166,7 @@ class _EmptySignaturePainter extends CustomPainter {
     );
 
     final signaturePaint = Paint()
-      ..color = const Color(0xFF1E1E1E)
+      ..color = AppColors.textPrimary
       ..strokeWidth = 2.1
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
@@ -235,7 +235,7 @@ class _SourcePill extends StatelessWidget {
         shape: const LiquidRoundedRectangle(borderRadius: 28),
         useOwnLayer: true,
         interactionScale: 1.05,
-        glowColor: Colors.white.withValues(alpha: 0.42),
+        glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
         glowRadius: 1.2,
         settings: LiquidGlassSettings(
           blur: 18,
@@ -246,8 +246,8 @@ class _SourcePill extends StatelessWidget {
           ambientRim: 0.38,
           fresnelStrength: 0.86,
           whitenStrength: 0.26,
-          glassColor: Colors.white.withValues(alpha: 0.42),
-          backerColor: Colors.white.withValues(alpha: 0.34),
+          glassColor: AppColors.glassWhite.withValues(alpha: 0.42),
+          backerColor: AppColors.glassWhite.withValues(alpha: 0.34),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

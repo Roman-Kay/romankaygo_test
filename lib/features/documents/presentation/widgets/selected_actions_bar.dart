@@ -56,13 +56,13 @@ class _FloatingAction extends StatelessWidget {
         iconSize: 30,
         useOwnLayer: true,
         interactionScale: 0.94,
-        glowColor: Colors.white.withValues(alpha: 0.42),
+        glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
         glowRadius: 20,
         settings: LiquidGlassSettings(
           blur: 18,
           thickness: 22,
           refractiveIndex: 1.32,
-          glassColor: Colors.white.withValues(alpha: 0.18),
+          glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
         ),
       ),
     );

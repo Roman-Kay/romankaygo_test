@@ -61,8 +61,8 @@ class DocumentContextMenu extends StatelessWidget {
               saturation: 1.24,
               glowIntensity: 0.52,
               whitenStrength: 0.16,
-              glassColor: Colors.white.withValues(alpha: 0.19),
-              backerColor: const Color(0xFFF5F5F5).withValues(alpha: 0.20),
+              glassColor: AppColors.glassWhite.withValues(alpha: 0.19),
+              backerColor: AppColors.glassBacker.withValues(alpha: 0.20),
             ),
             child: Column(
               children: [
@@ -90,7 +90,7 @@ class DocumentContextMenu extends StatelessWidget {
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(horizontal: 24),
-                  color: const Color(0xFFE6E6E6),
+                  color: AppColors.separator,
                 ),
                 Expanded(child: _DeleteAction(onTap: onDelete)),
               ],
@@ -124,7 +124,7 @@ class _MenuAction extends StatelessWidget {
         style: GlassButtonStyle.transparent,
         useOwnLayer: true,
         interactionScale: 1.02,
-        glowColor: Colors.white.withValues(alpha: 0.24),
+        glowColor: AppColors.glassWhite.withValues(alpha: 0.24),
         glowRadius: 0.8,
         shape: const LiquidRoundedRectangle(borderRadius: 26),
         child: Column(
@@ -165,19 +165,23 @@ class _DeleteAction extends StatelessWidget {
         style: GlassButtonStyle.transparent,
         useOwnLayer: true,
         interactionScale: 1.02,
-        glowColor: const Color(0xFFFF3B30).withValues(alpha: 0.18),
+        glowColor: AppColors.destructiveGlow.withValues(alpha: 0.18),
         glowRadius: 0.8,
         shape: const LiquidRoundedRectangle(borderRadius: 24),
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: [
-              Icon(Icons.delete_outline, size: 24, color: Color(0xFFFF383C)),
+              Icon(
+                Icons.delete_outline,
+                size: 24,
+                color: AppColors.destructiveIos,
+              ),
               SizedBox(width: 8),
               Text(
                 'Delete',
                 style: TextStyle(
-                  color: Color(0xFFFF383C),
+                  color: AppColors.destructiveIos,
                   fontSize: 17,
                   fontWeight: FontWeight.w400,
                   height: 1.18,

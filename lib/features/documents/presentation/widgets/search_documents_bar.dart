@@ -88,14 +88,14 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
             ),
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: CupertinoColors.white.withValues(alpha: 0.9),
+                color: AppColors.glassWhite.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(27),
                 border: Border.all(
-                  color: CupertinoColors.systemGrey.withValues(alpha: 0.12),
+                  color: AppColors.tabDivider.withValues(alpha: 0.12),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.05),
+                    color: AppColors.black.withValues(alpha: 0.05),
                     blurRadius: 16,
                     offset: const Offset(0, 8),
                   ),
@@ -109,7 +109,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
                   _controller.clear();
                   widget.onChanged('');
                 },
-                backgroundColor: CupertinoColors.transparent,
+                backgroundColor: AppColors.transparent,
                 borderRadius: BorderRadius.circular(27),
                 itemColor: AppColors.textPrimary,
                 itemSize: 28,
@@ -118,7 +118,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
                 suffixInsets: const EdgeInsetsDirectional.only(end: 12),
                 placeholder: 'Search Documents',
                 placeholderStyle: const TextStyle(
-                  color: Color(0xFFD0D0D0),
+                  color: AppColors.searchPlaceholder,
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   height: 1.1,
@@ -148,13 +148,13 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
             iconSize: 28,
             useOwnLayer: true,
             interactionScale: 0.94,
-            glowColor: CupertinoColors.white.withValues(alpha: 0.42),
+            glowColor: AppColors.glassWhite.withValues(alpha: 0.42),
             glowRadius: 20,
             settings: LiquidGlassSettings(
               blur: 18,
               thickness: 20,
               refractiveIndex: 1.3,
-              glassColor: CupertinoColors.white.withValues(alpha: 0.18),
+              glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
             ),
           ),
         ),

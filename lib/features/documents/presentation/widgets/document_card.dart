@@ -74,14 +74,19 @@ class DocumentCard extends StatelessWidget {
                       height: 42,
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? const Color(0xFF69D82F)
-                            : Colors.white.withValues(alpha: 0.45),
+                            ? AppColors.selectedCheck
+                            : AppColors.glassWhite.withValues(alpha: 0.45),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white, width: 2),
+                        border: Border.all(
+                          color: AppColors.glassWhite,
+                          width: 2,
+                        ),
                       ),
                       child: Icon(
                         Icons.check,
-                        color: isSelected ? Colors.white : Colors.black26,
+                        color: isSelected
+                            ? AppColors.glassWhite
+                            : AppColors.blackMuted,
                         size: 28,
                       ),
                     ),
@@ -137,7 +142,7 @@ class _DocumentSheet extends StatelessWidget {
     return Opacity(
       opacity: opacity,
       child: Container(
-        color: Colors.white,
+        color: AppColors.glassWhite,
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
         child: CustomPaint(
           painter: _DocumentLinesPainter(),
@@ -195,15 +200,15 @@ class _PreviewFrame extends StatelessWidget {
       height: 167.84,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.glassWhite,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color(0xFFDADADA).withValues(alpha: 0.59),
+          color: AppColors.documentBorder.withValues(alpha: 0.59),
         ),
         boxShadow: hasShadow
             ? [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
+                  color: AppColors.black.withValues(alpha: 0.08),
                   blurRadius: 11.1,
                   offset: const Offset(0, 4),
                 ),
@@ -219,15 +224,15 @@ class _DocumentLinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final titlePaint = Paint()
-      ..color = const Color(0xFF2B2B2B)
+      ..color = AppColors.documentTitleLine
       ..strokeWidth = 1.2
       ..strokeCap = StrokeCap.round;
     final linePaint = Paint()
-      ..color = const Color(0xFF515151).withValues(alpha: 0.65)
+      ..color = AppColors.documentBodyLine.withValues(alpha: 0.65)
       ..strokeWidth = 0.85
       ..strokeCap = StrokeCap.round;
     final tablePaint = Paint()
-      ..color = const Color(0xFF6A6A6A).withValues(alpha: 0.55)
+      ..color = AppColors.documentTableLine.withValues(alpha: 0.55)
       ..strokeWidth = 0.8;
 
     canvas.drawLine(
@@ -293,7 +298,7 @@ class _SignedMarkBadge extends StatelessWidget {
       height: 42,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.75),
+        color: AppColors.glassWhite.withValues(alpha: 0.75),
         borderRadius: BorderRadius.circular(20),
       ),
       child: const _SignatureMark(),

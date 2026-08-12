@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../../../../app/theme/app_colors.dart';
+
 class GlassPanel extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -13,7 +15,7 @@ class GlassPanel extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.all(16),
     this.borderRadius = const BorderRadius.all(Radius.circular(32)),
-    this.color = const Color(0xEFFFFFFF),
+    this.color = AppColors.panelWhite,
   });
 
   @override
@@ -27,10 +29,12 @@ class GlassPanel extends StatelessWidget {
           decoration: BoxDecoration(
             color: color,
             borderRadius: borderRadius,
-            border: Border.all(color: Colors.white.withValues(alpha: 0.55)),
+            border: Border.all(
+              color: AppColors.glassWhite.withValues(alpha: 0.55),
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
+                color: AppColors.black.withValues(alpha: 0.08),
                 blurRadius: 26,
                 offset: const Offset(0, 12),
               ),

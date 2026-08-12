@@ -13,7 +13,11 @@ class SignicaLogo extends StatelessWidget {
         const SizedBox(width: 10),
         const Text(
           'Signica',
-          style: TextStyle(color: AppColors.white, fontSize: 18, fontWeight: FontWeight.w900),
+          style: TextStyle(
+            color: AppColors.glassWhite,
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ],
     );

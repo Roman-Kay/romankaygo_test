@@ -61,8 +61,8 @@ class DocumentOverflowMenu extends StatelessWidget {
               saturation: 1.28,
               glowIntensity: 0.52,
               whitenStrength: 0.14,
-              glassColor: Colors.white.withValues(alpha: 0.18),
-              backerColor: const Color(0xFFF5F5F5).withValues(alpha: 0.18),
+              glassColor: AppColors.glassWhite.withValues(alpha: 0.18),
+              backerColor: AppColors.glassBacker.withValues(alpha: 0.18),
             ),
             child: Column(
               children: [
@@ -111,7 +111,7 @@ class _MenuItem extends StatelessWidget {
           style: GlassButtonStyle.transparent,
           shape: const LiquidRoundedRectangle(borderRadius: 22),
           interactionScale: 1.03,
-          glowColor: Colors.white.withValues(alpha: 0.26),
+          glowColor: AppColors.glassWhite.withValues(alpha: 0.26),
           glowRadius: 0.8,
           child: Align(
             alignment: Alignment.center,
