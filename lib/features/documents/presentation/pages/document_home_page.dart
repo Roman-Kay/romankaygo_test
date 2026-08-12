@@ -45,6 +45,7 @@ class _DocumentHomeView extends StatefulWidget {
 class _DocumentHomeViewState extends State<_DocumentHomeView> {
   final _menuButtonKey = GlobalKey();
   Rect? _menuAnchorRect;
+  Rect? _contextMenuAnchorRect;
 
   void _toggleActionsMenu(DocumentListBloc bloc) {
     final context = _menuButtonKey.currentContext;
@@ -56,6 +57,42 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
     }
 
     bloc.add(const ActionsMenuToggled());
+  }
+
+  void _openDocumentContextMenu(
+    DocumentListBloc bloc,
+    String documentId,
+    String documentTitle,
+    BuildContext anchorContext,
+  ) {
+    final renderBox = anchorContext.findRenderObject() as RenderBox?;
+    final topLeft = renderBox?.localToGlobal(Offset.zero);
+
+    if (renderBox != null && topLeft != null) {
+      final titlePainter = TextPainter(
+        text: TextSpan(
+          text: documentTitle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            height: 1.2,
+          ),
+        ),
+        maxLines: 2,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: 96);
+      final dateTop = topLeft.dy + 182 + 8 + titlePainter.height + 4;
+
+      _contextMenuAnchorRect = Rect.fromLTWH(
+        topLeft.dx,
+        dateTop,
+        renderBox.size.width,
+        1,
+      );
+    }
+
+    bloc.add(DocumentContextMenuOpened(documentId));
   }
 
   @override
@@ -116,7 +153,22 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                                                 );
                                               },
                                         )
-                                      : _DocumentGrid(state: state),
+                                      : _DocumentGrid(
+                                          state: state,
+                                          onContextMenuRequested:
+                                              (
+                                                documentId,
+                                                documentTitle,
+                                                anchorContext,
+                                              ) {
+                                                _openDocumentContextMenu(
+                                                  bloc,
+                                                  documentId,
+                                                  documentTitle,
+                                                  anchorContext,
+                                                );
+                                              },
+                                        ),
                                 ),
                               ],
                             ),
@@ -142,24 +194,6 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                             SelectedActionsBar(
                               onDelete: () {
                                 bloc.add(const DeleteSelectedPressed());
-                              },
-                            ),
-                          if (state.overlay == DocumentsOverlay.documentContext)
-                            _DocumentContextDismissLayer(
-                              onDismiss: () {
-                                bloc.add(const DocumentContextMenuDismissed());
-                              },
-                            ),
-                          if (state.overlay == DocumentsOverlay.documentContext)
-                            DocumentContextMenu(
-                              onPrint: () {
-                                bloc.add(const DocumentContextMenuDismissed());
-                              },
-                              onShare: () {
-                                bloc.add(const DocumentContextMenuDismissed());
-                              },
-                              onDelete: () {
-                                bloc.add(const ContextDocumentDeletePressed());
                               },
                             ),
                           if (state.isImporting)
@@ -201,6 +235,25 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                     },
                     onAddDocument: () {
                       bloc.add(const AddDocumentPressed());
+                    },
+                  ),
+                if (state.overlay == DocumentsOverlay.documentContext)
+                  _DocumentContextDismissLayer(
+                    onDismiss: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                  ),
+                if (state.overlay == DocumentsOverlay.documentContext)
+                  DocumentContextMenu(
+                    anchorRect: _contextMenuAnchorRect ?? Rect.zero,
+                    onPrint: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                    onShare: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                    onDelete: () {
+                      bloc.add(const ContextDocumentDeletePressed());
                     },
                   ),
               ],
@@ -441,8 +494,17 @@ class _Header extends StatelessWidget {
 
 class _DocumentGrid extends StatelessWidget {
   final DocumentListState state;
+  final void Function(
+    String documentId,
+    String documentTitle,
+    BuildContext anchorContext,
+  )
+  onContextMenuRequested;
 
-  const _DocumentGrid({required this.state});
+  const _DocumentGrid({
+    required this.state,
+    required this.onContextMenuRequested,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -461,35 +523,43 @@ class _DocumentGrid extends StatelessWidget {
         final shouldDim =
             state.overlay == DocumentsOverlay.documentContext &&
             state.contextDocumentId != document.id;
-        return AnimatedOpacity(
-          duration: const Duration(milliseconds: 180),
-          curve: Curves.easeOutCubic,
-          opacity: shouldDim ? 0.18 : 1,
-          child: ImageFiltered(
-            imageFilter: ImageFilter.blur(
-              sigmaX: shouldDim ? 7 : 0,
-              sigmaY: shouldDim ? 7 : 0,
-            ),
-            child: DocumentCard(
-              document: document,
-              isSelected: state.selectedIds.contains(document.id),
-              isSelectMode: state.isSelectMode,
-              onTap: () {
-                if (state.overlay == DocumentsOverlay.documentContext) {
-                  bloc.add(const DocumentContextMenuDismissed());
-                  return;
-                }
-                if (state.isSelectMode) {
-                  bloc.add(DocumentSelectionToggled(document.id));
-                  return;
-                }
-                bloc.add(DocumentTapped(document.id));
-              },
-              onLongPress: () {
-                bloc.add(DocumentContextMenuOpened(document.id));
-              },
-            ),
-          ),
+        return Builder(
+          builder: (cardContext) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOutCubic,
+              opacity: shouldDim ? 0.18 : 1,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(
+                  sigmaX: shouldDim ? 7 : 0,
+                  sigmaY: shouldDim ? 7 : 0,
+                ),
+                child: DocumentCard(
+                  document: document,
+                  isSelected: state.selectedIds.contains(document.id),
+                  isSelectMode: state.isSelectMode,
+                  onTap: () {
+                    if (state.overlay == DocumentsOverlay.documentContext) {
+                      bloc.add(const DocumentContextMenuDismissed());
+                      return;
+                    }
+                    if (state.isSelectMode) {
+                      bloc.add(DocumentSelectionToggled(document.id));
+                      return;
+                    }
+                    bloc.add(DocumentTapped(document.id));
+                  },
+                  onLongPress: () {
+                    onContextMenuRequested(
+                      document.id,
+                      document.title,
+                      cardContext,
+                    );
+                  },
+                ),
+              ),
+            );
+          },
         );
       },
     );

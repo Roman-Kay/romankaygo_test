@@ -99,6 +99,10 @@ class DocumentCard extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+              textHeightBehavior: const TextHeightBehavior(
+                applyHeightToFirstAscent: false,
+                applyHeightToLastDescent: false,
+              ),
               style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 14,

@@ -32,6 +32,6 @@ abstract final class AppColors {
   static const textSecondary = Color(0xFF9B9B9B);
   static const textTertiary = Color(0xFF919191);
   static const destructive = Color(0xFFFF3B4E);
-  static const destructiveIos = Color(0xFFFF383C);
+  static const accentRed = Color(0xFFFF383C);
   static const destructiveGlow = Color(0xFFFF3B30);
 }
