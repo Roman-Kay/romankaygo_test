@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import 'circle_icon_button.dart';
 import 'glass_tap_target.dart';
 
 class SelectedActionsBar extends StatelessWidget {
@@ -58,12 +59,7 @@ class _FloatingAction extends StatelessWidget {
         interactionScale: 0.94,
         glowColor: AppColors.white.withValues(alpha: 0.42),
         glowRadius: 20,
-        settings: LiquidGlassSettings(
-          blur: 18,
-          thickness: 22,
-          refractiveIndex: 1.32,
-          glassColor: AppColors.white.withValues(alpha: 0.18),
-        ),
+        settings: CircleIconButton.iosGlassSettings(),
       ),
     );
   }

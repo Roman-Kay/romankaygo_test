@@ -2,13 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import 'circle_icon_button.dart';
 import 'glass_tap_target.dart';
 
 class AnimatedSearchPanel extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  const AnimatedSearchPanel({super.key, required this.visible, required this.child});
+  const AnimatedSearchPanel({
+    super.key,
+    required this.visible,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,12 @@ class AnimatedSearchPanel extends StatelessWidget {
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutCubic,
         opacity: visible ? 1 : 0,
-        child: AnimatedSlide(duration: const Duration(milliseconds: 260), curve: Curves.easeOutBack, offset: visible ? Offset.zero : const Offset(0, 0.35), child: child),
+        child: AnimatedSlide(
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutBack,
+          offset: visible ? Offset.zero : const Offset(0, 0.35),
+          child: child,
+        ),
       ),
     );
   }
@@ -29,7 +39,12 @@ class SearchDocumentsBar extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onClose;
 
-  const SearchDocumentsBar({super.key, required this.query, required this.onChanged, required this.onClose});
+  const SearchDocumentsBar({
+    super.key,
+    required this.query,
+    required this.onChanged,
+    required this.onClose,
+  });
 
   @override
   State<SearchDocumentsBar> createState() => _SearchDocumentsBarState();
@@ -64,7 +79,12 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
           child: GlassContainer(
             height: 54,
             shape: const LiquidRoundedRectangle(borderRadius: 100),
-            settings: LiquidGlassSettings(thickness: 45, glassColor: AppColors.white.withValues(alpha: 0.2), backerColor: AppColors.white.withValues(alpha: 0.56), whitenStrength: 0.5),
+            settings: LiquidGlassSettings(
+              thickness: 45,
+              glassColor: AppColors.white.withValues(alpha: 0.2),
+              backerColor: AppColors.white.withValues(alpha: 0.56),
+              whitenStrength: 0.5,
+            ),
             padding: EdgeInsets.zero,
             child: CupertinoSearchTextField(
               controller: _controller,
@@ -82,8 +102,20 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
               prefixInsets: const EdgeInsetsDirectional.only(start: 16),
               suffixInsets: const EdgeInsetsDirectional.only(end: 12),
               placeholder: 'Search Documents',
-              placeholderStyle: const TextStyle(color: AppColors.documentTitleLine, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
-              style: const TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
+              placeholderStyle: const TextStyle(
+                color: AppColors.documentTitleLine,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                height: 1.1,
+                letterSpacing: 0,
+              ),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                height: 1.1,
+                letterSpacing: 0,
+              ),
             ),
           ),
         ),
@@ -91,7 +123,10 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
         GlassTapTarget(
           onTap: widget.onClose,
           child: GlassIconButton(
-            icon: const Icon(CupertinoIcons.xmark, color: AppColors.textPrimary),
+            icon: const Icon(
+              CupertinoIcons.xmark,
+              color: AppColors.textPrimary,
+            ),
             onPressed: () {},
             size: 54,
             iconSize: 28,
@@ -99,7 +134,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
             interactionScale: 0.94,
             glowColor: AppColors.white.withValues(alpha: 0.42),
             glowRadius: 20,
-            settings: LiquidGlassSettings(blur: 18, thickness: 20, refractiveIndex: 1.3, glassColor: AppColors.white.withValues(alpha: 0.18)),
+            settings: CircleIconButton.iosGlassSettings(),
           ),
         ),
       ],

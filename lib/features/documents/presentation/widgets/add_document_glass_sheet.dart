@@ -1,37 +1,28 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
-import 'glass_tap_target.dart';
+import 'circle_icon_button.dart';
+import 'source_pill.dart';
 
 class AddDocumentGlassSheet extends StatefulWidget {
   final ValueChanged<DocumentSource> onSourceSelected;
   final VoidCallback onClose;
 
-  const AddDocumentGlassSheet({
-    super.key,
-    required this.onSourceSelected,
-    required this.onClose,
-  });
+  const AddDocumentGlassSheet({super.key, required this.onSourceSelected, required this.onClose});
 
   @override
   State<AddDocumentGlassSheet> createState() => _AddDocumentGlassSheetState();
 }
 
-class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
-    with SingleTickerProviderStateMixin {
+class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 520),
-    )..forward();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 520))..forward();
   }
 
   @override
@@ -46,38 +37,20 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
 
   @override
   Widget build(BuildContext context) {
-    final topBarHeight = MediaQuery.paddingOf(context).top + 88;
-
-    return Positioned.fill(
+    return GestureDetector(
+      onTap: _close,
+      behavior: HitTestBehavior.translucent,
       child: Stack(
         children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: _close,
-              behavior: HitTestBehavior.translucent,
-            ),
-          ),
-          Positioned(
-            left: 0,
-            top: topBarHeight,
-            right: 0,
-            bottom: 0,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(34),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                child: AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    return Container(
-                      color: AppColors.white.withValues(
-                        alpha: 0.46 * _controller.value,
-                      ),
-                    );
-                  },
-                ),
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Container(color: AppColors.white.withValues(alpha: 0.46 * _controller.value));
+                },
               ),
             ),
           ),
@@ -87,61 +60,46 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _FanSourceButton(
+                _FanTransition(
                   animation: _interval(0.22, 1),
                   beginOffset: const Offset(92, 138),
-                  iconAsset: 'assets/figma/source_files.png',
-                  label: 'Files',
-                  onTap: () => widget.onSourceSelected(DocumentSource.files),
+                  child: SourcePill.sheet(assetPath: 'assets/figma/source_files.png', label: 'Files', onTap: () => widget.onSourceSelected(DocumentSource.files)),
                 ),
                 const SizedBox(height: 12),
-                _FanSourceButton(
+                _FanTransition(
                   animation: _interval(0.12, 0.9),
                   beginOffset: const Offset(78, 74),
-                  iconAsset: 'assets/figma/source_photos.png',
-                  label: 'Photos',
-                  onTap: () => widget.onSourceSelected(DocumentSource.photos),
+                  child: SourcePill.sheet(assetPath: 'assets/figma/source_photos.png', label: 'Photos', onTap: () => widget.onSourceSelected(DocumentSource.photos)),
                 ),
                 const SizedBox(height: 12),
-                _FanSourceButton(
+                _FanTransition(
                   animation: _interval(0, 0.78),
                   beginOffset: const Offset(56, 28),
-                  iconAsset: 'assets/figma/source_scanner.png',
-                  label: 'Scanner',
-                  onTap: () => widget.onSourceSelected(DocumentSource.scanner),
+                  child: SourcePill.sheet(assetPath: 'assets/figma/source_scanner.png', label: 'Scanner', onTap: () => widget.onSourceSelected(DocumentSource.scanner)),
                 ),
               ],
             ),
           ),
           Positioned(
-            left: 88,
-            right: 92,
-            bottom: 70,
+            right: 20 + 63 + 12,
+            bottom: 12 + MediaQuery.paddingOf(context).bottom,
             child: _FanTitle(animation: _interval(0, 0.72)),
           ),
           Positioned(
             right: 20,
-            bottom: 45,
+            bottom: 12 + MediaQuery.paddingOf(context).bottom,
             child: ScaleTransition(
               scale: _interval(0, 0.65),
-              child: GlassTapTarget(
-                onTap: _close,
-                child: GlassIconButton(
-                  icon: const Icon(Icons.close, color: AppColors.textPrimary),
-                  onPressed: () {},
-                  size: 63,
-                  iconSize: 34,
-                  useOwnLayer: true,
-                  interactionScale: 0.94,
-                  glowColor: AppColors.white.withValues(alpha: 0.42),
-                  glowRadius: 22,
-                  settings: LiquidGlassSettings(
-                    blur: 24,
-                    thickness: 22,
-                    refractiveIndex: 1.32,
-                    glassColor: AppColors.white.withValues(alpha: 0.18),
-                  ),
-                ),
+              child: GlassIconButton(
+                icon: const Icon(Icons.close, color: AppColors.textPrimary),
+                onPressed: _close,
+                size: 63,
+                iconSize: 34,
+                useOwnLayer: true,
+                interactionScale: 0.94,
+                glowColor: AppColors.white.withValues(alpha: 0.42),
+                glowRadius: 22,
+                settings: CircleIconButton.iosGlassSettings(),
               ),
             ),
           ),
@@ -174,42 +132,29 @@ class _FanTitle extends StatelessWidget {
           opacity: value,
           child: Transform.translate(
             offset: Offset(72 * (1 - value), 6 * (1 - value)),
-            child: Transform.scale(
-              alignment: Alignment.centerRight,
-              scale: 0.82 + 0.18 * value,
-              child: child,
-            ),
+            child: Transform.scale(alignment: Alignment.centerRight, scale: 0.82 + 0.18 * value, child: child),
           ),
         );
       },
-      child: Text(
-        'Add Document From',
-        textAlign: TextAlign.center,
-        maxLines: 1,
-        style: TextStyle(
-          color: AppColors.textPrimary.withValues(alpha: 0.92),
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
+      child: SizedBox(
+        height: 63,
+        child: Center(
+          child: Text(
+            'Add Document From',
+            style: TextStyle(color: AppColors.tabSelected, fontSize: 16, fontWeight: FontWeight.w700),
+          ),
         ),
       ),
     );
   }
 }
 
-class _FanSourceButton extends StatelessWidget {
+class _FanTransition extends StatelessWidget {
   final Animation<double> animation;
   final Offset beginOffset;
-  final String iconAsset;
-  final String label;
-  final VoidCallback onTap;
+  final Widget child;
 
-  const _FanSourceButton({
-    required this.animation,
-    required this.beginOffset,
-    required this.iconAsset,
-    required this.label,
-    required this.onTap,
-  });
+  const _FanTransition({required this.animation, required this.beginOffset, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -228,49 +173,7 @@ class _FanSourceButton extends StatelessWidget {
           ),
         );
       },
-      child: GlassTapTarget(
-        onTap: onTap,
-        child: GlassButton.custom(
-          onTap: () {},
-          width: 128,
-          height: 56,
-          shape: const LiquidRoundedRectangle(borderRadius: 100),
-          useOwnLayer: true,
-          interactionScale: 1.05,
-          glowColor: AppColors.white.withValues(alpha: 0.42),
-          glowRadius: 1.2,
-          settings: LiquidGlassSettings(
-            blur: 24,
-            thickness: 22,
-            refractiveIndex: 1.32,
-            glassColor: AppColors.white.withValues(alpha: 0.18),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(iconAsset, width: 24, height: 24),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      label,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      child: child,
     );
   }
 }
