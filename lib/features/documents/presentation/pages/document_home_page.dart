@@ -28,10 +28,7 @@ class DocumentHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<DocumentListBloc>()..add(const DocumentsStarted()),
-      child: const _DocumentHomeView(),
-    );
+    return BlocProvider(create: (_) => getIt<DocumentListBloc>()..add(const DocumentsStarted()), child: const _DocumentHomeView());
   }
 }
 
@@ -70,9 +67,7 @@ class _DocumentHomeView extends StatelessWidget {
                           width: double.infinity,
                           decoration: const BoxDecoration(
                             color: AppColors.paper,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(36),
-                            ),
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
                           ),
                           child: Column(
                             children: [
@@ -85,14 +80,9 @@ class _DocumentHomeView extends StatelessWidget {
                               Expanded(
                                 child: state.isEmpty
                                     ? EmptyDocumentsView(
-                                        onSourceSelected:
-                                            (DocumentSource source) {
-                                              bloc.add(
-                                                AddDocumentSourceSelected(
-                                                  source,
-                                                ),
-                                              );
-                                            },
+                                        onSourceSelected: (DocumentSource source) {
+                                          bloc.add(AddDocumentSourceSelected(source));
+                                        },
                                       )
                                     : _DocumentGrid(state: state),
                               ),
@@ -167,11 +157,7 @@ class _DocumentHomeView extends StatelessWidget {
                     ),
                   if (state.isImporting)
                     Positioned.fill(
-                      child: Container(
-                        color: AppColors.black.withValues(alpha: 0.16),
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator(),
-                      ),
+                      child: Container(color: AppColors.black.withValues(alpha: 0.16), alignment: Alignment.center, child: const CircularProgressIndicator()),
                     ),
                   if (state.overlay == DocumentsOverlay.addSource)
                     AddDocumentGlassSheet(
@@ -199,13 +185,7 @@ class _BottomDocumentControls extends StatelessWidget {
   final VoidCallback onSearchClosed;
   final VoidCallback onAddPressed;
 
-  const _BottomDocumentControls({
-    required this.state,
-    required this.onSearchPressed,
-    required this.onSearchChanged,
-    required this.onSearchClosed,
-    required this.onAddPressed,
-  });
+  const _BottomDocumentControls({required this.state, required this.onSearchPressed, required this.onSearchChanged, required this.onSearchClosed, required this.onAddPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -214,40 +194,22 @@ class _BottomDocumentControls extends StatelessWidget {
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
       transitionBuilder: (child, animation) {
-        final curved = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutBack,
-          reverseCurve: Curves.easeInCubic,
-        );
+        final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutBack, reverseCurve: Curves.easeInCubic);
         return FadeTransition(
           opacity: animation,
           child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.18),
-              end: Offset.zero,
-            ).animate(curved),
-            child: ScaleTransition(
-              scale: Tween<double>(begin: 0.96, end: 1).animate(curved),
-              child: child,
-            ),
+            position: Tween<Offset>(begin: const Offset(0, 0.18), end: Offset.zero).animate(curved),
+            child: ScaleTransition(scale: Tween<double>(begin: 0.96, end: 1).animate(curved), child: child),
           ),
         );
       },
       child: state.isSearchActive
-          ? SearchDocumentsBar(
-              key: const ValueKey('search'),
-              query: state.searchQuery,
-              onChanged: onSearchChanged,
-              onClose: onSearchClosed,
-            )
+          ? SearchDocumentsBar(key: const ValueKey('search'), query: state.searchQuery, onChanged: onSearchChanged, onClose: onSearchClosed)
           : Row(
               key: const ValueKey('actions'),
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _RoundGlassActionButton(
-                  icon: Icons.search,
-                  onPressed: onSearchPressed,
-                ),
+                _RoundGlassActionButton(icon: Icons.search, onPressed: onSearchPressed),
                 _AddDocumentGlassButton(onPressed: onAddPressed),
               ],
             ),
@@ -266,7 +228,7 @@ class _RoundGlassActionButton extends StatelessWidget {
     return GlassTapTarget(
       onTap: onPressed,
       child: GlassIconButton(
-        icon: Icon(icon, color: AppColors.searchIcon),
+        icon: Icon(icon, color: AppColors.blackSearch),
         onPressed: () {},
         size: 70,
         iconSize: 34,
@@ -314,12 +276,7 @@ class _AddDocumentGlassButton extends StatelessWidget {
         interactionScale: 1.05,
         glowColor: AppColors.accent.withValues(alpha: 0.36),
         glowRadius: 1.1,
-        settings: LiquidGlassSettings(
-          blur: 16,
-          thickness: 24,
-          refractiveIndex: 1.34,
-          glassColor: AppColors.accent.withValues(alpha: 0.48),
-        ),
+        settings: LiquidGlassSettings(blur: 16, thickness: 24, refractiveIndex: 1.34, glassColor: AppColors.accent.withValues(alpha: 0.48)),
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 22, vertical: 18),
           child: FittedBox(
@@ -331,12 +288,7 @@ class _AddDocumentGlassButton extends StatelessWidget {
                 SizedBox(width: 8),
                 Text(
                   'Add Document',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 0,
-                  ),
+                  style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 0),
                 ),
               ],
             ),
@@ -353,23 +305,13 @@ class _Header extends StatelessWidget {
   final VoidCallback onCloseSelect;
   final VoidCallback onSelectAll;
 
-  const _Header({
-    required this.state,
-    required this.onMenuPressed,
-    required this.onCloseSelect,
-    required this.onSelectAll,
-  });
+  const _Header({required this.state, required this.onMenuPressed, required this.onCloseSelect, required this.onSelectAll});
 
   @override
   Widget build(BuildContext context) {
     final topInset = MediaQuery.paddingOf(context).top;
     return Padding(
-      padding: EdgeInsets.only(
-        left: 18,
-        top: topInset + 12,
-        right: 18,
-        bottom: 16,
-      ),
+      padding: EdgeInsets.only(left: 18, top: topInset + 12, right: 18, bottom: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -385,45 +327,21 @@ class _Header extends StatelessWidget {
               glowColor: AppColors.white.withValues(alpha: 0.1),
               glowRadius: 1.2,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 child: Text(
-                  state.isAllVisibleSelected
-                      ? 'Deselect All (${state.selectedIds.length})'
-                      : 'Select All',
-                  style: const TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
+                  state.isAllVisibleSelected ? 'Deselect All (${state.selectedIds.length})' : 'Select All',
+                  style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
             ),
           if (state.isSelectMode)
-            CircleIconButton(
-              icon: Icons.close,
-              size: 52,
-              onPressed: onCloseSelect,
-            )
+            CircleIconButton(icon: Icons.close, size: 52, onPressed: onCloseSelect)
           else
             Row(
               children: [
-                if (state.tab == DocumentTab.signed)
-                  CircleIconButton(
-                    icon: Icons.settings,
-                    size: 38,
-                    borderRadius: 15.2,
-                    onPressed: () {},
-                  ),
+                if (state.tab == DocumentTab.signed) CircleIconButton(icon: Icons.settings, size: 38, borderRadius: 15.2, onPressed: () {}),
                 if (state.tab == DocumentTab.signed) const SizedBox(width: 8),
-                CircleIconButton(
-                  icon: Icons.more_horiz,
-                  size: 38,
-                  borderRadius: 15.2,
-                  onPressed: onMenuPressed,
-                ),
+                CircleIconButton(icon: Icons.more_horiz, size: 38, borderRadius: 15.2, onPressed: onMenuPressed),
               ],
             ),
         ],
@@ -442,27 +360,17 @@ class _DocumentGrid extends StatelessWidget {
     final bloc = context.read<DocumentListBloc>();
     return GridView.builder(
       padding: const EdgeInsets.only(left: 28, top: 36, right: 28, bottom: 126),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 38,
-        crossAxisSpacing: 19,
-        childAspectRatio: 150 / 227,
-      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 38, crossAxisSpacing: 19, childAspectRatio: 150 / 227),
       itemCount: state.visibleDocuments.length,
       itemBuilder: (context, index) {
         final document = state.visibleDocuments[index];
-        final shouldDim =
-            state.overlay == DocumentsOverlay.documentContext &&
-            state.contextDocumentId != document.id;
+        final shouldDim = state.overlay == DocumentsOverlay.documentContext && state.contextDocumentId != document.id;
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 180),
           curve: Curves.easeOutCubic,
           opacity: shouldDim ? 0.18 : 1,
           child: ImageFiltered(
-            imageFilter: ImageFilter.blur(
-              sigmaX: shouldDim ? 7 : 0,
-              sigmaY: shouldDim ? 7 : 0,
-            ),
+            imageFilter: ImageFilter.blur(sigmaX: shouldDim ? 7 : 0, sigmaY: shouldDim ? 7 : 0),
             child: DocumentCard(
               document: document,
               isSelected: state.selectedIds.contains(document.id),
