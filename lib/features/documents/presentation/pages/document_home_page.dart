@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/di/injection.dart';
@@ -45,131 +46,124 @@ class _DocumentHomeView extends StatelessWidget {
           body: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: Center(
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      _Header(
-                        state: state,
-                        onMenuPressed: () {
-                          bloc.add(const ActionsMenuToggled());
-                        },
-                        onCloseSelect: () {
-                          bloc.add(const SelectModeExited());
-                        },
-                        onSelectAll: () {
-                          bloc.add(const SelectAllPressed());
-                        },
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: AppColors.paper,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
-                          ),
-                          child: Column(
-                            children: [
-                              DocumentTabs(
-                                selectedTab: state.tab,
-                                onChanged: (tab) {
-                                  bloc.add(DocumentTabChanged(tab));
-                                },
-                              ),
-                              Expanded(
-                                child: state.isEmpty
-                                    ? EmptyDocumentsView(
-                                        onSourceSelected: (DocumentSource source) {
-                                          bloc.add(AddDocumentSourceSelected(source));
-                                        },
-                                      )
-                                    : _DocumentGrid(state: state),
-                              ),
-                            ],
-                          ),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    _Header(
+                      state: state,
+                      onMenuPressed: () {
+                        bloc.add(const ActionsMenuToggled());
+                      },
+                      onCloseSelect: () {
+                        bloc.add(const SelectModeExited());
+                      },
+                      onSelectAll: () {
+                        bloc.add(const SelectAllPressed());
+                      },
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: AppColors.paper,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
+                        ),
+                        child: Column(
+                          children: [
+                            DocumentTabs(
+                              selectedTab: state.tab,
+                              onChanged: (tab) {
+                                bloc.add(DocumentTabChanged(tab));
+                              },
+                            ),
+                            Expanded(
+                              child: state.isEmpty
+                                  ? EmptyDocumentsView(
+                                      onSourceSelected: (DocumentSource source) {
+                                        bloc.add(AddDocumentSourceSelected(source));
+                                      },
+                                    )
+                                  : _DocumentGrid(state: state),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                if (!state.isSelectMode)
+                  _BottomDocumentControls(
+                    state: state,
+                    onSearchPressed: () {
+                      bloc.add(const SearchPressed());
+                    },
+                    onSearchChanged: (query) {
+                      bloc.add(SearchQueryChanged(query));
+                    },
+                    onSearchClosed: () {
+                      bloc.add(const SearchCancelled());
+                    },
+                    onAddPressed: () {
+                      bloc.add(const AddDocumentPressed());
+                    },
                   ),
-                  if (!state.isSelectMode)
-                    Positioned(
-                      left: 18,
-                      right: 18,
-                      bottom: 36,
-                      child: _BottomDocumentControls(
-                        state: state,
-                        onSearchPressed: () {
-                          bloc.add(const SearchPressed());
-                        },
-                        onSearchChanged: (query) {
-                          bloc.add(SearchQueryChanged(query));
-                        },
-                        onSearchClosed: () {
-                          bloc.add(const SearchCancelled());
-                        },
-                        onAddPressed: () {
-                          bloc.add(const AddDocumentPressed());
-                        },
-                      ),
-                    ),
-                  if (state.isSelectMode)
-                    SelectedActionsBar(
-                      onDelete: () {
-                        bloc.add(const DeleteSelectedPressed());
+                if (state.isSelectMode)
+                  SelectedActionsBar(
+                    onDelete: () {
+                      bloc.add(const DeleteSelectedPressed());
+                    },
+                  ),
+                if (state.overlay == DocumentsOverlay.documentContext)
+                  _DocumentContextDismissLayer(
+                    onDismiss: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                  ),
+                if (state.overlay == DocumentsOverlay.documentContext)
+                  DocumentContextMenu(
+                    onPrint: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                    onShare: () {
+                      bloc.add(const DocumentContextMenuDismissed());
+                    },
+                    onDelete: () {
+                      bloc.add(const ContextDocumentDeletePressed());
+                    },
+                  ),
+                if (state.overlay == DocumentsOverlay.actions)
+                  Positioned.fill(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        bloc.add(const ActionsMenuDismissed());
                       },
                     ),
-                  if (state.overlay == DocumentsOverlay.documentContext)
-                    _DocumentContextDismissLayer(
-                      onDismiss: () {
-                        bloc.add(const DocumentContextMenuDismissed());
-                      },
-                    ),
-                  if (state.overlay == DocumentsOverlay.documentContext)
-                    DocumentContextMenu(
-                      onPrint: () {
-                        bloc.add(const DocumentContextMenuDismissed());
-                      },
-                      onShare: () {
-                        bloc.add(const DocumentContextMenuDismissed());
-                      },
-                      onDelete: () {
-                        bloc.add(const ContextDocumentDeletePressed());
-                      },
-                    ),
-                  if (state.overlay == DocumentsOverlay.actions)
-                    Positioned.fill(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          bloc.add(const ActionsMenuDismissed());
-                        },
-                      ),
-                    ),
-                  if (state.overlay == DocumentsOverlay.actions)
-                    DocumentOverflowMenu(
-                      onSelect: () {
-                        bloc.add(const SelectModeEntered());
-                      },
-                      onAddDocument: () {
-                        bloc.add(const AddDocumentPressed());
-                      },
-                    ),
-                  if (state.isImporting)
-                    Positioned.fill(
-                      child: Container(color: AppColors.black.withValues(alpha: 0.16), alignment: Alignment.center, child: const CircularProgressIndicator()),
-                    ),
-                  if (state.overlay == DocumentsOverlay.addSource)
-                    AddDocumentGlassSheet(
-                      onSourceSelected: (source) {
-                        bloc.add(AddDocumentSourceSelected(source));
-                      },
-                      onClose: () {
-                        bloc.add(const AddDocumentCancelled());
-                      },
-                    ),
-                ],
-              ),
+                  ),
+                if (state.overlay == DocumentsOverlay.actions)
+                  DocumentOverflowMenu(
+                    onSelect: () {
+                      bloc.add(const SelectModeEntered());
+                    },
+                    onAddDocument: () {
+                      bloc.add(const AddDocumentPressed());
+                    },
+                  ),
+                if (state.isImporting)
+                  Positioned.fill(
+                    child: Container(color: AppColors.black.withValues(alpha: 0.16), alignment: Alignment.center, child: const CircularProgressIndicator()),
+                  ),
+                if (state.overlay == DocumentsOverlay.addSource)
+                  AddDocumentGlassSheet(
+                    onSourceSelected: (source) {
+                      bloc.add(AddDocumentSourceSelected(source));
+                    },
+                    onClose: () {
+                      bloc.add(const AddDocumentCancelled());
+                    },
+                  ),
+              ],
             ),
           ),
         );
@@ -189,70 +183,39 @@ class _BottomDocumentControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 360),
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      transitionBuilder: (child, animation) {
-        final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutBack, reverseCurve: Curves.easeInCubic);
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: Tween<Offset>(begin: const Offset(0, 0.18), end: Offset.zero).animate(curved),
-            child: ScaleTransition(scale: Tween<double>(begin: 0.96, end: 1).animate(curved), child: child),
-          ),
-        );
-      },
-      child: state.isSearchActive
-          ? SearchDocumentsBar(key: const ValueKey('search'), query: state.searchQuery, onChanged: onSearchChanged, onClose: onSearchClosed)
-          : Row(
-              key: const ValueKey('actions'),
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _RoundGlassActionButton(icon: Icons.search, onPressed: onSearchPressed),
-                _AddDocumentGlassButton(onPressed: onAddPressed),
-              ],
-            ),
+    return Positioned(
+      left: 18,
+      right: 18,
+      bottom: 36,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 150),
+        child: state.isSearchActive
+            ? SearchDocumentsBar(query: state.searchQuery, onChanged: onSearchChanged, onClose: onSearchClosed)
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _RoundGlassActionButton(onPressed: onSearchPressed),
+                  _AddDocumentGlassButton(onPressed: onAddPressed),
+                ],
+              ),
+      ),
     );
   }
 }
 
 class _RoundGlassActionButton extends StatelessWidget {
-  final IconData icon;
   final VoidCallback onPressed;
 
-  const _RoundGlassActionButton({required this.icon, required this.onPressed});
+  const _RoundGlassActionButton({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return GlassTapTarget(
-      onTap: onPressed,
-      child: GlassIconButton(
-        icon: Icon(icon, color: AppColors.blackSearch),
-        onPressed: () {},
-        size: 70,
-        iconSize: 34,
-        useOwnLayer: true,
-        interactionScale: 0.96,
-        glowColor: AppColors.white.withValues(alpha: 0.55),
-        glowRadius: 26,
-        semanticLabel: 'Search',
-        settings: LiquidGlassSettings(
-          blur: 14,
-          thickness: 32,
-          refractiveIndex: 1.44,
-          chromaticAberration: 0.014,
-          lightIntensity: 0.72,
-          ambientStrength: 0.16,
-          ambientRim: 0.42,
-          fresnelStrength: 0.88,
-          saturation: 1.16,
-          glowIntensity: 0.48,
-          whitenStrength: 0.22,
-          glassColor: AppColors.white.withValues(alpha: 0.24),
-          backerColor: AppColors.white.withValues(alpha: 0.20),
-        ),
-      ),
+    return GlassIconButton(
+      icon: SvgPicture.asset('assets/figma/search.svg', height: 18),
+      onPressed: onPressed,
+      size: 62.9,
+      semanticLabel: 'Search',
+      settings: LiquidGlassSettings(thickness: 45, glassColor: AppColors.white.withValues(alpha: 0.2), backerColor: AppColors.white.withValues(alpha: 0.56), whitenStrength: 0.5),
     );
   }
 }
@@ -264,34 +227,31 @@ class _AddDocumentGlassButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassTapTarget(
+    return GlassButton.custom(
       onTap: onPressed,
-      child: GlassButton.custom(
-        onTap: () {},
-        width: 206,
-        height: 62,
-        shape: const LiquidRoundedRectangle(borderRadius: 31),
-        useOwnLayer: true,
-        style: GlassButtonStyle.prominent,
-        interactionScale: 1.05,
-        glowColor: AppColors.accent.withValues(alpha: 0.36),
-        glowRadius: 1.1,
-        settings: LiquidGlassSettings(blur: 16, thickness: 24, refractiveIndex: 1.34, glassColor: AppColors.accent.withValues(alpha: 0.48)),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 22, vertical: 18),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add_circle, color: AppColors.textPrimary, size: 24),
-                SizedBox(width: 8),
-                Text(
-                  'Add Document',
-                  style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 0),
-                ),
-              ],
-            ),
+      width: 206,
+      height: 62,
+      shape: const LiquidRoundedRectangle(borderRadius: 31),
+      useOwnLayer: true,
+      style: GlassButtonStyle.prominent,
+      interactionScale: 1.05,
+      glowColor: AppColors.accent.withValues(alpha: 0.36),
+      glowRadius: 1.1,
+      settings: LiquidGlassSettings(blur: 16, thickness: 24, refractiveIndex: 1.34, glassColor: AppColors.accent.withValues(alpha: 0.48)),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 22, vertical: 18),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.add_circle, color: AppColors.textPrimary, size: 24),
+              SizedBox(width: 8),
+              Text(
+                'Add Document',
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.w900, letterSpacing: 0),
+              ),
+            ],
           ),
         ),
       ),
