@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-
 import '../../../../app/theme/app_colors.dart';
-import 'glass_tap_target.dart';
 
 const _menuWidth = 250.0;
 const _menuHeight = 137.0;
@@ -13,12 +11,7 @@ class DocumentContextMenu extends StatelessWidget {
   final VoidCallback onShare;
   final VoidCallback onDelete;
 
-  const DocumentContextMenu({
-    super.key,
-    required this.onPrint,
-    required this.onShare,
-    required this.onDelete,
-  });
+  const DocumentContextMenu({super.key, required this.onPrint, required this.onShare, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +27,7 @@ class DocumentContextMenu extends StatelessWidget {
             opacity: value.clamp(0, 1),
             child: Transform.translate(
               offset: Offset(0, 12 * (1 - value)),
-              child: Transform.scale(
-                scale: 0.92 + 0.08 * value,
-                alignment: Alignment.bottomCenter,
-                child: child,
-              ),
+              child: Transform.scale(scale: 0.92 + 0.08 * value, alignment: Alignment.bottomCenter, child: child),
             ),
           );
         },
@@ -71,27 +60,15 @@ class DocumentContextMenu extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: _MenuAction(
-                          icon: Icons.print,
-                          label: 'Print',
-                          onTap: onPrint,
-                        ),
+                        child: _MenuAction(icon: Icons.print, label: 'Print', onTap: onPrint),
                       ),
                       Expanded(
-                        child: _MenuAction(
-                          icon: Icons.ios_share,
-                          label: 'Share',
-                          onTap: onShare,
-                        ),
+                        child: _MenuAction(icon: Icons.ios_share, label: 'Share', onTap: onShare),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  height: 1,
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  color: AppColors.separator,
-                ),
+                Container(height: 1, margin: const EdgeInsets.symmetric(horizontal: 24), color: AppColors.separator),
                 Expanded(child: _DeleteAction(onTap: onDelete)),
               ],
             ),
@@ -107,43 +84,29 @@ class _MenuAction extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _MenuAction({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
+  const _MenuAction({required this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return GlassTapTarget(
+    return GlassButton.custom(
       onTap: onTap,
-      behavior: HitTestBehavior.deferToChild,
-      child: GlassButton.custom(
-        onTap: () {},
-        height: 56,
-        style: GlassButtonStyle.transparent,
-        useOwnLayer: true,
-        interactionScale: 1.02,
-        glowColor: AppColors.white.withValues(alpha: 0.24),
-        glowRadius: 0.8,
-        shape: const LiquidRoundedRectangle(borderRadius: 26),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 22, color: AppColors.textPrimary),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                height: 1.5,
-                letterSpacing: 0,
-              ),
-            ),
-          ],
-        ),
+      height: 56,
+      style: GlassButtonStyle.transparent,
+      useOwnLayer: true,
+      interactionScale: 1.02,
+      glowColor: AppColors.white.withValues(alpha: 0.24),
+      glowRadius: 0.8,
+      shape: const LiquidRoundedRectangle(borderRadius: 26),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 22, color: AppColors.textPrimary),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(color: AppColors.textPrimary, fontSize: 12, fontWeight: FontWeight.w600, height: 1.5, letterSpacing: 0),
+          ),
+        ],
       ),
     );
   }
@@ -156,40 +119,26 @@ class _DeleteAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassTapTarget(
+    return GlassButton.custom(
       onTap: onTap,
-      behavior: HitTestBehavior.deferToChild,
-      child: GlassButton.custom(
-        onTap: () {},
-        height: 70,
-        style: GlassButtonStyle.transparent,
-        useOwnLayer: true,
-        interactionScale: 1.02,
-        glowColor: AppColors.destructiveGlow.withValues(alpha: 0.18),
-        glowRadius: 0.8,
-        shape: const LiquidRoundedRectangle(borderRadius: 24),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            children: [
-              Icon(
-                Icons.delete_outline,
-                size: 24,
-                color: AppColors.destructiveIos,
-              ),
-              SizedBox(width: 8),
-              Text(
-                'Delete',
-                style: TextStyle(
-                  color: AppColors.destructiveIos,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  height: 1.18,
-                  letterSpacing: -0.43,
-                ),
-              ),
-            ],
-          ),
+      height: 70,
+      style: GlassButtonStyle.transparent,
+      useOwnLayer: true,
+      interactionScale: 1.02,
+      glowColor: AppColors.destructiveGlow.withValues(alpha: 0.18),
+      glowRadius: 0.8,
+      shape: const LiquidRoundedRectangle(borderRadius: 24),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          children: [
+            Icon(Icons.delete_outline, size: 24, color: AppColors.destructiveIos),
+            SizedBox(width: 8),
+            Text(
+              'Delete',
+              style: TextStyle(color: AppColors.destructiveIos, fontSize: 17, fontWeight: FontWeight.w400, height: 1.18, letterSpacing: -0.43),
+            ),
+          ],
         ),
       ),
     );

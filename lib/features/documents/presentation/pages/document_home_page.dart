@@ -195,7 +195,7 @@ class _BottomDocumentControls extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleIconButton.asset(onPressed: onSearchPressed, assetPath: 'assets/figma/search.svg', size: 62.9, iconSize: 18, semanticLabel: 'Search'),
+                  CircleIconButton(onPressed: onSearchPressed, assetPath: 'assets/figma/search.svg', size: 62.9, semanticLabel: 'Search'),
                   _AddDocumentGlassButton(onPressed: onAddPressed),
                 ],
               ),
@@ -265,40 +265,75 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final topInset = MediaQuery.paddingOf(context).top;
     return Padding(
-      padding: EdgeInsets.only(left: 18, top: topInset + 12, right: 18, bottom: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (state.isSelectMode == false)
-            const SignicaLogo()
-          else
-            GlassButton.custom(
-              onTap: onSelectAll,
-              height: 44,
-              shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-              useOwnLayer: true,
-              interactionScale: 1.04,
-              glowColor: AppColors.white.withValues(alpha: 0.1),
-              glowRadius: 1.2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: Text(
-                  state.isAllVisibleSelected ? 'Deselect All (${state.selectedIds.length})' : 'Select All',
-                  style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 14),
+      padding: EdgeInsets.only(left: 18, top: topInset, right: 18),
+      child: SizedBox(
+        height: 66,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (state.isSelectMode == false)
+              const SignicaLogo()
+            else
+              GlassButton.custom(
+                onTap: onSelectAll,
+                height: 44,
+                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                useOwnLayer: true,
+                interactionScale: 1.04,
+                glowColor: AppColors.white.withValues(alpha: 0.1),
+                glowRadius: 1.2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Text(
+                    state.isAllVisibleSelected ? 'Deselect All (${state.selectedIds.length})' : 'Select All',
+                    style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 14),
+                  ),
                 ),
               ),
-            ),
-          if (state.isSelectMode)
-            CircleIconButton(icon: Icons.close, size: 52, onPressed: onCloseSelect)
-          else
-            Row(
-              children: [
-                if (state.tab == DocumentTab.signed) CircleIconButton(icon: Icons.settings, size: 38, borderRadius: 15.2, onPressed: () {}),
-                if (state.tab == DocumentTab.signed) const SizedBox(width: 8),
-                CircleIconButton(icon: Icons.more_horiz, size: 38, borderRadius: 15.2, onPressed: onMenuPressed),
-              ],
-            ),
-        ],
+            if (state.isSelectMode)
+              GlassButton.custom(
+                onTap: onCloseSelect,
+                height: 38,
+                width: 38,
+                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                useOwnLayer: true,
+                interactionScale: 1.04,
+                glowColor: AppColors.white.withValues(alpha: 0.1),
+                glowRadius: 1.2,
+                child: Center(child: SvgPicture.asset('assets/figma/close_white.svg', width: 12)),
+              )
+            else
+              Row(
+                children: [
+                  if (state.tab == DocumentTab.signed)
+                    GlassButton.custom(
+                      onTap: () {},
+                      height: 38,
+                      width: 38,
+                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                      useOwnLayer: true,
+                      interactionScale: 1.04,
+                      glowColor: AppColors.white.withValues(alpha: 0.1),
+                      glowRadius: 1.2,
+                      child: Center(child: SvgPicture.asset('assets/figma/settings.svg', width: 18)),
+                    ),
+
+                  if (state.tab == DocumentTab.signed) const SizedBox(width: 12),
+                  GlassButton.custom(
+                    onTap: onMenuPressed,
+                    height: 38,
+                    width: 38,
+                    shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                    useOwnLayer: true,
+                    interactionScale: 1.04,
+                    glowColor: AppColors.white.withValues(alpha: 0.1),
+                    glowRadius: 1.2,
+                    child: Center(child: SvgPicture.asset('assets/figma/menu.svg', width: 18)),
+                  ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }

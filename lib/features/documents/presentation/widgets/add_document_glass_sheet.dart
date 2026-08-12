@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import 'circle_icon_button.dart';
@@ -90,17 +89,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with Sing
             bottom: 12 + MediaQuery.paddingOf(context).bottom,
             child: ScaleTransition(
               scale: _interval(0, 0.65),
-              child: GlassIconButton(
-                icon: const Icon(Icons.close, color: AppColors.textPrimary),
-                onPressed: _close,
-                size: 63,
-                iconSize: 34,
-                useOwnLayer: true,
-                interactionScale: 0.94,
-                glowColor: AppColors.white.withValues(alpha: 0.42),
-                glowRadius: 22,
-                settings: CircleIconButton.iosGlassSettings(),
-              ),
+              child: CircleIconButton(assetPath: 'assets/figma/close.svg', onPressed: _close, size: 63, iconSize: 18, semanticLabel: 'Close'),
             ),
           ),
         ],
