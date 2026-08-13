@@ -14,7 +14,7 @@ class DocumentListState extends Equatable {
   final bool isSelectMode;
   final DocumentsOverlay overlay;
   final String? contextDocumentId;
-  final String? errorMessage;
+  final String? errorKey;
 
   const DocumentListState({
     this.documents = const [],
@@ -28,7 +28,7 @@ class DocumentListState extends Equatable {
     this.isSelectMode = false,
     this.overlay = DocumentsOverlay.none,
     this.contextDocumentId,
-    this.errorMessage,
+    this.errorKey,
   });
 
   bool get isEmpty => documents.isEmpty;
@@ -53,7 +53,8 @@ class DocumentListState extends Equatable {
     DocumentsOverlay? overlay,
     String? contextDocumentId,
     bool clearContextDocument = false,
-    String? errorMessage,
+    String? errorKey,
+    bool clearError = false,
   }) {
     return DocumentListState(
       documents: documents ?? this.documents,
@@ -69,7 +70,7 @@ class DocumentListState extends Equatable {
       contextDocumentId: clearContextDocument
           ? null
           : contextDocumentId ?? this.contextDocumentId,
-      errorMessage: errorMessage,
+      errorKey: clearError ? null : errorKey ?? this.errorKey,
     );
   }
 
@@ -86,6 +87,6 @@ class DocumentListState extends Equatable {
     isSelectMode,
     overlay,
     contextDocumentId,
-    errorMessage,
+    errorKey,
   ];
 }

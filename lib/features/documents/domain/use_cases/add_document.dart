@@ -7,11 +7,17 @@ import '../services/document_import_service.dart';
 
 class AddDocumentParams extends Equatable {
   final DocumentSource source;
+  final String photoTitle;
+  final String scannedTitle;
 
-  const AddDocumentParams({required this.source});
+  const AddDocumentParams({
+    required this.source,
+    required this.photoTitle,
+    required this.scannedTitle,
+  });
 
   @override
-  List<Object?> get props => [source];
+  List<Object?> get props => [source, photoTitle, scannedTitle];
 }
 
 @injectable
@@ -21,7 +27,11 @@ class AddDocument {
   const AddDocument(this.importService);
 
   Future<List<Document>> call(AddDocumentParams params) async {
-    final documents = await importService.importDocuments(params.source);
+    final documents = await importService.importDocuments(
+      source: params.source,
+      photoTitle: params.photoTitle,
+      scannedTitle: params.scannedTitle,
+    );
     if (documents.isEmpty) {
       throw const DocumentImportCancelledException();
     }

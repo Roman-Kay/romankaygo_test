@@ -18,6 +18,7 @@
   "documents": {
     "empty_title": "No Documents Yet",
     "empty_subtitle": "Your can add documents from ",
+    "importing_preview": "Preparing document preview...",
     "photo_title": "Photo Document",
     "scanned_title": "Scanned Document",
     "search_placeholder": "Search Documents"

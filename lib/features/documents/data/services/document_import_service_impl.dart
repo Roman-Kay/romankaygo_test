@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -9,7 +8,6 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../app/localization/app_locale_keys.dart';
 import '../../domain/entities/document.dart';
 import '../../domain/entities/document_source.dart';
 import '../../domain/entities/document_status.dart';
@@ -37,7 +35,11 @@ class DocumentImportServiceImpl implements DocumentImportService {
   );
 
   @override
-  Future<List<Document>> importDocuments(DocumentSource source) async {
+  Future<List<Document>> importDocuments({
+    required DocumentSource source,
+    required String photoTitle,
+    required String scannedTitle,
+  }) async {
     final root = await getApplicationDocumentsDirectory();
     final documentsDirectory = Directory(p.join(root.path, 'documents'));
     final previewsDirectory = Directory(p.join(root.path, 'previews'));
@@ -50,9 +52,11 @@ class DocumentImportServiceImpl implements DocumentImportService {
       ),
       DocumentSource.photos => await _pickPhotos(
         documentsDirectoryPath: documentsDirectory.path,
+        title: photoTitle,
       ),
       DocumentSource.scanner => await _scanDocument(
         documentsDirectoryPath: documentsDirectory.path,
+        title: scannedTitle,
       ),
     };
 
@@ -109,6 +113,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
 
   Future<List<ImportedPdf>> _pickPhotos({
     required String documentsDirectoryPath,
+    required String title,
   }) async {
     final images = await imagePicker.pickMultiImage(limit: _photoPickerLimit);
     if (images.isEmpty) {
@@ -118,7 +123,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
     final id = uuid.v4();
     final imported = await _buildPdfFromImages(
       id: id,
-      title: AppLocaleKeys.documentsPhotoTitle.tr(),
+      title: title,
       imagePaths: images.map((image) => image.path).toList(growable: false),
       documentsDirectoryPath: documentsDirectoryPath,
     );
@@ -127,6 +132,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
 
   Future<List<ImportedPdf>> _scanDocument({
     required String documentsDirectoryPath,
+    required String title,
   }) async {
     final images = await CunningDocumentScanner.getPictures(noOfPages: 10);
     if (images == null || images.isEmpty) {
@@ -135,7 +141,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
     final id = uuid.v4();
     final imported = await _buildPdfFromImages(
       id: id,
-      title: AppLocaleKeys.documentsScannedTitle.tr(),
+      title: title,
       imagePaths: images,
       documentsDirectoryPath: documentsDirectoryPath,
     );

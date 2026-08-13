@@ -1,29 +1,23 @@
-import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-
-import '../../../../app/assets/app_images.dart';
 import '../../../../app/di/injection.dart';
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
-import '../../domain/entities/document_tab.dart';
 import '../bloc/document_list_bloc.dart';
 import '../widgets/add_document_glass_sheet.dart';
-import '../widgets/circle_icon_button.dart';
-import '../widgets/document_card.dart';
+import '../widgets/document_bottom_controls.dart';
+import '../widgets/document_context_dismiss_layer.dart';
 import '../widgets/document_context_menu.dart';
+import '../widgets/document_grid.dart';
+import '../widgets/document_home_header.dart';
 import '../widgets/document_overflow_menu.dart';
 import '../widgets/document_tabs.dart';
 import '../widgets/empty_documents_view.dart';
-import '../widgets/search_documents_bar.dart';
+import '../widgets/import_progress_overlay.dart';
 import '../widgets/selected_actions_bar.dart';
-import '../widgets/signica_logo.dart';
 
 @RoutePage()
 class DocumentHomePage extends StatelessWidget {
@@ -84,487 +78,189 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
     bloc.add(DocumentContextMenuOpened(documentId));
   }
 
+  void _addSourceSelected(DocumentListBloc bloc, DocumentSource source) {
+    bloc.add(
+      AddDocumentSourceSelected(
+        source: source,
+        photoTitle: AppLocaleKeys.documentsPhotoTitle.tr(),
+        scannedTitle: AppLocaleKeys.documentsScannedTitle.tr(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DocumentListBloc, DocumentListState>(
-      builder: (context, state) {
-        final bloc = context.read<DocumentListBloc>();
+    return BlocListener<DocumentListBloc, DocumentListState>(
+      listenWhen: (previous, current) => previous.errorKey != current.errorKey,
+      listener: (context, state) {
+        final errorKey = state.errorKey;
+        if (errorKey == null) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(errorKey.tr()),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        context.read<DocumentListBloc>().add(const ErrorMessageShown());
+      },
+      child: BlocBuilder<DocumentListBloc, DocumentListState>(
+        builder: (context, state) {
+          final bloc = context.read<DocumentListBloc>();
 
-        return Scaffold(
-          body: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    _Header(
-                      state: state,
-                      onMenuPressed: () {
-                        _toggleActionsMenu(bloc);
-                      },
-                      onCloseSelect: () {
-                        bloc.add(const SelectModeExited());
-                      },
-                      onSelectAll: () {
-                        bloc.add(const SelectAllPressed());
-                      },
-                      menuButtonKey: _menuButtonKey,
-                    ),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: AppColors.paper,
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(36),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                DocumentTabs(
-                                  selectedTab: state.tab,
-                                  onChanged: (tab) {
-                                    bloc.add(DocumentTabChanged(tab));
-                                  },
+          return Scaffold(
+            body: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      DocumentHomeHeader(
+                        state: state,
+                        onMenuPressed: () {
+                          _toggleActionsMenu(bloc);
+                        },
+                        onCloseSelect: () {
+                          bloc.add(const SelectModeExited());
+                        },
+                        onSelectAll: () {
+                          bloc.add(const SelectAllPressed());
+                        },
+                        menuButtonKey: _menuButtonKey,
+                      ),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                color: AppColors.paper,
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(36),
                                 ),
-                                Expanded(
-                                  child: state.isEmpty
-                                      ? EmptyDocumentsView(
-                                          onSourceSelected:
-                                              (DocumentSource source) {
-                                                bloc.add(
-                                                  AddDocumentSourceSelected(
+                              ),
+                              child: Column(
+                                children: [
+                                  DocumentTabs(
+                                    selectedTab: state.tab,
+                                    onChanged: (tab) {
+                                      bloc.add(DocumentTabChanged(tab));
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: state.isEmpty
+                                        ? EmptyDocumentsView(
+                                            onSourceSelected:
+                                                (DocumentSource source) {
+                                                  _addSourceSelected(
+                                                    bloc,
                                                     source,
-                                                  ),
-                                                );
-                                              },
-                                        )
-                                      : _DocumentGrid(
-                                          state: state,
-                                          onContextMenuRequested:
-                                              (documentId, anchorContext) {
-                                                _openDocumentContextMenu(
-                                                  bloc,
-                                                  documentId,
-                                                  anchorContext,
-                                                );
-                                              },
-                                        ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (!state.isSelectMode &&
-                              state.overlay != DocumentsOverlay.addSource)
-                            _BottomDocumentControls(
-                              state: state,
-                              onSearchPressed: () {
-                                bloc.add(const SearchPressed());
-                              },
-                              onSearchChanged: (query) {
-                                bloc.add(SearchQueryChanged(query));
-                              },
-                              onSearchClosed: () {
-                                bloc.add(const SearchCancelled());
-                              },
-                              onAddPressed: () {
-                                bloc.add(const AddDocumentPressed());
-                              },
-                            ),
-                          if (state.isSelectMode)
-                            SelectedActionsBar(
-                              hasSelection: state.selectedIds.isNotEmpty,
-                              onDelete: () {
-                                bloc.add(const DeleteSelectedPressed());
-                              },
-                              onShare: () {
-                                bloc.add(const ShareSelectedPressed());
-                              },
-                            ),
-                          if (state.isImporting)
-                            Positioned.fill(
-                              child: Container(
-                                color: AppColors.black.withValues(alpha: 0.16),
-                                alignment: Alignment.center,
-                                child: const CircularProgressIndicator(),
+                                                  );
+                                                },
+                                          )
+                                        : DocumentGrid(
+                                            state: state,
+                                            onContextMenuRequested:
+                                                (documentId, anchorContext) {
+                                                  _openDocumentContextMenu(
+                                                    bloc,
+                                                    documentId,
+                                                    anchorContext,
+                                                  );
+                                                },
+                                          ),
+                                  ),
+                                ],
                               ),
                             ),
-                          if (state.overlay == DocumentsOverlay.addSource)
-                            AddDocumentGlassSheet(
-                              onSourceSelected: (source) {
-                                bloc.add(AddDocumentSourceSelected(source));
-                              },
-                              onClose: () {
-                                bloc.add(const AddDocumentCancelled());
-                              },
-                            ),
-                        ],
+                            if (!state.isSelectMode &&
+                                state.overlay != DocumentsOverlay.addSource)
+                              DocumentBottomControls(
+                                state: state,
+                                onSearchPressed: () {
+                                  bloc.add(const SearchPressed());
+                                },
+                                onSearchChanged: (query) {
+                                  bloc.add(SearchQueryChanged(query));
+                                },
+                                onSearchClosed: () {
+                                  bloc.add(const SearchCancelled());
+                                },
+                                onAddPressed: () {
+                                  bloc.add(const AddDocumentPressed());
+                                },
+                              ),
+                            if (state.isSelectMode)
+                              SelectedActionsBar(
+                                hasSelection: state.selectedIds.isNotEmpty,
+                                onDelete: () {
+                                  bloc.add(const DeleteSelectedPressed());
+                                },
+                                onShare: () {
+                                  bloc.add(const ShareSelectedPressed());
+                                },
+                              ),
+                            if (state.isImporting)
+                              const ImportProgressOverlay(),
+                            if (state.overlay == DocumentsOverlay.addSource)
+                              AddDocumentGlassSheet(
+                                onSourceSelected: (source) {
+                                  _addSourceSelected(bloc, source);
+                                },
+                                onClose: () {
+                                  bloc.add(const AddDocumentCancelled());
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (state.overlay == DocumentsOverlay.actions)
+                    Positioned.fill(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          bloc.add(const ActionsMenuDismissed());
+                        },
                       ),
                     ),
-                  ],
-                ),
-                if (state.overlay == DocumentsOverlay.actions)
-                  Positioned.fill(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        bloc.add(const ActionsMenuDismissed());
+                  if (state.overlay == DocumentsOverlay.actions)
+                    DocumentOverflowMenu(
+                      anchorRect: _menuAnchorRect ?? Rect.zero,
+                      onSelect: () {
+                        bloc.add(const SelectModeEntered());
+                      },
+                      onAddDocument: () {
+                        bloc.add(const AddDocumentPressed());
                       },
                     ),
-                  ),
-                if (state.overlay == DocumentsOverlay.actions)
-                  DocumentOverflowMenu(
-                    anchorRect: _menuAnchorRect ?? Rect.zero,
-                    onSelect: () {
-                      bloc.add(const SelectModeEntered());
-                    },
-                    onAddDocument: () {
-                      bloc.add(const AddDocumentPressed());
-                    },
-                  ),
-                if (state.overlay == DocumentsOverlay.documentContext)
-                  _DocumentContextDismissLayer(
-                    onDismiss: () {
-                      bloc.add(const DocumentContextMenuDismissed());
-                    },
-                  ),
-                if (state.overlay == DocumentsOverlay.documentContext)
-                  DocumentContextMenu(
-                    anchorRect: _contextMenuAnchorRect ?? Rect.zero,
-                    onPrint: () {
-                      bloc.add(const ContextDocumentPrintPressed());
-                    },
-                    onShare: () {
-                      bloc.add(const ContextDocumentSharePressed());
-                    },
-                    onDelete: () {
-                      bloc.add(const ContextDocumentDeletePressed());
-                    },
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _BottomDocumentControls extends StatelessWidget {
-  final DocumentListState state;
-  final VoidCallback onSearchPressed;
-  final ValueChanged<String> onSearchChanged;
-  final VoidCallback onSearchClosed;
-  final VoidCallback onAddPressed;
-
-  const _BottomDocumentControls({
-    required this.state,
-    required this.onSearchPressed,
-    required this.onSearchChanged,
-    required this.onSearchClosed,
-    required this.onAddPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bottomInset = MediaQuery.paddingOf(context).bottom;
-
-    return Positioned(
-      left: 18,
-      right: 18,
-      bottom: 13 + bottomInset,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        child: state.isSearchActive
-            ? SearchDocumentsBar(
-                query: state.searchQuery,
-                onChanged: onSearchChanged,
-                onClose: onSearchClosed,
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleIconButton(
-                    onPressed: onSearchPressed,
-                    assetPath: AppImages.search,
-                    size: 62.9,
-                    semanticLabel: AppLocaleKeys.actionsSearch.tr(),
-                  ),
-                  _AddDocumentGlassButton(onPressed: onAddPressed),
+                  if (state.overlay == DocumentsOverlay.documentContext)
+                    DocumentContextDismissLayer(
+                      onDismiss: () {
+                        bloc.add(const DocumentContextMenuDismissed());
+                      },
+                    ),
+                  if (state.overlay == DocumentsOverlay.documentContext)
+                    DocumentContextMenu(
+                      anchorRect: _contextMenuAnchorRect ?? Rect.zero,
+                      onPrint: () {
+                        bloc.add(const ContextDocumentPrintPressed());
+                      },
+                      onShare: () {
+                        bloc.add(const ContextDocumentSharePressed());
+                      },
+                      onDelete: () {
+                        bloc.add(const ContextDocumentDeletePressed());
+                      },
+                    ),
                 ],
               ),
-      ),
-    );
-  }
-}
-
-class _AddDocumentGlassButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _AddDocumentGlassButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassButton.custom(
-      onTap: onPressed,
-      height: 61,
-      shape: const LiquidRoundedRectangle(borderRadius: 31),
-      useOwnLayer: true,
-      style: GlassButtonStyle.prominent,
-      interactionScale: 1.05,
-      glowColor: AppColors.accent.withValues(alpha: 0.36),
-      glowRadius: 1.1,
-      settings: LiquidGlassSettings(
-        blur: 16,
-        thickness: 24,
-        refractiveIndex: 1.34,
-        glassColor: AppColors.accent.withValues(alpha: 0.22),
-        backerColor: AppColors.accent.withValues(alpha: 0.18),
-        whitenStrength: 0.04,
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(31),
-        child: DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment(0.5, 0),
-              end: Alignment(0.5, 1),
-              colors: [
-                AppColors.accentGradientTop,
-                AppColors.accentGradientBottom,
-              ],
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 19),
-            child: Row(
-              children: [
-                SvgPicture.asset(AppImages.add, height: 23),
-                const SizedBox(width: 8),
-                Text(
-                  AppLocaleKeys.actionsAddDocument.tr(),
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  final DocumentListState state;
-  final VoidCallback onMenuPressed;
-  final VoidCallback onCloseSelect;
-  final VoidCallback onSelectAll;
-  final GlobalKey menuButtonKey;
-
-  const _Header({
-    required this.state,
-    required this.onMenuPressed,
-    required this.onCloseSelect,
-    required this.onSelectAll,
-    required this.menuButtonKey,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final topInset = MediaQuery.paddingOf(context).top;
-    return Padding(
-      padding: EdgeInsets.only(left: 18, top: topInset, right: 18),
-      child: SizedBox(
-        height: 66,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (state.isSelectMode == false)
-              const SignicaLogo()
-            else
-              GlassButton.custom(
-                onTap: onSelectAll,
-                height: 44,
-                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-                useOwnLayer: true,
-                interactionScale: 1.04,
-                glowColor: AppColors.white.withValues(alpha: 0.1),
-                glowRadius: 1.2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  child: Text(
-                    state.isAllVisibleSelected
-                        ? AppLocaleKeys.actionsDeselectAll.tr(
-                            namedArgs: {
-                              'count': state.selectedIds.length.toString(),
-                            },
-                          )
-                        : AppLocaleKeys.actionsSelectAll.tr(),
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ),
-            if (state.isSelectMode)
-              GlassButton.custom(
-                onTap: onCloseSelect,
-                height: 38,
-                width: 38,
-                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-                useOwnLayer: true,
-                interactionScale: 1.04,
-                glowColor: AppColors.white.withValues(alpha: 0.1),
-                glowRadius: 1.2,
-                child: Center(
-                  child: SvgPicture.asset(AppImages.closeWhite, width: 12),
-                ),
-              )
-            else
-              Row(
-                children: [
-                  if (state.tab == DocumentTab.signed)
-                    GlassButton.custom(
-                      onTap: () {},
-                      height: 38,
-                      width: 38,
-                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-                      useOwnLayer: true,
-                      interactionScale: 1.04,
-                      glowColor: AppColors.white.withValues(alpha: 0.1),
-                      glowRadius: 1.2,
-                      child: Center(
-                        child: SvgPicture.asset(AppImages.settings, width: 18),
-                      ),
-                    ),
-
-                  if (state.tab == DocumentTab.signed)
-                    const SizedBox(width: 12),
-                  Semantics(
-                    label: AppLocaleKeys.actionsMenu.tr(),
-                    button: true,
-                    child: GlassButton.custom(
-                      key: menuButtonKey,
-                      onTap: onMenuPressed,
-                      height: 38,
-                      width: 38,
-                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-                      useOwnLayer: true,
-                      interactionScale: 1.04,
-                      glowColor: AppColors.white.withValues(alpha: 0.1),
-                      glowRadius: 1.2,
-                      child: Center(
-                        child: SvgPicture.asset(AppImages.menu, width: 18),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DocumentGrid extends StatelessWidget {
-  final DocumentListState state;
-  final void Function(String documentId, BuildContext anchorContext)
-  onContextMenuRequested;
-
-  const _DocumentGrid({
-    required this.state,
-    required this.onContextMenuRequested,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<DocumentListBloc>();
-    return GridView.builder(
-      padding: const EdgeInsets.only(left: 28, top: 36, right: 28, bottom: 126),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 38,
-        crossAxisSpacing: 19,
-        childAspectRatio: 150 / 227,
-      ),
-      itemCount: state.visibleDocuments.length,
-      itemBuilder: (context, index) {
-        final document = state.visibleDocuments[index];
-        final shouldDim =
-            state.overlay == DocumentsOverlay.documentContext &&
-            state.contextDocumentId != document.id;
-        return Builder(
-          builder: (cardContext) {
-            return AnimatedOpacity(
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeOutCubic,
-              opacity: shouldDim ? 0.18 : 1,
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(
-                  sigmaX: shouldDim ? 7 : 0,
-                  sigmaY: shouldDim ? 7 : 0,
-                ),
-                child: DocumentCard(
-                  document: document,
-                  isSelected: state.selectedIds.contains(document.id),
-                  isSelectMode: state.isSelectMode,
-                  onTap: () {
-                    if (state.overlay == DocumentsOverlay.documentContext) {
-                      bloc.add(const DocumentContextMenuDismissed());
-                      return;
-                    }
-                    if (state.isSelectMode) {
-                      bloc.add(DocumentSelectionToggled(document.id));
-                      return;
-                    }
-                    bloc.add(DocumentTapped(document.id));
-                  },
-                  onLongPress: () {
-                    onContextMenuRequested(document.id, cardContext);
-                  },
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class _DocumentContextDismissLayer extends StatelessWidget {
-  final VoidCallback onDismiss;
-
-  const _DocumentContextDismissLayer({required this.onDismiss});
-
-  @override
-  Widget build(BuildContext context) {
-    final topInset = MediaQuery.paddingOf(context).top;
-    return Positioned(
-      left: 0,
-      right: 0,
-      top: topInset + 66,
-      bottom: 0,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onDismiss,
-          child: ColoredBox(color: AppColors.white.withValues(alpha: 0.08)),
-        ),
+          );
+        },
       ),
     );
   }

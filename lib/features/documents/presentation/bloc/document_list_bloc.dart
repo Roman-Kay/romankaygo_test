@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -57,6 +56,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     on<ContextDocumentSharePressed>(_onContextDocumentSharePressed);
     on<AddDocumentCancelled>(_onOverlayCancelled);
     on<AddDocumentSourceSelected>(_onAddSourceSelected);
+    on<ErrorMessageShown>(_onErrorMessageShown);
     on<SearchPressed>(_onSearchPressed);
     on<SearchCancelled>(_onSearchCancelled);
     on<SearchQueryChanged>(_onSearchQueryChanged);
@@ -73,14 +73,14 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     DocumentsStarted event,
     Emitter<DocumentListState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    emit(state.copyWith(isLoading: true, clearError: true));
     final documents = await _getDocuments();
     emit(
       _derive(
         state.copyWith(
           documents: documents,
           isLoading: false,
-          errorMessage: null,
+          clearError: true,
         ),
       ),
     );
@@ -183,7 +183,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _printDocument(PrintDocumentParams(document));
     } catch (_) {
-      emit(state.copyWith(errorMessage: AppLocaleKeys.errorsPrintFailed.tr()));
+      emit(state.copyWith(errorKey: AppLocaleKeys.errorsPrintFailed));
     }
   }
 
@@ -202,7 +202,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _shareDocuments(ShareDocumentsParams([document]));
     } catch (_) {
-      emit(state.copyWith(errorMessage: AppLocaleKeys.errorsShareFailed.tr()));
+      emit(state.copyWith(errorKey: AppLocaleKeys.errorsShareFailed));
     }
   }
 
@@ -226,12 +226,18 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
       state.copyWith(
         isImporting: true,
         overlay: DocumentsOverlay.none,
-        errorMessage: null,
+        clearError: true,
       ),
     );
 
     try {
-      await _addDocument(AddDocumentParams(source: event.source));
+      await _addDocument(
+        AddDocumentParams(
+          source: event.source,
+          photoTitle: event.photoTitle,
+          scannedTitle: event.scannedTitle,
+        ),
+      );
     } on DocumentImportCancelledException {
       emit(state.copyWith(isImporting: false));
       return;
@@ -239,7 +245,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
       emit(
         state.copyWith(
           isImporting: false,
-          errorMessage: AppLocaleKeys.errorsImportFailed.tr(),
+          errorKey: AppLocaleKeys.errorsImportFailed,
         ),
       );
       return;
@@ -252,10 +258,17 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
           documents: documents,
           isImporting: false,
           overlay: DocumentsOverlay.none,
-          errorMessage: null,
+          clearError: true,
         ),
       ),
     );
+  }
+
+  void _onErrorMessageShown(
+    ErrorMessageShown event,
+    Emitter<DocumentListState> emit,
+  ) {
+    emit(state.copyWith(clearError: true));
   }
 
   void _onSearchPressed(SearchPressed event, Emitter<DocumentListState> emit) {
@@ -356,9 +369,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _shareDocuments(ShareDocumentsParams(documents));
     } catch (_) {
-      emit(
-        state.copyWith(errorMessage: AppLocaleKeys.errorsShareManyFailed.tr()),
-      );
+      emit(state.copyWith(errorKey: AppLocaleKeys.errorsShareManyFailed));
     }
   }
 

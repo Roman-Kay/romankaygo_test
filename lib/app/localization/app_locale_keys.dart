@@ -15,6 +15,7 @@ abstract final class AppLocaleKeys {
 
   static const documentsEmptyTitle = 'documents.empty_title';
   static const documentsEmptySubtitle = 'documents.empty_subtitle';
+  static const documentsImportingPreview = 'documents.importing_preview';
   static const documentsPhotoTitle = 'documents.photo_title';
   static const documentsScannedTitle = 'documents.scanned_title';
   static const documentsSearchPlaceholder = 'documents.search_placeholder';

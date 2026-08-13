@@ -63,11 +63,21 @@ class AddDocumentCancelled extends DocumentListEvent {
 
 class AddDocumentSourceSelected extends DocumentListEvent {
   final DocumentSource source;
+  final String photoTitle;
+  final String scannedTitle;
 
-  const AddDocumentSourceSelected(this.source);
+  const AddDocumentSourceSelected({
+    required this.source,
+    required this.photoTitle,
+    required this.scannedTitle,
+  });
 
   @override
-  List<Object?> get props => [source];
+  List<Object?> get props => [source, photoTitle, scannedTitle];
+}
+
+class ErrorMessageShown extends DocumentListEvent {
+  const ErrorMessageShown();
 }
 
 class SearchPressed extends DocumentListEvent {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,8 +16,24 @@ class DocumentRepositoryImpl implements DocumentRepository {
   const DocumentRepositoryImpl(this.dao);
 
   @override
-  Future<void> deleteDocuments(Set<String> ids) {
-    return dao.deleteByIds(ids);
+  Future<void> deleteDocuments(Set<String> ids) async {
+    if (ids.isEmpty) return;
+
+    final documents = await getDocuments();
+    final documentsToDelete = documents
+        .where((document) => ids.contains(document.id))
+        .toList(growable: false);
+
+    await dao.deleteByIds(ids);
+
+    for (final document in documentsToDelete) {
+      await _deleteFileIfExists(document.filePath);
+      await _deleteFileIfExists(document.preview.firstPageImagePath);
+      final lastPagePath = document.preview.lastPageImagePath;
+      if (lastPagePath != null) {
+        await _deleteFileIfExists(lastPagePath);
+      }
+    }
   }
 
   @override
@@ -45,5 +63,12 @@ class DocumentRepositoryImpl implements DocumentRepository {
     await saveDocument(
       document.copyWith(status: nextStatus, updatedAt: DateTime.now()),
     );
+  }
+
+  Future<void> _deleteFileIfExists(String path) async {
+    final file = File(path);
+    if (await file.exists()) {
+      await file.delete();
+    }
   }
 }
