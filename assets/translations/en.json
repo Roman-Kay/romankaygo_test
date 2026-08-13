@@ -10,6 +10,7 @@
     "deselect_all": "Deselect All ({count})",
     "menu": "Menu",
     "print": "Print",
+    "retry": "Retry",
     "search": "Search",
     "select": "Select",
     "select_all": "Select All",
@@ -19,6 +20,9 @@
     "empty_title": "No Documents Yet",
     "empty_subtitle": "Your can add documents from ",
     "importing_preview": "Preparing document preview...",
+    "load_failed_title": "Could not load documents",
+    "load_failed_subtitle": "Restart the app or try again.",
+    "loading": "Loading documents...",
     "photo_title": "New Document",
     "scanned_title": "New Document",
     "search_placeholder": "Search Documents"

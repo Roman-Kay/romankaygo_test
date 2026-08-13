@@ -45,6 +45,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
        _printDocument = printDocument,
        super(const DocumentListState()) {
     on<DocumentsStarted>(_onStarted);
+    on<DocumentsReloadPressed>(_onReloadPressed);
     on<DocumentTabChanged>(_onTabChanged);
     on<AddDocumentPressed>(_onAddPressed);
     on<ActionsMenuToggled>(_onActionsMenuToggled);
@@ -73,17 +74,42 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     DocumentsStarted event,
     Emitter<DocumentListState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, clearError: true));
-    final documents = await _getDocuments();
+    await _loadDocuments(emit);
+  }
+
+  Future<void> _onReloadPressed(
+    DocumentsReloadPressed event,
+    Emitter<DocumentListState> emit,
+  ) async {
+    await _loadDocuments(emit);
+  }
+
+  Future<void> _loadDocuments(Emitter<DocumentListState> emit) async {
     emit(
-      _derive(
-        state.copyWith(
-          documents: documents,
-          isLoading: false,
-          clearError: true,
-        ),
-      ),
+      state.copyWith(isLoading: true, clearError: true, clearLoadError: true),
     );
+    try {
+      final documents = await _getDocuments();
+      emit(
+        _derive(
+          state.copyWith(
+            documents: documents,
+            isLoading: false,
+            clearError: true,
+            clearLoadError: true,
+          ),
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          documents: const [],
+          visibleDocuments: const [],
+          isLoading: false,
+          loadErrorKey: AppLocaleKeys.documentsLoadFailedSubtitle,
+        ),
+      );
+    }
   }
 
   void _onTabChanged(

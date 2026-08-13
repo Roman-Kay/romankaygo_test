@@ -11,6 +11,10 @@ class DocumentsStarted extends DocumentListEvent {
   const DocumentsStarted();
 }
 
+class DocumentsReloadPressed extends DocumentListEvent {
+  const DocumentsReloadPressed();
+}
+
 class DocumentTabChanged extends DocumentListEvent {
   final DocumentTab tab;
 

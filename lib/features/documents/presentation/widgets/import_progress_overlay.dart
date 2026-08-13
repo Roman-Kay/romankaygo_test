@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../app/widgets/adaptive_progress_indicator.dart';
 
 class ImportProgressOverlay extends StatelessWidget {
   const ImportProgressOverlay({super.key});
@@ -36,11 +37,7 @@ class ImportProgressOverlay extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: 28.r,
-                  height: 28.r,
-                  child: CircularProgressIndicator(strokeWidth: 3.r),
-                ),
+                const AdaptiveProgressIndicator(),
                 SizedBox(height: 14.h),
                 Text(
                   AppLocaleKeys.documentsImportingPreview.tr(),

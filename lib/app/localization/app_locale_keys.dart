@@ -8,6 +8,7 @@ abstract final class AppLocaleKeys {
   static const actionsDeselectAll = 'actions.deselect_all';
   static const actionsMenu = 'actions.menu';
   static const actionsPrint = 'actions.print';
+  static const actionsRetry = 'actions.retry';
   static const actionsSearch = 'actions.search';
   static const actionsSelect = 'actions.select';
   static const actionsSelectAll = 'actions.select_all';
@@ -16,6 +17,9 @@ abstract final class AppLocaleKeys {
   static const documentsEmptyTitle = 'documents.empty_title';
   static const documentsEmptySubtitle = 'documents.empty_subtitle';
   static const documentsImportingPreview = 'documents.importing_preview';
+  static const documentsLoadFailedTitle = 'documents.load_failed_title';
+  static const documentsLoadFailedSubtitle = 'documents.load_failed_subtitle';
+  static const documentsLoading = 'documents.loading';
   static const documentsPhotoTitle = 'documents.photo_title';
   static const documentsScannedTitle = 'documents.scanned_title';
   static const documentsSearchPlaceholder = 'documents.search_placeholder';

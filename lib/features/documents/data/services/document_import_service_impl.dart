@@ -115,7 +115,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
   Future<List<ImportedPdf>> _pickPdf({
     required String documentsDirectoryPath,
   }) async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
       allowMultiple: false,

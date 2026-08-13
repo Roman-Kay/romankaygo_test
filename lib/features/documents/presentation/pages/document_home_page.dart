@@ -15,6 +15,7 @@ import '../widgets/document_context_dismiss_layer.dart';
 import '../widgets/document_context_menu.dart';
 import '../widgets/document_grid.dart';
 import '../widgets/document_home_header.dart';
+import '../widgets/document_load_state_view.dart';
 import '../widgets/document_overflow_menu.dart';
 import '../widgets/document_tabs.dart';
 import '../widgets/empty_documents_view.dart';
@@ -155,7 +156,17 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                                     },
                                   ),
                                   Expanded(
-                                    child: state.isEmpty
+                                    child: state.loadErrorKey != null
+                                        ? DocumentLoadStateView.error(
+                                            onRetry: () {
+                                              bloc.add(
+                                                const DocumentsReloadPressed(),
+                                              );
+                                            },
+                                          )
+                                        : state.isLoading
+                                        ? const DocumentLoadStateView.loading()
+                                        : state.isEmpty
                                         ? EmptyDocumentsView(
                                             onSourceSelected:
                                                 (DocumentSource source) {

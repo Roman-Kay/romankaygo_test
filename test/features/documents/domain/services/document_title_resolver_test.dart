@@ -16,5 +16,14 @@ void main() {
 
       expect(result, 'Name 4');
     });
+
+    test('appends next suffix for repeated New Document titles', () {
+      final result = resolver.resolve('New Document', {
+        'New Document',
+        'New Document 2',
+      });
+
+      expect(result, 'New Document 3');
+    });
   });
 }

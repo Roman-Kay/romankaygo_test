@@ -13,27 +13,19 @@ class AddDocumentGlassSheet extends StatefulWidget {
   final ValueChanged<DocumentSource> onSourceSelected;
   final VoidCallback onClose;
 
-  const AddDocumentGlassSheet({
-    super.key,
-    required this.onSourceSelected,
-    required this.onClose,
-  });
+  const AddDocumentGlassSheet({super.key, required this.onSourceSelected, required this.onClose});
 
   @override
   State<AddDocumentGlassSheet> createState() => _AddDocumentGlassSheetState();
 }
 
-class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
-    with SingleTickerProviderStateMixin {
+class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 520),
-    )..forward();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 520))..forward();
   }
 
   @override
@@ -60,71 +52,44 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
               child: AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
-                  return Container(
-                    color: AppColors.white.withValues(
-                      alpha: 0.46 * _controller.value,
-                    ),
-                  );
+                  return Container(color: AppColors.white.withValues(alpha: 0.46 * _controller.value));
                 },
               ),
             ),
           ),
           Positioned(
             right: 28.w,
-            bottom: 121.h,
+            bottom: 12.r + 63.r + 12.r + MediaQuery.paddingOf(context).bottom,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 _FanTransition(
                   animation: _interval(0.22, 1),
-                  beginOffset: Offset(92.w, 138.h),
-                  child: SourcePill.sheet(
-                    assetPath: AppImages.sourceFiles,
-                    label: AppLocaleKeys.sourcesFiles.tr(),
-                    onTap: () => widget.onSourceSelected(DocumentSource.files),
-                  ),
+                  beginOffset: Offset(92.r, 138.r),
+                  child: SourcePill.sheet(assetPath: AppImages.sourceFiles, label: AppLocaleKeys.sourcesFiles.tr(), onTap: () => widget.onSourceSelected(DocumentSource.files)),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: 12.r),
                 _FanTransition(
                   animation: _interval(0.12, 0.9),
-                  beginOffset: Offset(78.w, 74.h),
-                  child: SourcePill.sheet(
-                    assetPath: AppImages.sourcePhotos,
-                    label: AppLocaleKeys.sourcesPhotos.tr(),
-                    onTap: () => widget.onSourceSelected(DocumentSource.photos),
-                  ),
+                  beginOffset: Offset(78.r, 74.r),
+                  child: SourcePill.sheet(assetPath: AppImages.sourcePhotos, label: AppLocaleKeys.sourcesPhotos.tr(), onTap: () => widget.onSourceSelected(DocumentSource.photos)),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: 12.r),
                 _FanTransition(
                   animation: _interval(0, 0.78),
-                  beginOffset: Offset(56.w, 28.h),
-                  child: SourcePill.sheet(
-                    assetPath: AppImages.sourceScanner,
-                    label: AppLocaleKeys.sourcesScanner.tr(),
-                    onTap: () =>
-                        widget.onSourceSelected(DocumentSource.scanner),
-                  ),
+                  beginOffset: Offset(56.r, 28.r),
+                  child: SourcePill.sheet(assetPath: AppImages.sourceScanner, label: AppLocaleKeys.sourcesScanner.tr(), onTap: () => widget.onSourceSelected(DocumentSource.scanner)),
                 ),
               ],
             ),
           ),
+
           Positioned(
-            right: 20.w + 63.r + 12.w,
-            bottom: 12.h + MediaQuery.paddingOf(context).bottom,
-            child: _FanTitle(animation: _interval(0, 0.72)),
-          ),
-          Positioned(
-            right: 20.w,
-            bottom: 12.h + MediaQuery.paddingOf(context).bottom,
+            right: 20.r,
+            bottom: 12.r + MediaQuery.paddingOf(context).bottom,
             child: ScaleTransition(
               scale: _interval(0, 0.65),
-              child: CircleIconButton(
-                assetPath: AppImages.close,
-                onPressed: _close,
-                size: 63,
-                iconSize: 18,
-                semanticLabel: AppLocaleKeys.actionsClose.tr(),
-              ),
+              child: CircleIconButton(assetPath: AppImages.close, onPressed: _close, size: 63.r, iconSize: 18, semanticLabel: AppLocaleKeys.actionsClose.tr()),
             ),
           ),
         ],
@@ -141,56 +106,12 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
   }
 }
 
-class _FanTitle extends StatelessWidget {
-  final Animation<double> animation;
-
-  const _FanTitle({required this.animation});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, child) {
-        final value = animation.value.clamp(0.0, 1.0);
-        return Opacity(
-          opacity: value,
-          child: Transform.translate(
-            offset: Offset(72.w * (1 - value), 6.h * (1 - value)),
-            child: Transform.scale(
-              alignment: Alignment.centerRight,
-              scale: 0.82 + 0.18 * value,
-              child: child,
-            ),
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 63.h,
-        child: Center(
-          child: Text(
-            AppLocaleKeys.actionsAddDocumentFrom.tr(),
-            style: TextStyle(
-              color: AppColors.tabSelected,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _FanTransition extends StatelessWidget {
   final Animation<double> animation;
   final Offset beginOffset;
   final Widget child;
 
-  const _FanTransition({
-    required this.animation,
-    required this.beginOffset,
-    required this.child,
-  });
+  const _FanTransition({required this.animation, required this.beginOffset, required this.child});
 
   @override
   Widget build(BuildContext context) {

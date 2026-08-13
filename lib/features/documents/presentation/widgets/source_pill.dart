@@ -42,7 +42,7 @@ class SourcePill extends StatelessWidget {
     return GlassButton.custom(
       onTap: onTap,
       width: width?.w,
-      height: height.h,
+      height: height.r,
       shape: LiquidRoundedRectangle(borderRadius: 100.r),
       useOwnLayer: true,
       settings: LiquidGlassSettings(
@@ -54,9 +54,9 @@ class SourcePill extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
           left: horizontalPadding,
-          top: verticalPadding.h,
+          top: verticalPadding.r,
           right: horizontalPadding,
-          bottom: verticalPadding.h,
+          bottom: verticalPadding.r,
         ),
         child: Row(
           mainAxisSize: width == null ? MainAxisSize.min : MainAxisSize.max,
