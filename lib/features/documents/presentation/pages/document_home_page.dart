@@ -448,20 +448,24 @@ class _Header extends StatelessWidget {
 
                   if (state.tab == DocumentTab.signed)
                     const SizedBox(width: 12),
-                  GlassButton.custom(
-                    key: menuButtonKey,
-                    onTap: onMenuPressed,
-                    height: 38,
-                    width: 38,
-                    shape: const LiquidRoundedRectangle(borderRadius: 15.2),
-                    useOwnLayer: true,
-                    interactionScale: 1.04,
-                    glowColor: AppColors.white.withValues(alpha: 0.1),
-                    glowRadius: 1.2,
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/figma/menu.svg',
-                        width: 18,
+                  Semantics(
+                    label: 'Menu',
+                    button: true,
+                    child: GlassButton.custom(
+                      key: menuButtonKey,
+                      onTap: onMenuPressed,
+                      height: 38,
+                      width: 38,
+                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                      useOwnLayer: true,
+                      interactionScale: 1.04,
+                      glowColor: AppColors.white.withValues(alpha: 0.1),
+                      glowRadius: 1.2,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/figma/menu.svg',
+                          width: 18,
+                        ),
                       ),
                     ),
                   ),

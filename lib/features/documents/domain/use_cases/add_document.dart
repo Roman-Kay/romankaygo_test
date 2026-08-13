@@ -20,12 +20,12 @@ class AddDocument {
 
   const AddDocument(this.importService);
 
-  Future<Document> call(AddDocumentParams params) async {
-    final document = await importService.importDocument(params.source);
-    if (document == null) {
+  Future<List<Document>> call(AddDocumentParams params) async {
+    final documents = await importService.importDocuments(params.source);
+    if (documents.isEmpty) {
       throw const DocumentImportCancelledException();
     }
-    return document;
+    return documents;
   }
 }
 

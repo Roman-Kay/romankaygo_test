@@ -48,10 +48,14 @@ class CircleIconButton extends StatelessWidget {
           backerColor: AppColors.white.withValues(alpha: 0.56),
           whitenStrength: 0.5,
         ),
-        child: SvgPicture.asset(
-          assetPath,
-          height: resolvedIconSize,
-          colorFilter: ColorFilter.mode(foregroundColor, BlendMode.srcIn),
+        child: Semantics(
+          label: semanticLabel,
+          button: true,
+          child: SvgPicture.asset(
+            assetPath,
+            height: resolvedIconSize,
+            colorFilter: ColorFilter.mode(foregroundColor, BlendMode.srcIn),
+          ),
         ),
       ),
     );

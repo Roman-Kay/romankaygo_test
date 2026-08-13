@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
 import 'package:test_romankaygo/app/app.dart';
 import 'package:test_romankaygo/app/di/injection.dart';
 
@@ -19,11 +17,11 @@ void main() {
     expect(find.text('Photos'), findsOneWidget);
     expect(find.text('Scanner'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.search));
+    await tester.tap(find.bySemanticsLabel('Search'));
     await tester.pumpAndSettle();
     expect(find.text('Search Documents'), findsOneWidget);
 
-    await tester.tap(find.byIcon(CupertinoIcons.xmark));
+    await tester.tap(find.bySemanticsLabel('Close'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add Document'));
     await tester.pumpAndSettle();
@@ -39,7 +37,7 @@ void main() {
     await tester.pumpWidget(const SignicaApp());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.tap(find.bySemanticsLabel('Menu'));
     await tester.pumpAndSettle();
     expect(find.text('Select'), findsOneWidget);
 

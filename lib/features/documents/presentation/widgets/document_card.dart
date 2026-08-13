@@ -13,10 +13,21 @@ class DocumentCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
-  const DocumentCard({super.key, required this.document, required this.isSelected, required this.isSelectMode, required this.onTap, required this.onLongPress});
+  const DocumentCard({
+    super.key,
+    required this.document,
+    required this.isSelected,
+    required this.isSelectMode,
+    required this.onTap,
+    required this.onLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final lastPageImagePath = document.preview.lastPageImagePath;
+    final hasMultiplePages =
+        document.preview.hasLastPage && lastPageImagePath != null;
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -27,20 +38,48 @@ class DocumentCard extends StatelessWidget {
             height: 182,
             child: Stack(
               children: [
-                Positioned(
-                  left: 2,
-                  top: 7,
-                  child: Transform.rotate(angle: -0.03, child: _PreviewFrame(child: Image.asset('assets/figma/back_document.png'))),
-                ),
-                Positioned(
-                  left: 20,
-                  top: 8,
-                  child: Transform.rotate(
-                    angle: 0.13,
-                    child: _PreviewFrame(hasShadow: true, child: _PreviewImage(path: document.preview.firstPageImagePath, opacity: 1)),
+                if (hasMultiplePages)
+                  Positioned(
+                    left: 2,
+                    top: 7,
+                    child: Transform.rotate(
+                      angle: -0.03,
+                      child: _PreviewFrame(
+                        child: _PreviewImage(
+                          path: lastPageImagePath,
+                          opacity: 1,
+                        ),
+                      ),
+                    ),
                   ),
+                Positioned(
+                  left: hasMultiplePages ? 20 : 13.14,
+                  top: hasMultiplePages ? 8 : 0,
+                  child: hasMultiplePages
+                      ? Transform.rotate(
+                          angle: 0.13,
+                          child: _PreviewFrame(
+                            hasShadow: true,
+                            child: _PreviewImage(
+                              path: document.preview.firstPageImagePath,
+                              opacity: 1,
+                            ),
+                          ),
+                        )
+                      : _PreviewFrame(
+                          hasShadow: true,
+                          child: _PreviewImage(
+                            path: document.preview.firstPageImagePath,
+                            opacity: 1,
+                          ),
+                        ),
                 ),
-                if (document.status == DocumentStatus.signed) Positioned(left: 54, top: 140, child: const _SignedMarkBadge()),
+                if (document.status == DocumentStatus.signed)
+                  Positioned(
+                    left: 54,
+                    top: 140,
+                    child: const _SignedMarkBadge(),
+                  ),
                 if (isSelectMode)
                   Center(
                     child: AnimatedContainer(
@@ -48,13 +87,27 @@ class DocumentCard extends StatelessWidget {
                       width: 30,
                       height: 30,
                       decoration: BoxDecoration(
-                        color: isSelected ? AppColors.selectedCheck : AppColors.transparent,
+                        color: isSelected
+                            ? AppColors.selectedCheck
+                            : AppColors.transparent,
 
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: AppColors.white, width: 3),
-                        boxShadow: [BoxShadow(color: AppColors.black.withValues(alpha: 0.1), blurRadius: 12, offset: const Offset(0, 4))],
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.black.withValues(alpha: 0.1),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                      child: Icon(Icons.check, color: isSelected ? AppColors.white : AppColors.blackMuted, size: 15),
+                      child: Icon(
+                        Icons.check,
+                        color: isSelected
+                            ? AppColors.white
+                            : AppColors.blackMuted,
+                        size: 15,
+                      ),
                     ),
                   ),
               ],
@@ -68,14 +121,26 @@ class DocumentCard extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
-              style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w700, height: 1.2),
+              textHeightBehavior: const TextHeightBehavior(
+                applyHeightToFirstAscent: false,
+                applyHeightToLastDescent: false,
+              ),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+              ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             _formatDate(document.createdAt),
-            style: const TextStyle(color: AppColors.textCardTitle, fontSize: 11, fontWeight: FontWeight.w400),
+            style: const TextStyle(
+              color: AppColors.textCardTitle,
+              fontSize: 11,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),
@@ -139,8 +204,18 @@ class _PreviewFrame extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.documentBorder.withValues(alpha: 0.59)),
-        boxShadow: hasShadow ? [BoxShadow(color: AppColors.black.withValues(alpha: 0.08), blurRadius: 11.1, offset: const Offset(0, 4))] : null,
+        border: Border.all(
+          color: AppColors.documentBorder.withValues(alpha: 0.59),
+        ),
+        boxShadow: hasShadow
+            ? [
+                BoxShadow(
+                  color: AppColors.black.withValues(alpha: 0.08),
+                  blurRadius: 11.1,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: child,
     );
@@ -162,12 +237,20 @@ class _DocumentLinesPainter extends CustomPainter {
       ..color = AppColors.documentTableLine.withValues(alpha: 0.55)
       ..strokeWidth = 0.8;
 
-    canvas.drawLine(Offset(size.width * 0.22, 5), Offset(size.width * 0.78, 5), titlePaint);
+    canvas.drawLine(
+      Offset(size.width * 0.22, 5),
+      Offset(size.width * 0.78, 5),
+      titlePaint,
+    );
 
     for (var i = 0; i < 16; i++) {
       final y = 20.0 + i * 5.8;
       final inset = i.isEven ? 0.0 : size.width * 0.08;
-      canvas.drawLine(Offset(inset, y), Offset(size.width - inset - (i % 3) * 8, y), linePaint);
+      canvas.drawLine(
+        Offset(inset, y),
+        Offset(size.width - inset - (i % 3) * 8, y),
+        linePaint,
+      );
     }
 
     final tableTop = size.height - 34;
@@ -175,9 +258,17 @@ class _DocumentLinesPainter extends CustomPainter {
     canvas.drawRect(tableRect, tablePaint);
     for (var i = 1; i < 4; i++) {
       final x = size.width * i / 4;
-      canvas.drawLine(Offset(x, tableTop), Offset(x, tableTop + 26), tablePaint);
+      canvas.drawLine(
+        Offset(x, tableTop),
+        Offset(x, tableTop + 26),
+        tablePaint,
+      );
     }
-    canvas.drawLine(Offset(0, tableTop + 13), Offset(size.width, tableTop + 13), tablePaint);
+    canvas.drawLine(
+      Offset(0, tableTop + 13),
+      Offset(size.width, tableTop + 13),
+      tablePaint,
+    );
   }
 
   @override
