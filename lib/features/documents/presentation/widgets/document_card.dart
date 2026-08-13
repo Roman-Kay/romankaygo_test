@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../../app/assets/app_images.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document.dart';
 import '../../domain/entities/document_status.dart';
@@ -280,6 +281,6 @@ class _SignedMarkBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/figma/sign.png', height: 42, width: 42);
+    return Image.asset(AppImages.sign, height: 42, width: 42);
   }
 }

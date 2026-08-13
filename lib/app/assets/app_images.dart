@@ -1,0 +1,21 @@
+abstract final class AppImages {
+  static const add = 'assets/svg/add.svg';
+  static const checkmark = 'assets/svg/checkmark.svg';
+  static const close = 'assets/svg/close.svg';
+  static const closeWhite = 'assets/svg/close_white.svg';
+  static const menu = 'assets/svg/menu.svg';
+  static const print = 'assets/svg/print.svg';
+  static const search = 'assets/svg/search.svg';
+  static const settings = 'assets/svg/settings.svg';
+  static const share = 'assets/svg/share.svg';
+  static const signicaLogo = 'assets/svg/signica_logo.svg';
+  static const trash = 'assets/svg/trash.svg';
+  static const backDocument = 'assets/images/back_document.png';
+  static const emptyDocument = 'assets/images/empty_document.png';
+  static const logo = 'assets/images/logo.png';
+  static const pen = 'assets/images/pen.png';
+  static const sign = 'assets/images/sign.png';
+  static const sourceFiles = 'assets/images/source_files.png';
+  static const sourcePhotos = 'assets/images/source_photos.png';
+  static const sourceScanner = 'assets/images/source_scanner.png';
+}

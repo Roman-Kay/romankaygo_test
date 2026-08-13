@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
+import '../../../../app/assets/app_images.dart';
 import '../../../../app/theme/app_colors.dart';
 
 const _menuWidth = 250.0;
@@ -13,13 +14,25 @@ class DocumentContextMenu extends StatelessWidget {
   final VoidCallback onShare;
   final VoidCallback onDelete;
 
-  const DocumentContextMenu({super.key, required this.anchorRect, required this.onPrint, required this.onShare, required this.onDelete});
+  const DocumentContextMenu({
+    super.key,
+    required this.anchorRect,
+    required this.onPrint,
+    required this.onShare,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
-    final left = (anchorRect.center.dx - _menuWidth / 2).clamp(16.0, screenSize.width - _menuWidth - 16);
-    final top = anchorRect.top.clamp(16.0, screenSize.height - _menuHeight - 24);
+    final left = (anchorRect.center.dx - _menuWidth / 2).clamp(
+      16.0,
+      screenSize.width - _menuWidth - 16,
+    );
+    final top = anchorRect.top.clamp(
+      16.0,
+      screenSize.height - _menuHeight - 24,
+    );
 
     return Positioned(
       left: left,
@@ -33,7 +46,11 @@ class DocumentContextMenu extends StatelessWidget {
             opacity: value.clamp(0, 1),
             child: Transform.translate(
               offset: Offset(0, 12 * (1 - value)),
-              child: Transform.scale(scale: 0.92 + 0.08 * value, alignment: Alignment.bottomCenter, child: child),
+              child: Transform.scale(
+                scale: 0.92 + 0.08 * value,
+                alignment: Alignment.bottomCenter,
+                child: child,
+              ),
             ),
           );
         },
@@ -43,7 +60,12 @@ class DocumentContextMenu extends StatelessWidget {
           child: GlassContainer(
             useOwnLayer: true,
             shape: const LiquidRoundedRectangle(borderRadius: _menuRadius),
-            settings: LiquidGlassSettings(thickness: 45, glassColor: AppColors.white.withValues(alpha: 0.2), backerColor: AppColors.white.withValues(alpha: 0.56), whitenStrength: 0.5),
+            settings: LiquidGlassSettings(
+              thickness: 45,
+              glassColor: AppColors.white.withValues(alpha: 0.2),
+              backerColor: AppColors.white.withValues(alpha: 0.56),
+              whitenStrength: 0.5,
+            ),
             child: Column(
               children: [
                 Spacer(),
@@ -52,16 +74,28 @@ class DocumentContextMenu extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: _MenuAction(assetPath: 'assets/figma/print.svg', label: 'Print', onTap: onPrint),
+                        child: _MenuAction(
+                          assetPath: AppImages.print,
+                          label: 'Print',
+                          onTap: onPrint,
+                        ),
                       ),
                       SizedBox(width: 6),
                       Expanded(
-                        child: _MenuAction(assetPath: 'assets/figma/share.svg', label: 'Share', onTap: onShare),
+                        child: _MenuAction(
+                          assetPath: AppImages.share,
+                          label: 'Share',
+                          onTap: onShare,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Container(height: 1, margin: const EdgeInsets.symmetric(horizontal: 24), color: AppColors.separator),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  color: AppColors.separator,
+                ),
                 Spacer(),
                 _DeleteAction(onTap: onDelete),
                 Spacer(),
@@ -79,7 +113,11 @@ class _MenuAction extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _MenuAction({required this.assetPath, required this.label, required this.onTap});
+  const _MenuAction({
+    required this.assetPath,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +133,11 @@ class _MenuAction extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             label,
-            style: const TextStyle(color: AppColors.textDropDown, fontSize: 12, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: AppColors.textDropDown,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -119,11 +161,15 @@ class _DeleteAction extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
           children: [
-            SvgPicture.asset('assets/figma/trash.svg', height: 18),
+            SvgPicture.asset(AppImages.trash, height: 18),
             const SizedBox(width: 13),
             const Text(
               'Delete',
-              style: TextStyle(color: AppColors.accentRed, fontSize: 17, fontWeight: FontWeight.w400),
+              style: TextStyle(
+                color: AppColors.accentRed,
+                fontSize: 17,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ],
         ),

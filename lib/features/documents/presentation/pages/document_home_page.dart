@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
+import '../../../../app/assets/app_images.dart';
 import '../../../../app/di/injection.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
@@ -286,7 +287,7 @@ class _BottomDocumentControls extends StatelessWidget {
                 children: [
                   CircleIconButton(
                     onPressed: onSearchPressed,
-                    assetPath: 'assets/figma/search.svg',
+                    assetPath: AppImages.search,
                     size: 62.9,
                     semanticLabel: 'Search',
                   ),
@@ -339,7 +340,7 @@ class _AddDocumentGlassButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14, vertical: 19),
             child: Row(
               children: [
-                SvgPicture.asset('assets/figma/add.svg', height: 23),
+                SvgPicture.asset(AppImages.add, height: 23),
                 const SizedBox(width: 8),
                 const Text(
                   'Add Document',
@@ -422,10 +423,7 @@ class _Header extends StatelessWidget {
                 glowColor: AppColors.white.withValues(alpha: 0.1),
                 glowRadius: 1.2,
                 child: Center(
-                  child: SvgPicture.asset(
-                    'assets/figma/close_white.svg',
-                    width: 12,
-                  ),
+                  child: SvgPicture.asset(AppImages.closeWhite, width: 12),
                 ),
               )
             else
@@ -442,10 +440,7 @@ class _Header extends StatelessWidget {
                       glowColor: AppColors.white.withValues(alpha: 0.1),
                       glowRadius: 1.2,
                       child: Center(
-                        child: SvgPicture.asset(
-                          'assets/figma/settings.svg',
-                          width: 18,
-                        ),
+                        child: SvgPicture.asset(AppImages.settings, width: 18),
                       ),
                     ),
 
@@ -465,10 +460,7 @@ class _Header extends StatelessWidget {
                       glowColor: AppColors.white.withValues(alpha: 0.1),
                       glowRadius: 1.2,
                       child: Center(
-                        child: SvgPicture.asset(
-                          'assets/figma/menu.svg',
-                          width: 18,
-                        ),
+                        child: SvgPicture.asset(AppImages.menu, width: 18),
                       ),
                     ),
                   ),

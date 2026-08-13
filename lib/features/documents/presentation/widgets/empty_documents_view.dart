@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../app/assets/app_images.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import 'source_pill.dart';
@@ -14,7 +15,7 @@ class EmptyDocumentsView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Spacer(flex: 66),
-        Image.asset('assets/figma/empty_document.png', width: 272, height: 160),
+        Image.asset(AppImages.emptyDocument, width: 272, height: 160),
         const SizedBox(height: 18),
         const Text(
           'No Documents Yet',
@@ -44,17 +45,17 @@ class EmptyDocumentsView extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               SourcePill(
-                assetPath: 'assets/figma/source_files.png',
+                assetPath: AppImages.sourceFiles,
                 label: 'Files',
                 onTap: () => onSourceSelected(DocumentSource.files),
               ),
               SourcePill(
-                assetPath: 'assets/figma/source_photos.png',
+                assetPath: AppImages.sourcePhotos,
                 label: 'Photos',
                 onTap: () => onSourceSelected(DocumentSource.photos),
               ),
               SourcePill(
-                assetPath: 'assets/figma/source_scanner.png',
+                assetPath: AppImages.sourceScanner,
                 label: 'Scanner',
                 onTap: () => onSourceSelected(DocumentSource.scanner),
               ),

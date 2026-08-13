@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_romankaygo/app/assets/app_images.dart';
 import 'package:test_romankaygo/app/theme/app_colors.dart';
 
 class SignicaLogo extends StatelessWidget {
@@ -9,7 +10,7 @@ class SignicaLogo extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset('assets/figma/logo.png', width: 38, height: 38),
+        Image.asset(AppImages.logo, width: 38, height: 38),
         const SizedBox(width: 10),
         const Text(
           'Signica',

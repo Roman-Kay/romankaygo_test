@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../../../app/assets/app_images.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import 'circle_icon_button.dart';
@@ -9,19 +10,27 @@ class AddDocumentGlassSheet extends StatefulWidget {
   final ValueChanged<DocumentSource> onSourceSelected;
   final VoidCallback onClose;
 
-  const AddDocumentGlassSheet({super.key, required this.onSourceSelected, required this.onClose});
+  const AddDocumentGlassSheet({
+    super.key,
+    required this.onSourceSelected,
+    required this.onClose,
+  });
 
   @override
   State<AddDocumentGlassSheet> createState() => _AddDocumentGlassSheetState();
 }
 
-class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with SingleTickerProviderStateMixin {
+class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 520))..forward();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 520),
+    )..forward();
   }
 
   @override
@@ -48,7 +57,11 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with Sing
               child: AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
-                  return Container(color: AppColors.white.withValues(alpha: 0.46 * _controller.value));
+                  return Container(
+                    color: AppColors.white.withValues(
+                      alpha: 0.46 * _controller.value,
+                    ),
+                  );
                 },
               ),
             ),
@@ -62,19 +75,32 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with Sing
                 _FanTransition(
                   animation: _interval(0.22, 1),
                   beginOffset: const Offset(92, 138),
-                  child: SourcePill.sheet(assetPath: 'assets/figma/source_files.png', label: 'Files', onTap: () => widget.onSourceSelected(DocumentSource.files)),
+                  child: SourcePill.sheet(
+                    assetPath: AppImages.sourceFiles,
+                    label: 'Files',
+                    onTap: () => widget.onSourceSelected(DocumentSource.files),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 _FanTransition(
                   animation: _interval(0.12, 0.9),
                   beginOffset: const Offset(78, 74),
-                  child: SourcePill.sheet(assetPath: 'assets/figma/source_photos.png', label: 'Photos', onTap: () => widget.onSourceSelected(DocumentSource.photos)),
+                  child: SourcePill.sheet(
+                    assetPath: AppImages.sourcePhotos,
+                    label: 'Photos',
+                    onTap: () => widget.onSourceSelected(DocumentSource.photos),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 _FanTransition(
                   animation: _interval(0, 0.78),
                   beginOffset: const Offset(56, 28),
-                  child: SourcePill.sheet(assetPath: 'assets/figma/source_scanner.png', label: 'Scanner', onTap: () => widget.onSourceSelected(DocumentSource.scanner)),
+                  child: SourcePill.sheet(
+                    assetPath: AppImages.sourceScanner,
+                    label: 'Scanner',
+                    onTap: () =>
+                        widget.onSourceSelected(DocumentSource.scanner),
+                  ),
                 ),
               ],
             ),
@@ -89,7 +115,13 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet> with Sing
             bottom: 12 + MediaQuery.paddingOf(context).bottom,
             child: ScaleTransition(
               scale: _interval(0, 0.65),
-              child: CircleIconButton(assetPath: 'assets/figma/close.svg', onPressed: _close, size: 63, iconSize: 18, semanticLabel: 'Close'),
+              child: CircleIconButton(
+                assetPath: AppImages.close,
+                onPressed: _close,
+                size: 63,
+                iconSize: 18,
+                semanticLabel: 'Close',
+              ),
             ),
           ),
         ],
@@ -121,7 +153,11 @@ class _FanTitle extends StatelessWidget {
           opacity: value,
           child: Transform.translate(
             offset: Offset(72 * (1 - value), 6 * (1 - value)),
-            child: Transform.scale(alignment: Alignment.centerRight, scale: 0.82 + 0.18 * value, child: child),
+            child: Transform.scale(
+              alignment: Alignment.centerRight,
+              scale: 0.82 + 0.18 * value,
+              child: child,
+            ),
           ),
         );
       },
@@ -130,7 +166,11 @@ class _FanTitle extends StatelessWidget {
         child: Center(
           child: Text(
             'Add Document From',
-            style: TextStyle(color: AppColors.tabSelected, fontSize: 16, fontWeight: FontWeight.w700),
+            style: TextStyle(
+              color: AppColors.tabSelected,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
@@ -143,7 +183,11 @@ class _FanTransition extends StatelessWidget {
   final Offset beginOffset;
   final Widget child;
 
-  const _FanTransition({required this.animation, required this.beginOffset, required this.child});
+  const _FanTransition({
+    required this.animation,
+    required this.beginOffset,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
