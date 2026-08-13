@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 
 const _menuWidth = 250.0;
@@ -76,7 +78,7 @@ class DocumentContextMenu extends StatelessWidget {
                       Expanded(
                         child: _MenuAction(
                           assetPath: AppImages.print,
-                          label: 'Print',
+                          label: AppLocaleKeys.actionsPrint.tr(),
                           onTap: onPrint,
                         ),
                       ),
@@ -84,7 +86,7 @@ class DocumentContextMenu extends StatelessWidget {
                       Expanded(
                         child: _MenuAction(
                           assetPath: AppImages.share,
-                          label: 'Share',
+                          label: AppLocaleKeys.actionsShare.tr(),
                           onTap: onShare,
                         ),
                       ),
@@ -163,9 +165,9 @@ class _DeleteAction extends StatelessWidget {
           children: [
             SvgPicture.asset(AppImages.trash, height: 18),
             const SizedBox(width: 13),
-            const Text(
-              'Delete',
-              style: TextStyle(
+            Text(
+              AppLocaleKeys.actionsDelete.tr(),
+              style: const TextStyle(
                 color: AppColors.accentRed,
                 fontSize: 17,
                 fontWeight: FontWeight.w400,

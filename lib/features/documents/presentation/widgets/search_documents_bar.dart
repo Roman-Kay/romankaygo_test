@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import 'circle_icon_button.dart';
 
@@ -101,7 +103,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
               padding: const EdgeInsetsDirectional.fromSTEB(18, 0, 10, 0),
               prefixInsets: const EdgeInsetsDirectional.only(start: 16),
               suffixInsets: const EdgeInsetsDirectional.only(end: 12),
-              placeholder: 'Search Documents',
+              placeholder: AppLocaleKeys.documentsSearchPlaceholder.tr(),
               placeholderStyle: const TextStyle(
                 color: AppColors.searchColor,
                 fontSize: 20,
@@ -125,7 +127,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
           onPressed: widget.onClose,
           size: 54,
           iconSize: 18,
-          semanticLabel: 'Close',
+          semanticLabel: AppLocaleKeys.actionsClose.tr(),
         ),
       ],
     );

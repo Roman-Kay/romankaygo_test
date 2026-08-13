@@ -1,0 +1,41 @@
+{
+  "app": {
+    "title": "Signica"
+  },
+  "actions": {
+    "add_document": "Add Document",
+    "add_document_from": "Add Document From",
+    "close": "Close",
+    "delete": "Delete",
+    "deselect_all": "Deselect All ({count})",
+    "menu": "Menu",
+    "print": "Print",
+    "search": "Search",
+    "select": "Select",
+    "select_all": "Select All",
+    "share": "Share"
+  },
+  "documents": {
+    "empty_title": "No Documents Yet",
+    "empty_subtitle": "Your can add documents from ",
+    "photo_title": "Photo Document",
+    "scanned_title": "Scanned Document",
+    "search_placeholder": "Search Documents"
+  },
+  "errors": {
+    "import_failed": "Failed to import document",
+    "print_failed": "Failed to print document",
+    "share_failed": "Failed to share document",
+    "share_many_failed": "Failed to share documents"
+  },
+  "sources": {
+    "files": "Files",
+    "photos": "Photos",
+    "scanner": "Scanner"
+  },
+  "tabs": {
+    "all": "All",
+    "signed": "Signed",
+    "unsigned": "Unsigned"
+  }
+}

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/assets/app_images.dart';
 import '../../../../app/di/injection.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import '../../domain/entities/document_tab.dart';
@@ -289,7 +291,7 @@ class _BottomDocumentControls extends StatelessWidget {
                     onPressed: onSearchPressed,
                     assetPath: AppImages.search,
                     size: 62.9,
-                    semanticLabel: 'Search',
+                    semanticLabel: AppLocaleKeys.actionsSearch.tr(),
                   ),
                   _AddDocumentGlassButton(onPressed: onAddPressed),
                 ],
@@ -342,9 +344,9 @@ class _AddDocumentGlassButton extends StatelessWidget {
               children: [
                 SvgPicture.asset(AppImages.add, height: 23),
                 const SizedBox(width: 8),
-                const Text(
-                  'Add Document',
-                  style: TextStyle(
+                Text(
+                  AppLocaleKeys.actionsAddDocument.tr(),
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -402,8 +404,12 @@ class _Header extends StatelessWidget {
                   ),
                   child: Text(
                     state.isAllVisibleSelected
-                        ? 'Deselect All (${state.selectedIds.length})'
-                        : 'Select All',
+                        ? AppLocaleKeys.actionsDeselectAll.tr(
+                            namedArgs: {
+                              'count': state.selectedIds.length.toString(),
+                            },
+                          )
+                        : AppLocaleKeys.actionsSelectAll.tr(),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontWeight: FontWeight.w700,
@@ -447,7 +453,7 @@ class _Header extends StatelessWidget {
                   if (state.tab == DocumentTab.signed)
                     const SizedBox(width: 12),
                   Semantics(
-                    label: 'Menu',
+                    label: AppLocaleKeys.actionsMenu.tr(),
                     button: true,
                     child: GlassButton.custom(
                       key: menuButtonKey,

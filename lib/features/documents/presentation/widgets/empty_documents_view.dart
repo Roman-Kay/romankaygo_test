@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import 'source_pill.dart';
@@ -17,9 +19,9 @@ class EmptyDocumentsView extends StatelessWidget {
         Spacer(flex: 66),
         Image.asset(AppImages.emptyDocument, width: 272, height: 160),
         const SizedBox(height: 18),
-        const Text(
-          'No Documents Yet',
-          style: TextStyle(
+        Text(
+          AppLocaleKeys.documentsEmptyTitle.tr(),
+          style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -28,8 +30,8 @@ class EmptyDocumentsView extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          'Your can add documents from ',
-          style: TextStyle(
+          AppLocaleKeys.documentsEmptySubtitle.tr(),
+          style: const TextStyle(
             color: AppColors.blackEmptyHint,
             fontSize: 15,
             fontWeight: FontWeight.w400,
@@ -46,17 +48,17 @@ class EmptyDocumentsView extends StatelessWidget {
             children: [
               SourcePill(
                 assetPath: AppImages.sourceFiles,
-                label: 'Files',
+                label: AppLocaleKeys.sourcesFiles.tr(),
                 onTap: () => onSourceSelected(DocumentSource.files),
               ),
               SourcePill(
                 assetPath: AppImages.sourcePhotos,
-                label: 'Photos',
+                label: AppLocaleKeys.sourcesPhotos.tr(),
                 onTap: () => onSourceSelected(DocumentSource.photos),
               ),
               SourcePill(
                 assetPath: AppImages.sourceScanner,
-                label: 'Scanner',
+                label: AppLocaleKeys.sourcesScanner.tr(),
                 onTap: () => onSourceSelected(DocumentSource.scanner),
               ),
             ],

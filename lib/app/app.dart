@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import 'localization/app_locale_keys.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
 
@@ -17,7 +19,10 @@ class _SignicaAppState extends State<SignicaApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Signica',
+      title: AppLocaleKeys.appTitle.tr(),
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       theme: AppTheme.dark,
       routerConfig: _router.config(),
     );

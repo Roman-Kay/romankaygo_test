@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_source.dart';
 import 'circle_icon_button.dart';
@@ -77,7 +79,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                   beginOffset: const Offset(92, 138),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourceFiles,
-                    label: 'Files',
+                    label: AppLocaleKeys.sourcesFiles.tr(),
                     onTap: () => widget.onSourceSelected(DocumentSource.files),
                   ),
                 ),
@@ -87,7 +89,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                   beginOffset: const Offset(78, 74),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourcePhotos,
-                    label: 'Photos',
+                    label: AppLocaleKeys.sourcesPhotos.tr(),
                     onTap: () => widget.onSourceSelected(DocumentSource.photos),
                   ),
                 ),
@@ -97,7 +99,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                   beginOffset: const Offset(56, 28),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourceScanner,
-                    label: 'Scanner',
+                    label: AppLocaleKeys.sourcesScanner.tr(),
                     onTap: () =>
                         widget.onSourceSelected(DocumentSource.scanner),
                   ),
@@ -120,7 +122,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
                 onPressed: _close,
                 size: 63,
                 iconSize: 18,
-                semanticLabel: 'Close',
+                semanticLabel: AppLocaleKeys.actionsClose.tr(),
               ),
             ),
           ),
@@ -165,7 +167,7 @@ class _FanTitle extends StatelessWidget {
         height: 63,
         child: Center(
           child: Text(
-            'Add Document From',
+            AppLocaleKeys.actionsAddDocumentFrom.tr(),
             style: TextStyle(
               color: AppColors.tabSelected,
               fontSize: 16,

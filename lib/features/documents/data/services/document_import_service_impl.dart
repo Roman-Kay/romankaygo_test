@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +9,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../domain/entities/document.dart';
 import '../../domain/entities/document_source.dart';
 import '../../domain/entities/document_status.dart';
@@ -116,7 +118,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
     final id = uuid.v4();
     final imported = await _buildPdfFromImages(
       id: id,
-      title: 'Photo Document',
+      title: AppLocaleKeys.documentsPhotoTitle.tr(),
       imagePaths: images.map((image) => image.path).toList(growable: false),
       documentsDirectoryPath: documentsDirectoryPath,
     );
@@ -133,7 +135,7 @@ class DocumentImportServiceImpl implements DocumentImportService {
     final id = uuid.v4();
     final imported = await _buildPdfFromImages(
       id: id,
-      title: 'Scanned Document',
+      title: AppLocaleKeys.documentsScannedTitle.tr(),
       imagePaths: images,
       documentsDirectoryPath: documentsDirectoryPath,
     );

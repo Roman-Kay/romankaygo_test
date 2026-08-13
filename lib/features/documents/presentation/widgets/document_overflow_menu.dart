@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 
 const _menuWidth = 262.0;
@@ -56,12 +58,12 @@ class DocumentOverflowMenu extends StatelessWidget {
             children: [
               _MenuItem(
                 svgPath: AppImages.checkmark,
-                label: 'Select',
+                label: AppLocaleKeys.actionsSelect.tr(),
                 onTap: onSelect,
               ),
               _MenuItem(
                 svgPath: AppImages.add,
-                label: 'Add Document',
+                label: AppLocaleKeys.actionsAddDocument.tr(),
                 onTap: onAddDocument,
               ),
             ],

@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../domain/entities/document.dart';
 import '../../domain/entities/document_source.dart';
 import '../../domain/entities/document_status.dart';
@@ -181,7 +183,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _printDocument(PrintDocumentParams(document));
     } catch (_) {
-      emit(state.copyWith(errorMessage: 'Failed to print document'));
+      emit(state.copyWith(errorMessage: AppLocaleKeys.errorsPrintFailed.tr()));
     }
   }
 
@@ -200,7 +202,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _shareDocuments(ShareDocumentsParams([document]));
     } catch (_) {
-      emit(state.copyWith(errorMessage: 'Failed to share document'));
+      emit(state.copyWith(errorMessage: AppLocaleKeys.errorsShareFailed.tr()));
     }
   }
 
@@ -237,7 +239,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
       emit(
         state.copyWith(
           isImporting: false,
-          errorMessage: 'Failed to import document',
+          errorMessage: AppLocaleKeys.errorsImportFailed.tr(),
         ),
       );
       return;
@@ -354,7 +356,9 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     try {
       await _shareDocuments(ShareDocumentsParams(documents));
     } catch (_) {
-      emit(state.copyWith(errorMessage: 'Failed to share documents'));
+      emit(
+        state.copyWith(errorMessage: AppLocaleKeys.errorsShareManyFailed.tr()),
+      );
     }
   }
 

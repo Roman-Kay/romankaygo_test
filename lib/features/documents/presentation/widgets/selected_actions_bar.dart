@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/assets/app_images.dart';
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import 'circle_icon_button.dart';
 
@@ -34,13 +36,13 @@ class SelectedActionsBar extends StatelessWidget {
             assetPath: AppImages.trash,
             onPressed: hasSelection ? onDelete : null,
             foregroundColor: deleteColor,
-            semanticLabel: 'Delete',
+            semanticLabel: AppLocaleKeys.actionsDelete.tr(),
           ),
           _AnimatedActionButton(
             assetPath: AppImages.share,
             onPressed: hasSelection ? onShare : null,
             foregroundColor: shareColor,
-            semanticLabel: 'Share',
+            semanticLabel: AppLocaleKeys.actionsShare.tr(),
           ),
         ],
       ),

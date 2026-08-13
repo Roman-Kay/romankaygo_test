@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
+import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../domain/entities/document_tab.dart';
 
@@ -8,7 +10,11 @@ class DocumentTabs extends StatelessWidget {
   final DocumentTab selectedTab;
   final ValueChanged<DocumentTab> onChanged;
 
-  const DocumentTabs({super.key, required this.selectedTab, required this.onChanged});
+  const DocumentTabs({
+    super.key,
+    required this.selectedTab,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +32,24 @@ class DocumentTabs extends StatelessWidget {
               onSegmentSelected: (index) => onChanged(_tabAt(index)),
               backgroundColor: AppColors.tabBackground,
               indicatorColor: AppColors.white,
-              selectedTextStyle: const TextStyle(color: AppColors.tabSelected, fontSize: 14, fontWeight: FontWeight.w800, height: 1.1, letterSpacing: 0),
-              unselectedTextStyle: TextStyle(color: AppColors.tabSelected.withValues(alpha: 0.4), fontSize: 13, fontWeight: FontWeight.w800, height: 1.1, letterSpacing: 0),
-              segments: const [
-                GlassSegment(label: 'All'),
-                GlassSegment(label: 'Signed'),
-                GlassSegment(label: 'Unsigned'),
+              selectedTextStyle: const TextStyle(
+                color: AppColors.tabSelected,
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+                letterSpacing: 0,
+              ),
+              unselectedTextStyle: TextStyle(
+                color: AppColors.tabSelected.withValues(alpha: 0.4),
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                height: 1.1,
+                letterSpacing: 0,
+              ),
+              segments: [
+                GlassSegment(label: AppLocaleKeys.tabsAll.tr()),
+                GlassSegment(label: AppLocaleKeys.tabsSigned.tr()),
+                GlassSegment(label: AppLocaleKeys.tabsUnsigned.tr()),
               ],
             ),
             IgnorePointer(
@@ -40,8 +58,14 @@ class DocumentTabs extends StatelessWidget {
                   final segmentWidth = constraints.maxWidth / 3;
                   return Stack(
                     children: [
-                      _TabDivider(left: segmentWidth, isVisible: selectedTab == DocumentTab.unsigned),
-                      _TabDivider(left: segmentWidth * 2, isVisible: selectedTab == DocumentTab.all),
+                      _TabDivider(
+                        left: segmentWidth,
+                        isVisible: selectedTab == DocumentTab.unsigned,
+                      ),
+                      _TabDivider(
+                        left: segmentWidth * 2,
+                        isVisible: selectedTab == DocumentTab.all,
+                      ),
                     ],
                   );
                 },
@@ -87,7 +111,10 @@ class _TabDivider extends StatelessWidget {
         duration: const Duration(milliseconds: 180),
         child: Container(
           width: 1.5,
-          decoration: BoxDecoration(color: AppColors.tabDivider.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(100)),
+          decoration: BoxDecoration(
+            color: AppColors.tabDivider.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(100),
+          ),
         ),
       ),
     );
