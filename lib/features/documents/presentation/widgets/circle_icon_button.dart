@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
@@ -30,14 +31,15 @@ class CircleIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = borderRadius ?? size / 2;
-    final resolvedIconSize = iconSize ?? defaultIconSize;
+    final resolvedSize = size.r;
+    final radius = borderRadius?.r ?? resolvedSize / 2;
+    final resolvedIconSize = (iconSize ?? defaultIconSize).r;
     return IgnorePointer(
       ignoring: onPressed == null,
       child: GlassButton.custom(
         onTap: onPressed ?? () {},
-        width: size,
-        height: size,
+        width: resolvedSize,
+        height: resolvedSize,
         shape: LiquidRoundedRectangle(borderRadius: radius),
         useOwnLayer: true,
         glowColor: AppColors.white.withValues(alpha: 0.34),

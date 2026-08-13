@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
@@ -12,7 +13,11 @@ class AnimatedSearchPanel extends StatelessWidget {
   final bool visible;
   final Widget child;
 
-  const AnimatedSearchPanel({super.key, required this.visible, required this.child});
+  const AnimatedSearchPanel({
+    super.key,
+    required this.visible,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,12 @@ class AnimatedSearchPanel extends StatelessWidget {
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutCubic,
         opacity: visible ? 1 : 0,
-        child: AnimatedSlide(duration: const Duration(milliseconds: 260), curve: Curves.easeOutBack, offset: visible ? Offset.zero : const Offset(0, 0.35), child: child),
+        child: AnimatedSlide(
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutBack,
+          offset: visible ? Offset.zero : const Offset(0, 0.35),
+          child: child,
+        ),
       ),
     );
   }
@@ -33,7 +43,12 @@ class SearchDocumentsBar extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onClose;
 
-  const SearchDocumentsBar({super.key, required this.query, required this.onChanged, required this.onClose});
+  const SearchDocumentsBar({
+    super.key,
+    required this.query,
+    required this.onChanged,
+    required this.onClose,
+  });
 
   @override
   State<SearchDocumentsBar> createState() => _SearchDocumentsBarState();
@@ -66,15 +81,20 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
       children: [
         Expanded(
           child: GlassContainer(
-            height: 54,
-            shape: const LiquidRoundedRectangle(borderRadius: 100),
-            settings: LiquidGlassSettings(thickness: 45, glassColor: AppColors.white.withValues(alpha: 0.2), backerColor: AppColors.white.withValues(alpha: 0.56), whitenStrength: 0.5),
+            height: 54.h,
+            shape: LiquidRoundedRectangle(borderRadius: 100.r),
+            settings: LiquidGlassSettings(
+              thickness: 45,
+              glassColor: AppColors.white.withValues(alpha: 0.2),
+              backerColor: AppColors.white.withValues(alpha: 0.56),
+              whitenStrength: 0.5,
+            ),
             padding: EdgeInsets.zero,
             child: Row(
               children: [
-                const SizedBox(width: 18),
-                SvgPicture.asset(AppImages.search, height: 20),
-                const SizedBox(width: 9),
+                SizedBox(width: 18.w),
+                SvgPicture.asset(AppImages.search, height: 20.r),
+                SizedBox(width: 9.w),
                 Expanded(
                   child: CupertinoTextField(
                     controller: _controller,
@@ -83,17 +103,35 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
                     decoration: null,
                     padding: EdgeInsets.zero,
                     placeholder: AppLocaleKeys.documentsSearchPlaceholder.tr(),
-                    placeholderStyle: const TextStyle(color: AppColors.searchColor, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
-                    style: const TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
+                    placeholderStyle: TextStyle(
+                      color: AppColors.searchColor,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.1,
+                      letterSpacing: 0,
+                    ),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w500,
+                      height: 1.1,
+                      letterSpacing: 0,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
               ],
             ),
           ),
         ),
-        const SizedBox(width: 10),
-        CircleIconButton(assetPath: AppImages.close, onPressed: widget.onClose, size: 54, iconSize: 18, semanticLabel: AppLocaleKeys.actionsClose.tr()),
+        SizedBox(width: 10.w),
+        CircleIconButton(
+          assetPath: AppImages.close,
+          onPressed: widget.onClose,
+          size: 54,
+          iconSize: 18,
+          semanticLabel: AppLocaleKeys.actionsClose.tr(),
+        ),
       ],
     );
   }

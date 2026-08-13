@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/assets/app_images.dart';
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -26,9 +27,9 @@ class SelectedActionsBar extends StatelessWidget {
         : AppColors.textPrimary.withValues(alpha: 0.5);
 
     return Positioned(
-      left: 18,
-      right: 18,
-      bottom: 34,
+      left: 18.w,
+      right: 18.w,
+      bottom: 34.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

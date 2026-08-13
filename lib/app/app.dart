@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'localization/app_locale_keys.dart';
 import 'router/app_router.dart';
@@ -17,14 +18,21 @@ class _SignicaAppState extends State<SignicaApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: AppLocaleKeys.appTitle.tr(),
-      locale: context.locale,
-      supportedLocales: context.supportedLocales,
-      localizationsDelegates: context.localizationDelegates,
-      theme: AppTheme.dark,
-      routerConfig: _router.config(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: AppLocaleKeys.appTitle.tr(),
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+          theme: AppTheme.dark,
+          routerConfig: _router.config(),
+        );
+      },
     );
   }
 }

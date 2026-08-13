@@ -38,6 +38,7 @@ dependencies:
   equatable: ^2.0.7
   easy_localization: ^3.0.8
   flutter_bloc: ^9.1.1
+  flutter_screenutil: ^5.9.3
   get_it: ^8.2.0
   injectable: ^2.5.1
   liquid_glass_widgets: ^0.29.3

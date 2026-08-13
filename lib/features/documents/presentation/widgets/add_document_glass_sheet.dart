@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/assets/app_images.dart';
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -53,7 +54,7 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(34.r)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
               child: AnimatedBuilder(
@@ -69,34 +70,34 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
             ),
           ),
           Positioned(
-            right: 28,
-            bottom: 121,
+            right: 28.w,
+            bottom: 121.h,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 _FanTransition(
                   animation: _interval(0.22, 1),
-                  beginOffset: const Offset(92, 138),
+                  beginOffset: Offset(92.w, 138.h),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourceFiles,
                     label: AppLocaleKeys.sourcesFiles.tr(),
                     onTap: () => widget.onSourceSelected(DocumentSource.files),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 _FanTransition(
                   animation: _interval(0.12, 0.9),
-                  beginOffset: const Offset(78, 74),
+                  beginOffset: Offset(78.w, 74.h),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourcePhotos,
                     label: AppLocaleKeys.sourcesPhotos.tr(),
                     onTap: () => widget.onSourceSelected(DocumentSource.photos),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 _FanTransition(
                   animation: _interval(0, 0.78),
-                  beginOffset: const Offset(56, 28),
+                  beginOffset: Offset(56.w, 28.h),
                   child: SourcePill.sheet(
                     assetPath: AppImages.sourceScanner,
                     label: AppLocaleKeys.sourcesScanner.tr(),
@@ -108,13 +109,13 @@ class _AddDocumentGlassSheetState extends State<AddDocumentGlassSheet>
             ),
           ),
           Positioned(
-            right: 20 + 63 + 12,
-            bottom: 12 + MediaQuery.paddingOf(context).bottom,
+            right: 20.w + 63.r + 12.w,
+            bottom: 12.h + MediaQuery.paddingOf(context).bottom,
             child: _FanTitle(animation: _interval(0, 0.72)),
           ),
           Positioned(
-            right: 20,
-            bottom: 12 + MediaQuery.paddingOf(context).bottom,
+            right: 20.w,
+            bottom: 12.h + MediaQuery.paddingOf(context).bottom,
             child: ScaleTransition(
               scale: _interval(0, 0.65),
               child: CircleIconButton(
@@ -154,7 +155,7 @@ class _FanTitle extends StatelessWidget {
         return Opacity(
           opacity: value,
           child: Transform.translate(
-            offset: Offset(72 * (1 - value), 6 * (1 - value)),
+            offset: Offset(72.w * (1 - value), 6.h * (1 - value)),
             child: Transform.scale(
               alignment: Alignment.centerRight,
               scale: 0.82 + 0.18 * value,
@@ -164,13 +165,13 @@ class _FanTitle extends StatelessWidget {
         );
       },
       child: SizedBox(
-        height: 63,
+        height: 63.h,
         child: Center(
           child: Text(
             AppLocaleKeys.actionsAddDocumentFrom.tr(),
             style: TextStyle(
               color: AppColors.tabSelected,
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w700,
             ),
           ),

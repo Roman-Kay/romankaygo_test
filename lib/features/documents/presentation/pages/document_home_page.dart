@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/di/injection.dart';
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -9,6 +10,7 @@ import '../../domain/entities/document_source.dart';
 import '../bloc/document_list_bloc.dart';
 import '../widgets/add_document_glass_sheet.dart';
 import '../widgets/document_bottom_controls.dart';
+import '../widgets/document_card.dart';
 import '../widgets/document_context_dismiss_layer.dart';
 import '../widgets/document_context_menu.dart';
 import '../widgets/document_grid.dart';
@@ -65,7 +67,10 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
     final topLeft = renderBox?.localToGlobal(Offset.zero);
 
     if (renderBox != null && topLeft != null) {
-      final titleTop = topLeft.dy + 182 + 8;
+      final titleTop =
+          topLeft.dy +
+          DocumentCard.previewStackHeight.h +
+          DocumentCard.titleTopGap.h;
 
       _contextMenuAnchorRect = Rect.fromLTWH(
         topLeft.dx,
@@ -135,10 +140,10 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                           children: [
                             Container(
                               width: double.infinity,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppColors.paper,
                                 borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(36),
+                                  top: Radius.circular(36.r),
                                 ),
                               ),
                               child: Column(

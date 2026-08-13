@@ -2,11 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../bloc/document_list_bloc.dart';
 import 'document_card.dart';
 
 class DocumentGrid extends StatelessWidget {
+  static const double _horizontalInset = 28;
+  static const double _topInset = 32;
+  static const double _bottomInset = 126;
+  static const double _mainAxisSpacing = 40;
+  static const double _crossAxisSpacing = 19;
+
   final DocumentListState state;
   final void Function(String documentId, BuildContext anchorContext)
   onContextMenuRequested;
@@ -21,12 +28,17 @@ class DocumentGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<DocumentListBloc>();
     return GridView.builder(
-      padding: const EdgeInsets.only(left: 28, top: 36, right: 28, bottom: 126),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      padding: EdgeInsets.only(
+        left: _horizontalInset.w,
+        top: _topInset.h,
+        right: _horizontalInset.w,
+        bottom: _bottomInset.h,
+      ),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisSpacing: 38,
-        crossAxisSpacing: 19,
-        childAspectRatio: 150 / 227,
+        mainAxisSpacing: _mainAxisSpacing.h,
+        crossAxisSpacing: _crossAxisSpacing.w,
+        mainAxisExtent: DocumentCard.gridExtent,
       ),
       itemCount: state.visibleDocuments.length,
       itemBuilder: (context, index) {

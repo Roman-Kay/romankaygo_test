@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/theme/app_colors.dart';
@@ -40,9 +41,9 @@ class SourcePill extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassButton.custom(
       onTap: onTap,
-      width: width,
-      height: height,
-      shape: const LiquidRoundedRectangle(borderRadius: 100),
+      width: width?.w,
+      height: height.h,
+      shape: LiquidRoundedRectangle(borderRadius: 100.r),
       useOwnLayer: true,
       settings: LiquidGlassSettings(
         thickness: 45,
@@ -53,16 +54,16 @@ class SourcePill extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
           left: horizontalPadding,
-          top: verticalPadding,
+          top: verticalPadding.h,
           right: horizontalPadding,
-          bottom: verticalPadding,
+          bottom: verticalPadding.h,
         ),
         child: Row(
           mainAxisSize: width == null ? MainAxisSize.min : MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(assetPath, width: 24, height: 24),
-            const SizedBox(width: 8),
+            Image.asset(assetPath, width: 24.r, height: 24.r),
+            SizedBox(width: 8.w),
             Flexible(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -71,7 +72,7 @@ class SourcePill extends StatelessWidget {
                   maxLines: 1,
                   style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: fontWeight,
                   ),
                 ),

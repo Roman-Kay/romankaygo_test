@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/assets/app_images.dart';
 import '../../../../app/localization/app_locale_keys.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -17,33 +18,33 @@ class EmptyDocumentsView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Spacer(flex: 66),
-        Image.asset(AppImages.emptyDocument, width: 272, height: 160),
-        const SizedBox(height: 18),
+        Image.asset(AppImages.emptyDocument, width: 272.w, height: 160.h),
+        SizedBox(height: 18.h),
         Text(
           AppLocaleKeys.documentsEmptyTitle.tr(),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.w700,
             height: 1.20,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.h),
         Text(
           AppLocaleKeys.documentsEmptySubtitle.tr(),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.blackEmptyHint,
-            fontSize: 15,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w400,
             height: 1.3,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         SizedBox(
-          width: 343,
+          width: 343.w,
           child: Wrap(
-            spacing: 12,
-            runSpacing: 12,
+            spacing: 12.w,
+            runSpacing: 12.h,
             alignment: WrapAlignment.center,
             children: [
               SourcePill(

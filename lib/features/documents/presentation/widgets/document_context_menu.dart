@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import '../../../../app/assets/app_images.dart';
@@ -27,13 +28,16 @@ class DocumentContextMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
-    final left = (anchorRect.center.dx - _menuWidth / 2).clamp(
-      16.0,
-      screenSize.width - _menuWidth - 16,
+    final menuWidth = _menuWidth.w;
+    final menuHeight = _menuHeight.h;
+    final menuRadius = _menuRadius.r;
+    final left = (anchorRect.center.dx - menuWidth / 2).clamp(
+      16.w,
+      screenSize.width - menuWidth - 16.w,
     );
     final top = anchorRect.top.clamp(
-      16.0,
-      screenSize.height - _menuHeight - 24,
+      16.h,
+      screenSize.height - menuHeight - 24.h,
     );
 
     return Positioned(
@@ -47,7 +51,7 @@ class DocumentContextMenu extends StatelessWidget {
           return Opacity(
             opacity: value.clamp(0, 1),
             child: Transform.translate(
-              offset: Offset(0, 12 * (1 - value)),
+              offset: Offset(0, 12.h * (1 - value)),
               child: Transform.scale(
                 scale: 0.92 + 0.08 * value,
                 alignment: Alignment.bottomCenter,
@@ -57,11 +61,11 @@ class DocumentContextMenu extends StatelessWidget {
           );
         },
         child: SizedBox(
-          width: _menuWidth,
-          height: _menuHeight,
+          width: menuWidth,
+          height: menuHeight,
           child: GlassContainer(
             useOwnLayer: true,
-            shape: const LiquidRoundedRectangle(borderRadius: _menuRadius),
+            shape: LiquidRoundedRectangle(borderRadius: menuRadius),
             settings: LiquidGlassSettings(
               thickness: 45,
               glassColor: AppColors.white.withValues(alpha: 0.2),
@@ -70,9 +74,9 @@ class DocumentContextMenu extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Spacer(),
+                const Spacer(),
                 SizedBox(
-                  height: 66,
+                  height: 66.h,
                   child: Row(
                     children: [
                       Expanded(
@@ -82,7 +86,7 @@ class DocumentContextMenu extends StatelessWidget {
                           onTap: onPrint,
                         ),
                       ),
-                      SizedBox(width: 6),
+                      SizedBox(width: 6.w),
                       Expanded(
                         child: _MenuAction(
                           assetPath: AppImages.share,
@@ -94,13 +98,13 @@ class DocumentContextMenu extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: 1,
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  height: 1.h,
+                  margin: EdgeInsets.symmetric(horizontal: 24.w),
                   color: AppColors.separator,
                 ),
-                Spacer(),
+                const Spacer(),
                 _DeleteAction(onTap: onDelete),
-                Spacer(),
+                const Spacer(),
               ],
             ),
           ),
@@ -125,19 +129,19 @@ class _MenuAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassButton.custom(
       onTap: onTap,
-      height: 56,
+      height: 56.h,
       style: GlassButtonStyle.transparent,
-      shape: const LiquidRoundedRectangle(borderRadius: 26),
+      shape: LiquidRoundedRectangle(borderRadius: 26.r),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(assetPath, height: 18),
-          const SizedBox(height: 6),
+          SvgPicture.asset(assetPath, height: 18.r),
+          SizedBox(height: 6.h),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.textDropDown,
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -156,20 +160,20 @@ class _DeleteAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassButton.custom(
       onTap: onTap,
-      height: 40,
+      height: 40.h,
       style: GlassButtonStyle.transparent,
-      shape: const LiquidRoundedRectangle(borderRadius: 24),
+      shape: LiquidRoundedRectangle(borderRadius: 24.r),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Row(
           children: [
-            SvgPicture.asset(AppImages.trash, height: 18),
-            const SizedBox(width: 13),
+            SvgPicture.asset(AppImages.trash, height: 18.r),
+            SizedBox(width: 13.w),
             Text(
               AppLocaleKeys.actionsDelete.tr(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.accentRed,
-                fontSize: 17,
+                fontSize: 17.sp,
                 fontWeight: FontWeight.w400,
               ),
             ),

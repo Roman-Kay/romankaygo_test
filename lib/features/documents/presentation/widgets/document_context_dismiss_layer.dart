@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/theme/app_colors.dart';
 
@@ -13,10 +14,10 @@ class DocumentContextDismissLayer extends StatelessWidget {
     return Positioned(
       left: 0,
       right: 0,
-      top: topInset + 66,
+      top: topInset + 66.h,
       bottom: 0,
       child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(34.r)),
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: onDismiss,

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../app/localization/app_locale_keys.dart';
@@ -19,29 +20,29 @@ class DocumentTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, top: 16, right: 12),
+      padding: EdgeInsets.only(left: 12.w, top: 16.h, right: 12.w),
       child: SizedBox(
-        height: 36,
+        height: 36.h,
         child: Stack(
           alignment: Alignment.center,
           children: [
             GlassSegmentedControl(
-              height: 36,
-              padding: const EdgeInsets.all(4),
+              height: 36.h,
+              padding: EdgeInsets.all(4.r),
               selectedIndex: _indexOf(selectedTab),
               onSegmentSelected: (index) => onChanged(_tabAt(index)),
               backgroundColor: AppColors.tabBackground,
               indicatorColor: AppColors.white,
-              selectedTextStyle: const TextStyle(
+              selectedTextStyle: TextStyle(
                 color: AppColors.tabSelected,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w800,
                 height: 1.1,
                 letterSpacing: 0,
               ),
               unselectedTextStyle: TextStyle(
                 color: AppColors.tabSelected.withValues(alpha: 0.4),
-                fontSize: 13,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w800,
                 height: 1.1,
                 letterSpacing: 0,
@@ -104,16 +105,16 @@ class _TabDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       left: left,
-      top: 4,
-      bottom: 4,
+      top: 4.h,
+      bottom: 4.h,
       child: AnimatedOpacity(
         opacity: isVisible ? 1 : 0,
         duration: const Duration(milliseconds: 180),
         child: Container(
-          width: 1.5,
+          width: 1.5.w,
           decoration: BoxDecoration(
             color: AppColors.tabDivider.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(100.r),
           ),
         ),
       ),

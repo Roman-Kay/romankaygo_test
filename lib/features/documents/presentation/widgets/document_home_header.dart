@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
@@ -30,9 +31,9 @@ class DocumentHomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final topInset = MediaQuery.paddingOf(context).top;
     return Padding(
-      padding: EdgeInsets.only(left: 18, top: topInset, right: 18),
+      padding: EdgeInsets.only(left: 18.w, top: topInset, right: 18.w),
       child: SizedBox(
-        height: 66,
+        height: 66.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -41,16 +42,16 @@ class DocumentHomeHeader extends StatelessWidget {
             else
               GlassButton.custom(
                 onTap: onSelectAll,
-                height: 44,
-                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                height: 44.h,
+                shape: LiquidRoundedRectangle(borderRadius: 15.2.r),
                 useOwnLayer: true,
                 interactionScale: 1.04,
                 glowColor: AppColors.white.withValues(alpha: 0.1),
                 glowRadius: 1.2,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
                   ),
                   child: Text(
                     state.isAllVisibleSelected
@@ -60,10 +61,10 @@ class DocumentHomeHeader extends StatelessWidget {
                             },
                           )
                         : AppLocaleKeys.actionsSelectAll.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.white,
                       fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -71,15 +72,15 @@ class DocumentHomeHeader extends StatelessWidget {
             if (state.isSelectMode)
               GlassButton.custom(
                 onTap: onCloseSelect,
-                height: 38,
-                width: 38,
-                shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                height: 38.h,
+                width: 38.w,
+                shape: LiquidRoundedRectangle(borderRadius: 15.2.r),
                 useOwnLayer: true,
                 interactionScale: 1.04,
                 glowColor: AppColors.white.withValues(alpha: 0.1),
                 glowRadius: 1.2,
                 child: Center(
-                  child: SvgPicture.asset(AppImages.closeWhite, width: 12),
+                  child: SvgPicture.asset(AppImages.closeWhite, width: 12.w),
                 ),
               )
             else
@@ -88,34 +89,36 @@ class DocumentHomeHeader extends StatelessWidget {
                   if (state.tab == DocumentTab.signed)
                     GlassButton.custom(
                       onTap: () {},
-                      height: 38,
-                      width: 38,
-                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                      height: 38.h,
+                      width: 38.w,
+                      shape: LiquidRoundedRectangle(borderRadius: 15.2.r),
                       useOwnLayer: true,
                       interactionScale: 1.04,
                       glowColor: AppColors.white.withValues(alpha: 0.1),
                       glowRadius: 1.2,
                       child: Center(
-                        child: SvgPicture.asset(AppImages.settings, width: 18),
+                        child: SvgPicture.asset(
+                          AppImages.settings,
+                          width: 18.w,
+                        ),
                       ),
                     ),
-                  if (state.tab == DocumentTab.signed)
-                    const SizedBox(width: 12),
+                  if (state.tab == DocumentTab.signed) SizedBox(width: 12.w),
                   Semantics(
                     label: AppLocaleKeys.actionsMenu.tr(),
                     button: true,
                     child: GlassButton.custom(
                       key: menuButtonKey,
                       onTap: onMenuPressed,
-                      height: 38,
-                      width: 38,
-                      shape: const LiquidRoundedRectangle(borderRadius: 15.2),
+                      height: 38.h,
+                      width: 38.w,
+                      shape: LiquidRoundedRectangle(borderRadius: 15.2.r),
                       useOwnLayer: true,
                       interactionScale: 1.04,
                       glowColor: AppColors.white.withValues(alpha: 0.1),
                       glowRadius: 1.2,
                       child: Center(
-                        child: SvgPicture.asset(AppImages.menu, width: 18),
+                        child: SvgPicture.asset(AppImages.menu, width: 18.w),
                       ),
                     ),
                   ),

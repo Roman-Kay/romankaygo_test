@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
@@ -31,9 +32,9 @@ class DocumentBottomControls extends StatelessWidget {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
 
     return Positioned(
-      left: 18,
-      right: 18,
-      bottom: 13 + bottomInset,
+      left: 18.w,
+      right: 18.w,
+      bottom: 13.h + bottomInset,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
         child: state.isSearchActive
@@ -68,8 +69,8 @@ class _AddDocumentGlassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassButton.custom(
       onTap: onPressed,
-      height: 61,
-      shape: const LiquidRoundedRectangle(borderRadius: 31),
+      height: 61.h,
+      shape: LiquidRoundedRectangle(borderRadius: 31.r),
       useOwnLayer: true,
       style: GlassButtonStyle.prominent,
       interactionScale: 1.05,
@@ -84,7 +85,7 @@ class _AddDocumentGlassButton extends StatelessWidget {
         whitenStrength: 0.04,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(31),
+        borderRadius: BorderRadius.circular(31.r),
         child: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -97,16 +98,16 @@ class _AddDocumentGlassButton extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 19),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 19.h),
             child: Row(
               children: [
-                SvgPicture.asset(AppImages.add, height: 23),
-                const SizedBox(width: 8),
+                SvgPicture.asset(AppImages.add, height: 23.r),
+                SizedBox(width: 8.w),
                 Text(
                   AppLocaleKeys.actionsAddDocument.tr(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

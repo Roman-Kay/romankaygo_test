@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/assets/app_images.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -8,26 +9,34 @@ import '../../domain/entities/document.dart';
 import '../../domain/entities/document_status.dart';
 
 class DocumentCard extends StatelessWidget {
+  static const double previewStackHeight = 182;
+  static const double titleTopGap = 8;
+  static const double titleWidth = 96;
+  static const double titleFontSize = 14;
+  static const double titleLineHeight = 1.2;
+  static const int titleMaxLines = 2;
+  static const double dateTopGap = 4;
+  static const double dateFontSize = 11;
+  static const double dateLineHeight = 1.2;
+
+  static double get titleHeight => titleFontSize.sp * titleLineHeight * titleMaxLines;
+
+  static double get dateHeight => dateFontSize.sp * dateLineHeight;
+
+  static double get gridExtent => previewStackHeight.h + titleTopGap.h + titleHeight + dateTopGap.h + dateHeight;
+
   final Document document;
   final bool isSelected;
   final bool isSelectMode;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
-  const DocumentCard({
-    super.key,
-    required this.document,
-    required this.isSelected,
-    required this.isSelectMode,
-    required this.onTap,
-    required this.onLongPress,
-  });
+  const DocumentCard({super.key, required this.document, required this.isSelected, required this.isSelectMode, required this.onTap, required this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
     final lastPageImagePath = document.preview.lastPageImagePath;
-    final hasMultiplePages =
-        document.preview.hasLastPage && lastPageImagePath != null;
+    final hasMultiplePages = document.preview.hasLastPage && lastPageImagePath != null;
 
     return GestureDetector(
       onTap: onTap,
@@ -36,111 +45,67 @@ class DocumentCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 182,
+            height: previewStackHeight.h,
             child: Stack(
               children: [
                 if (hasMultiplePages)
                   Positioned(
-                    left: 2,
-                    top: 7,
+                    left: 2.w,
+                    top: 7.h,
                     child: Transform.rotate(
                       angle: -0.03,
-                      child: _PreviewFrame(
-                        child: _PreviewImage(
-                          path: lastPageImagePath,
-                          opacity: 1,
-                        ),
-                      ),
+                      child: _PreviewFrame(child: _PreviewImage(path: lastPageImagePath, opacity: 1)),
                     ),
                   ),
                 Positioned(
-                  left: hasMultiplePages ? 20 : 13.14,
-                  top: hasMultiplePages ? 8 : 0,
+                  left: hasMultiplePages ? 20.w : 13.14.w,
+                  top: hasMultiplePages ? 8.h : 0,
                   child: hasMultiplePages
                       ? Transform.rotate(
                           angle: 0.13,
-                          child: _PreviewFrame(
-                            hasShadow: true,
-                            child: _PreviewImage(
-                              path: document.preview.firstPageImagePath,
-                              opacity: 1,
-                            ),
-                          ),
+                          child: _PreviewFrame(hasShadow: true, child: _PreviewImage(path: document.preview.firstPageImagePath, opacity: 1)),
                         )
-                      : _PreviewFrame(
-                          hasShadow: true,
-                          child: _PreviewImage(
-                            path: document.preview.firstPageImagePath,
-                            opacity: 1,
-                          ),
-                        ),
+                      : _PreviewFrame(hasShadow: true, child: _PreviewImage(path: document.preview.firstPageImagePath, opacity: 1)),
                 ),
-                if (document.status == DocumentStatus.signed)
-                  Positioned(
-                    left: 54,
-                    top: 140,
-                    child: const _SignedMarkBadge(),
-                  ),
+                if (document.status == DocumentStatus.signed) Positioned(left: 54.w, top: 140.h, child: const _SignedMarkBadge()),
                 if (isSelectMode)
                   Center(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 180),
-                      width: 30,
-                      height: 30,
+                      width: 30.r,
+                      height: 30.r,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.selectedCheck
-                            : AppColors.transparent,
+                        color: isSelected ? AppColors.selectedCheck : AppColors.transparent,
 
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.white, width: 3),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.black.withValues(alpha: 0.1),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(color: AppColors.white, width: 3.r),
+                        boxShadow: [BoxShadow(color: AppColors.black.withValues(alpha: 0.1), blurRadius: 12.r, offset: Offset(0, 4.h))],
                       ),
-                      child: Icon(
-                        Icons.check,
-                        color: isSelected
-                            ? AppColors.white
-                            : AppColors.blackMuted,
-                        size: 15,
-                      ),
+                      child: Icon(Icons.check, color: isSelected ? AppColors.white : AppColors.blackMuted, size: 15.r),
                     ),
                   ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: titleTopGap.h),
           SizedBox(
-            width: 96,
+            width: titleWidth.w,
+            height: titleHeight,
             child: Text(
               document.title,
               textAlign: TextAlign.center,
-              maxLines: 2,
+              maxLines: titleMaxLines,
               overflow: TextOverflow.ellipsis,
-              textHeightBehavior: const TextHeightBehavior(
-                applyHeightToFirstAscent: false,
-                applyHeightToLastDescent: false,
-              ),
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                height: 1.2,
-              ),
+              textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+              style: TextStyle(color: AppColors.textPrimary, fontSize: titleFontSize.sp, fontWeight: FontWeight.w700, height: titleLineHeight),
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            _formatDate(document.createdAt),
-            style: const TextStyle(
-              color: AppColors.textCardTitle,
-              fontSize: 11,
-              fontWeight: FontWeight.w400,
+          SizedBox(height: dateTopGap.h),
+          SizedBox(
+            height: dateHeight,
+            child: Text(
+              _formatDate(document.createdAt),
+              style: TextStyle(color: AppColors.textCardTitle, fontSize: dateFontSize.sp, fontWeight: FontWeight.w400, height: dateLineHeight),
             ),
           ),
         ],
@@ -199,24 +164,14 @@ class _PreviewFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 123.72,
-      height: 167.84,
+      width: 123.72.w,
+      height: 167.84.h,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.documentBorder.withValues(alpha: 0.59),
-        ),
-        boxShadow: hasShadow
-            ? [
-                BoxShadow(
-                  color: AppColors.black.withValues(alpha: 0.08),
-                  blurRadius: 11.1,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : null,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: AppColors.documentBorder.withValues(alpha: 0.59)),
+        boxShadow: hasShadow ? [BoxShadow(color: AppColors.black.withValues(alpha: 0.08), blurRadius: 11.1.r, offset: Offset(0, 4.h))] : null,
       ),
       child: child,
     );
@@ -238,20 +193,12 @@ class _DocumentLinesPainter extends CustomPainter {
       ..color = AppColors.documentTableLine.withValues(alpha: 0.55)
       ..strokeWidth = 0.8;
 
-    canvas.drawLine(
-      Offset(size.width * 0.22, 5),
-      Offset(size.width * 0.78, 5),
-      titlePaint,
-    );
+    canvas.drawLine(Offset(size.width * 0.22, 5), Offset(size.width * 0.78, 5), titlePaint);
 
     for (var i = 0; i < 16; i++) {
       final y = 20.0 + i * 5.8;
       final inset = i.isEven ? 0.0 : size.width * 0.08;
-      canvas.drawLine(
-        Offset(inset, y),
-        Offset(size.width - inset - (i % 3) * 8, y),
-        linePaint,
-      );
+      canvas.drawLine(Offset(inset, y), Offset(size.width - inset - (i % 3) * 8, y), linePaint);
     }
 
     final tableTop = size.height - 34;
@@ -259,17 +206,9 @@ class _DocumentLinesPainter extends CustomPainter {
     canvas.drawRect(tableRect, tablePaint);
     for (var i = 1; i < 4; i++) {
       final x = size.width * i / 4;
-      canvas.drawLine(
-        Offset(x, tableTop),
-        Offset(x, tableTop + 26),
-        tablePaint,
-      );
+      canvas.drawLine(Offset(x, tableTop), Offset(x, tableTop + 26), tablePaint);
     }
-    canvas.drawLine(
-      Offset(0, tableTop + 13),
-      Offset(size.width, tableTop + 13),
-      tablePaint,
-    );
+    canvas.drawLine(Offset(0, tableTop + 13), Offset(size.width, tableTop + 13), tablePaint);
   }
 
   @override
@@ -281,6 +220,6 @@ class _SignedMarkBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(AppImages.sign, height: 42, width: 42);
+    return Image.asset(AppImages.sign, height: 42.r, width: 42.r);
   }
 }
