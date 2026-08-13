@@ -19,15 +19,23 @@
     "empty_title": "No Documents Yet",
     "empty_subtitle": "Your can add documents from ",
     "importing_preview": "Preparing document preview...",
-    "photo_title": "Photo Document",
-    "scanned_title": "Scanned Document",
+    "photo_title": "New Document",
+    "scanned_title": "New Document",
     "search_placeholder": "Search Documents"
   },
   "errors": {
+    "file_picker_unavailable": "File picker is unavailable. Restart the app and try again.",
+    "file_save_failed": "Could not save the document file.",
     "import_failed": "Failed to import document",
+    "pdf_build_failed": "Could not create PDF from selected images.",
+    "permission_denied": "Permission denied. Allow access and try again.",
+    "photo_picker_unavailable": "Photo picker is unavailable. Restart the app and try again.",
+    "preview_render_failed": "Could not prepare document preview.",
     "print_failed": "Failed to print document",
+    "scanner_unavailable": "Scanner is unavailable. Restart the app and try again.",
     "share_failed": "Failed to share document",
-    "share_many_failed": "Failed to share documents"
+    "share_many_failed": "Failed to share documents",
+    "unsupported_file": "Only PDF files are supported."
   },
   "sources": {
     "files": "Files",

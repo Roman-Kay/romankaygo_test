@@ -7,6 +7,7 @@ import '../../domain/entities/document.dart';
 import '../../domain/entities/document_source.dart';
 import '../../domain/entities/document_status.dart';
 import '../../domain/entities/document_tab.dart';
+import '../../domain/services/document_import_service.dart';
 import '../../domain/use_cases/add_document.dart';
 import '../../domain/use_cases/delete_documents.dart';
 import '../../domain/use_cases/get_documents.dart';
@@ -14,7 +15,6 @@ import '../../domain/use_cases/print_document.dart';
 import '../../domain/use_cases/search_documents.dart';
 import '../../domain/use_cases/share_documents.dart';
 import '../../domain/use_cases/toggle_document_status.dart';
-
 part 'document_list_event.dart';
 part 'document_list_state.dart';
 
@@ -241,6 +241,14 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     } on DocumentImportCancelledException {
       emit(state.copyWith(isImporting: false));
       return;
+    } on DocumentImportException catch (error) {
+      emit(
+        state.copyWith(
+          isImporting: false,
+          errorKey: _importErrorKey(error.code),
+        ),
+      );
+      return;
     } catch (_) {
       emit(
         state.copyWith(
@@ -382,6 +390,28 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
       }
     }
     return null;
+  }
+
+  String _importErrorKey(DocumentImportErrorCode code) {
+    return switch (code) {
+      DocumentImportErrorCode.filePickerUnavailable =>
+        AppLocaleKeys.errorsFilePickerUnavailable,
+      DocumentImportErrorCode.unsupportedFile =>
+        AppLocaleKeys.errorsUnsupportedFile,
+      DocumentImportErrorCode.fileSaveFailed =>
+        AppLocaleKeys.errorsFileSaveFailed,
+      DocumentImportErrorCode.photoPickerUnavailable =>
+        AppLocaleKeys.errorsPhotoPickerUnavailable,
+      DocumentImportErrorCode.scannerUnavailable =>
+        AppLocaleKeys.errorsScannerUnavailable,
+      DocumentImportErrorCode.permissionDenied =>
+        AppLocaleKeys.errorsPermissionDenied,
+      DocumentImportErrorCode.pdfBuildFailed =>
+        AppLocaleKeys.errorsPdfBuildFailed,
+      DocumentImportErrorCode.previewRenderFailed =>
+        AppLocaleKeys.errorsPreviewRenderFailed,
+      DocumentImportErrorCode.unknown => AppLocaleKeys.errorsImportFailed,
+    };
   }
 
   DocumentListState _derive(DocumentListState input) {

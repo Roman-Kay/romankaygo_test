@@ -33,6 +33,8 @@ import 'package:test_romankaygo/features/documents/domain/services/document_acti
     as _i593;
 import 'package:test_romankaygo/features/documents/domain/services/document_import_service.dart'
     as _i387;
+import 'package:test_romankaygo/features/documents/domain/services/document_title_resolver.dart'
+    as _i131;
 import 'package:test_romankaygo/features/documents/domain/use_cases/add_document.dart'
     as _i82;
 import 'package:test_romankaygo/features/documents/domain/use_cases/delete_documents.dart'
@@ -64,6 +66,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i830.AppDatabase>(() => _i830.AppDatabase());
     gh.lazySingleton<_i329.PdfBuilderService>(() => _i329.PdfBuilderService());
     gh.lazySingleton<_i215.PdfPreviewService>(() => _i215.PdfPreviewService());
+    gh.lazySingleton<_i131.DocumentTitleResolver>(
+      () => const _i131.DocumentTitleResolver(),
+    );
     gh.lazySingleton<_i912.DocumentDao>(
       () => _i912.DocumentDao(gh<_i830.AppDatabase>()),
     );
@@ -73,20 +78,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i428.DocumentRepository>(
       () => _i205.DocumentRepositoryImpl(gh<_i912.DocumentDao>()),
     );
-    gh.lazySingleton<_i387.DocumentImportService>(
-      () => _i300.DocumentImportServiceImpl(
-        gh<_i428.DocumentRepository>(),
-        gh<_i329.PdfBuilderService>(),
-        gh<_i215.PdfPreviewService>(),
-        gh<_i183.ImagePicker>(),
-        gh<_i706.Uuid>(),
-      ),
-    );
     gh.factory<_i657.PrintDocument>(
       () => _i657.PrintDocument(gh<_i593.DocumentActionsService>()),
     );
     gh.factory<_i41.ShareDocuments>(
       () => _i41.ShareDocuments(gh<_i593.DocumentActionsService>()),
+    );
+    gh.lazySingleton<_i387.DocumentImportService>(
+      () => _i300.DocumentImportServiceImpl(
+        gh<_i428.DocumentRepository>(),
+        gh<_i329.PdfBuilderService>(),
+        gh<_i215.PdfPreviewService>(),
+        gh<_i131.DocumentTitleResolver>(),
+        gh<_i183.ImagePicker>(),
+        gh<_i706.Uuid>(),
+      ),
     );
     gh.factory<_i958.DeleteDocuments>(
       () => _i958.DeleteDocuments(gh<_i428.DocumentRepository>()),

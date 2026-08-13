@@ -8,3 +8,21 @@ abstract interface class DocumentImportService {
     required String scannedTitle,
   });
 }
+
+enum DocumentImportErrorCode {
+  filePickerUnavailable,
+  unsupportedFile,
+  fileSaveFailed,
+  photoPickerUnavailable,
+  scannerUnavailable,
+  permissionDenied,
+  pdfBuildFailed,
+  previewRenderFailed,
+  unknown,
+}
+
+class DocumentImportException implements Exception {
+  final DocumentImportErrorCode code;
+
+  const DocumentImportException(this.code);
+}
