@@ -8,7 +8,7 @@ class CircleIconButton extends StatelessWidget {
   static const double defaultIconSize = 18;
 
   final String assetPath;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
   final double size;
@@ -32,16 +32,28 @@ class CircleIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = borderRadius ?? size / 2;
     final resolvedIconSize = iconSize ?? defaultIconSize;
-    return GlassButton.custom(
-      onTap: onPressed,
-      width: size,
-      height: size,
-      shape: LiquidRoundedRectangle(borderRadius: radius),
-      useOwnLayer: true,
-      glowColor: AppColors.white.withValues(alpha: 0.34),
-      glowRadius: 20,
-      settings: LiquidGlassSettings(thickness: 45, glassColor: backgroundColor.withValues(alpha: 0.2), backerColor: AppColors.white.withValues(alpha: 0.56), whitenStrength: 0.5),
-      child: SvgPicture.asset(assetPath, height: resolvedIconSize),
+    return IgnorePointer(
+      ignoring: onPressed == null,
+      child: GlassButton.custom(
+        onTap: onPressed ?? () {},
+        width: size,
+        height: size,
+        shape: LiquidRoundedRectangle(borderRadius: radius),
+        useOwnLayer: true,
+        glowColor: AppColors.white.withValues(alpha: 0.34),
+        glowRadius: 20,
+        settings: LiquidGlassSettings(
+          thickness: 45,
+          glassColor: backgroundColor.withValues(alpha: 0.2),
+          backerColor: AppColors.white.withValues(alpha: 0.56),
+          whitenStrength: 0.5,
+        ),
+        child: SvgPicture.asset(
+          assetPath,
+          height: resolvedIconSize,
+          colorFilter: ColorFilter.mode(foregroundColor, BlendMode.srcIn),
+        ),
+      ),
     );
   }
 }

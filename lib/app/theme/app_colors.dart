@@ -14,6 +14,8 @@ abstract final class AppColors {
   static const searchPlaceholder = Color(0xFFD0D0D0);
   static const documentBorder = Color(0xFFDADADA);
   static const documentTitleLine = Color(0xFF2B2B2B);
+  static const searchColor = Color(0xFFD9D9D9);
+
   static const documentBodyLine = Color(0xFF515151);
   static const documentTableLine = Color(0xFF6A6A6A);
   static const headerButtonBackground = Color(0xFF3C3C3C);
@@ -31,6 +33,8 @@ abstract final class AppColors {
   static const textStrong = Color(0xFF303030);
   static const textSecondary = Color(0xFF9B9B9B);
   static const textTertiary = Color(0xFF919191);
+  static const textCardTitle = Color(0xFF929292);
+
   static const destructive = Color(0xFFFF3B4E);
   static const accentRed = Color(0xFFFF383C);
   static const destructiveGlow = Color(0xFFFF3B30);

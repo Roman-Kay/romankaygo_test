@@ -82,7 +82,7 @@ class _SearchDocumentsBarState extends State<SearchDocumentsBar> {
               prefixInsets: const EdgeInsetsDirectional.only(start: 16),
               suffixInsets: const EdgeInsetsDirectional.only(end: 12),
               placeholder: 'Search Documents',
-              placeholderStyle: const TextStyle(color: AppColors.documentTitleLine, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
+              placeholderStyle: const TextStyle(color: AppColors.searchColor, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
               style: const TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w500, height: 1.1, letterSpacing: 0),
             ),
           ),

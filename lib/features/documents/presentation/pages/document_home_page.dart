@@ -62,31 +62,17 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
   void _openDocumentContextMenu(
     DocumentListBloc bloc,
     String documentId,
-    String documentTitle,
     BuildContext anchorContext,
   ) {
     final renderBox = anchorContext.findRenderObject() as RenderBox?;
     final topLeft = renderBox?.localToGlobal(Offset.zero);
 
     if (renderBox != null && topLeft != null) {
-      final titlePainter = TextPainter(
-        text: TextSpan(
-          text: documentTitle,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            height: 1.2,
-          ),
-        ),
-        maxLines: 2,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      )..layout(maxWidth: 96);
-      final dateTop = topLeft.dy + 182 + 8 + titlePainter.height + 4;
+      final titleTop = topLeft.dy + 182 + 8;
 
       _contextMenuAnchorRect = Rect.fromLTWH(
         topLeft.dx,
-        dateTop,
+        titleTop,
         renderBox.size.width,
         1,
       );
@@ -156,15 +142,10 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                                       : _DocumentGrid(
                                           state: state,
                                           onContextMenuRequested:
-                                              (
-                                                documentId,
-                                                documentTitle,
-                                                anchorContext,
-                                              ) {
+                                              (documentId, anchorContext) {
                                                 _openDocumentContextMenu(
                                                   bloc,
                                                   documentId,
-                                                  documentTitle,
                                                   anchorContext,
                                                 );
                                               },
@@ -192,6 +173,7 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                             ),
                           if (state.isSelectMode)
                             SelectedActionsBar(
+                              hasSelection: state.selectedIds.isNotEmpty,
                               onDelete: () {
                                 bloc.add(const DeleteSelectedPressed());
                               },
@@ -494,11 +476,7 @@ class _Header extends StatelessWidget {
 
 class _DocumentGrid extends StatelessWidget {
   final DocumentListState state;
-  final void Function(
-    String documentId,
-    String documentTitle,
-    BuildContext anchorContext,
-  )
+  final void Function(String documentId, BuildContext anchorContext)
   onContextMenuRequested;
 
   const _DocumentGrid({
@@ -550,11 +528,7 @@ class _DocumentGrid extends StatelessWidget {
                     bloc.add(DocumentTapped(document.id));
                   },
                   onLongPress: () {
-                    onContextMenuRequested(
-                      document.id,
-                      document.title,
-                      cardContext,
-                    );
+                    onContextMenuRequested(document.id, cardContext);
                   },
                 ),
               ),
