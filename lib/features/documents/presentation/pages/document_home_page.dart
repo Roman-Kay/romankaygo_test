@@ -177,6 +177,9 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                               onDelete: () {
                                 bloc.add(const DeleteSelectedPressed());
                               },
+                              onShare: () {
+                                bloc.add(const ShareSelectedPressed());
+                              },
                             ),
                           if (state.isImporting)
                             Positioned.fill(
@@ -229,10 +232,10 @@ class _DocumentHomeViewState extends State<_DocumentHomeView> {
                   DocumentContextMenu(
                     anchorRect: _contextMenuAnchorRect ?? Rect.zero,
                     onPrint: () {
-                      bloc.add(const DocumentContextMenuDismissed());
+                      bloc.add(const ContextDocumentPrintPressed());
                     },
                     onShare: () {
-                      bloc.add(const DocumentContextMenuDismissed());
+                      bloc.add(const ContextDocumentSharePressed());
                     },
                     onDelete: () {
                       bloc.add(const ContextDocumentDeletePressed());

@@ -9,7 +9,9 @@ import '../../domain/entities/document_tab.dart';
 import '../../domain/use_cases/add_document.dart';
 import '../../domain/use_cases/delete_documents.dart';
 import '../../domain/use_cases/get_documents.dart';
+import '../../domain/use_cases/print_document.dart';
 import '../../domain/use_cases/search_documents.dart';
+import '../../domain/use_cases/share_documents.dart';
 import '../../domain/use_cases/toggle_document_status.dart';
 
 part 'document_list_event.dart';
@@ -22,6 +24,8 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
   final DeleteDocuments _deleteDocuments;
   final SearchDocuments _searchDocuments;
   final ToggleDocumentStatus _toggleDocumentStatus;
+  final ShareDocuments _shareDocuments;
+  final PrintDocument _printDocument;
 
   DocumentListBloc({
     required GetDocuments getDocuments,
@@ -29,11 +33,15 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     required DeleteDocuments deleteDocuments,
     required SearchDocuments searchDocuments,
     required ToggleDocumentStatus toggleDocumentStatus,
+    required ShareDocuments shareDocuments,
+    required PrintDocument printDocument,
   }) : _getDocuments = getDocuments,
        _addDocument = addDocument,
        _deleteDocuments = deleteDocuments,
        _searchDocuments = searchDocuments,
        _toggleDocumentStatus = toggleDocumentStatus,
+       _shareDocuments = shareDocuments,
+       _printDocument = printDocument,
        super(const DocumentListState()) {
     on<DocumentsStarted>(_onStarted);
     on<DocumentTabChanged>(_onTabChanged);
@@ -43,6 +51,8 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     on<DocumentContextMenuOpened>(_onDocumentContextMenuOpened);
     on<DocumentContextMenuDismissed>(_onDocumentContextMenuDismissed);
     on<ContextDocumentDeletePressed>(_onContextDocumentDeletePressed);
+    on<ContextDocumentPrintPressed>(_onContextDocumentPrintPressed);
+    on<ContextDocumentSharePressed>(_onContextDocumentSharePressed);
     on<AddDocumentCancelled>(_onOverlayCancelled);
     on<AddDocumentSourceSelected>(_onAddSourceSelected);
     on<SearchPressed>(_onSearchPressed);
@@ -54,6 +64,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     on<DocumentTapped>(_onDocumentTapped);
     on<SelectAllPressed>(_onSelectAllPressed);
     on<DeleteSelectedPressed>(_onDeleteSelectedPressed);
+    on<ShareSelectedPressed>(_onShareSelectedPressed);
   }
 
   Future<void> _onStarted(
@@ -153,6 +164,44 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
         ),
       ),
     );
+  }
+
+  Future<void> _onContextDocumentPrintPressed(
+    ContextDocumentPrintPressed event,
+    Emitter<DocumentListState> emit,
+  ) async {
+    final document = _contextDocument();
+    emit(
+      state.copyWith(
+        overlay: DocumentsOverlay.none,
+        clearContextDocument: true,
+      ),
+    );
+    if (document == null) return;
+    try {
+      await _printDocument(PrintDocumentParams(document));
+    } catch (_) {
+      emit(state.copyWith(errorMessage: 'Failed to print document'));
+    }
+  }
+
+  Future<void> _onContextDocumentSharePressed(
+    ContextDocumentSharePressed event,
+    Emitter<DocumentListState> emit,
+  ) async {
+    final document = _contextDocument();
+    emit(
+      state.copyWith(
+        overlay: DocumentsOverlay.none,
+        clearContextDocument: true,
+      ),
+    );
+    if (document == null) return;
+    try {
+      await _shareDocuments(ShareDocumentsParams([document]));
+    } catch (_) {
+      emit(state.copyWith(errorMessage: 'Failed to share document'));
+    }
   }
 
   void _onOverlayCancelled(
@@ -280,6 +329,7 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
     DeleteSelectedPressed event,
     Emitter<DocumentListState> emit,
   ) async {
+    if (state.selectedIds.isEmpty) return;
     await _deleteDocuments(DeleteDocumentsParams(state.selectedIds));
     final documents = await _getDocuments();
     emit(
@@ -291,6 +341,32 @@ class DocumentListBloc extends Bloc<DocumentListEvent, DocumentListState> {
         ),
       ),
     );
+  }
+
+  Future<void> _onShareSelectedPressed(
+    ShareSelectedPressed event,
+    Emitter<DocumentListState> emit,
+  ) async {
+    final documents = state.documents
+        .where((document) => state.selectedIds.contains(document.id))
+        .toList(growable: false);
+    if (documents.isEmpty) return;
+    try {
+      await _shareDocuments(ShareDocumentsParams(documents));
+    } catch (_) {
+      emit(state.copyWith(errorMessage: 'Failed to share documents'));
+    }
+  }
+
+  Document? _contextDocument() {
+    final documentId = state.contextDocumentId;
+    if (documentId == null) return null;
+    for (final document in state.documents) {
+      if (document.id == documentId) {
+        return document;
+      }
+    }
+    return null;
   }
 
   DocumentListState _derive(DocumentListState input) {

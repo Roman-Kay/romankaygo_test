@@ -19,6 +19,8 @@ import 'package:test_romankaygo/features/documents/data/database/daos/document_d
     as _i912;
 import 'package:test_romankaygo/features/documents/data/repositories/document_repository_impl.dart'
     as _i205;
+import 'package:test_romankaygo/features/documents/data/services/document_actions_service_impl.dart'
+    as _i889;
 import 'package:test_romankaygo/features/documents/data/services/document_import_service_impl.dart'
     as _i300;
 import 'package:test_romankaygo/features/documents/data/services/pdf_builder_service.dart'
@@ -27,6 +29,8 @@ import 'package:test_romankaygo/features/documents/data/services/pdf_preview_ser
     as _i215;
 import 'package:test_romankaygo/features/documents/domain/repositories/document_repository.dart'
     as _i428;
+import 'package:test_romankaygo/features/documents/domain/services/document_actions_service.dart'
+    as _i593;
 import 'package:test_romankaygo/features/documents/domain/services/document_import_service.dart'
     as _i387;
 import 'package:test_romankaygo/features/documents/domain/use_cases/add_document.dart'
@@ -35,8 +39,12 @@ import 'package:test_romankaygo/features/documents/domain/use_cases/delete_docum
     as _i958;
 import 'package:test_romankaygo/features/documents/domain/use_cases/get_documents.dart'
     as _i358;
+import 'package:test_romankaygo/features/documents/domain/use_cases/print_document.dart'
+    as _i657;
 import 'package:test_romankaygo/features/documents/domain/use_cases/search_documents.dart'
     as _i159;
+import 'package:test_romankaygo/features/documents/domain/use_cases/share_documents.dart'
+    as _i41;
 import 'package:test_romankaygo/features/documents/domain/use_cases/toggle_document_status.dart'
     as _i134;
 import 'package:test_romankaygo/features/documents/presentation/bloc/document_list_bloc.dart'
@@ -59,6 +67,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i912.DocumentDao>(
       () => _i912.DocumentDao(gh<_i830.AppDatabase>()),
     );
+    gh.lazySingleton<_i593.DocumentActionsService>(
+      () => const _i889.DocumentActionsServiceImpl(),
+    );
     gh.lazySingleton<_i428.DocumentRepository>(
       () => _i205.DocumentRepositoryImpl(gh<_i912.DocumentDao>()),
     );
@@ -70,6 +81,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i183.ImagePicker>(),
         gh<_i706.Uuid>(),
       ),
+    );
+    gh.factory<_i657.PrintDocument>(
+      () => _i657.PrintDocument(gh<_i593.DocumentActionsService>()),
+    );
+    gh.factory<_i41.ShareDocuments>(
+      () => _i41.ShareDocuments(gh<_i593.DocumentActionsService>()),
     );
     gh.factory<_i958.DeleteDocuments>(
       () => _i958.DeleteDocuments(gh<_i428.DocumentRepository>()),
@@ -93,6 +110,8 @@ extension GetItInjectableX on _i174.GetIt {
         deleteDocuments: gh<_i958.DeleteDocuments>(),
         searchDocuments: gh<_i159.SearchDocuments>(),
         toggleDocumentStatus: gh<_i134.ToggleDocumentStatus>(),
+        shareDocuments: gh<_i41.ShareDocuments>(),
+        printDocument: gh<_i657.PrintDocument>(),
       ),
     );
     return this;

@@ -49,6 +49,14 @@ class ContextDocumentDeletePressed extends DocumentListEvent {
   const ContextDocumentDeletePressed();
 }
 
+class ContextDocumentPrintPressed extends DocumentListEvent {
+  const ContextDocumentPrintPressed();
+}
+
+class ContextDocumentSharePressed extends DocumentListEvent {
+  const ContextDocumentSharePressed();
+}
+
 class AddDocumentCancelled extends DocumentListEvent {
   const AddDocumentCancelled();
 }
@@ -111,4 +119,8 @@ class SelectAllPressed extends DocumentListEvent {
 
 class DeleteSelectedPressed extends DocumentListEvent {
   const DeleteSelectedPressed();
+}
+
+class ShareSelectedPressed extends DocumentListEvent {
+  const ShareSelectedPressed();
 }

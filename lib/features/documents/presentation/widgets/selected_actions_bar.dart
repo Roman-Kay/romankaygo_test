@@ -4,10 +4,12 @@ import 'circle_icon_button.dart';
 
 class SelectedActionsBar extends StatelessWidget {
   final VoidCallback onDelete;
+  final VoidCallback onShare;
   final bool hasSelection;
   const SelectedActionsBar({
     super.key,
     required this.onDelete,
+    required this.onShare,
     required this.hasSelection,
   });
 
@@ -35,7 +37,7 @@ class SelectedActionsBar extends StatelessWidget {
           ),
           _AnimatedActionButton(
             assetPath: 'assets/figma/share.svg',
-            onPressed: hasSelection ? () {} : null,
+            onPressed: hasSelection ? onShare : null,
             foregroundColor: shareColor,
             semanticLabel: 'Share',
           ),
